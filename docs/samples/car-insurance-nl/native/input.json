@@ -1,0 +1,51 @@
+{
+  "request": {
+    "quoteId": "OFF-2026-004821",
+    "quotedOn": "2026-08-21",
+    "requestedStartDate": "2026-09-01",
+    "channel": "intermediair",
+    "intermediary": {
+      "agentNumber": "AG-4471",
+      "name": "Van Dijk Assurantiën"
+    },
+    "applicant": {
+      "initials": "S.M.",
+      "prefix": "de",
+      "lastName": "Vries",
+      "birthDate": "1991-11-04",
+      "licenceIssuedOn": "2011-06-14",
+      "street": "Keizersgracht",
+      "houseNumber": "212",
+      "postcode": "1017EA",
+      "city": "Amsterdam",
+      "country": "NL",
+      "email": "s.devries@example.nl",
+      "iban": "NL91ABNA0417164300"
+    },
+    "vehicle": {
+      "licencePlate": "XN-123-K",
+      "modelCode": "VW-GOLF-18-TSI",
+      "firstRegistration": "2019-03-15",
+      "catalogValue": 28950,
+      "currentValue": 14200,
+      "annualMileage": 12000,
+      "primaryUse": "PARTICULIER",
+      "parking": "OPENBARE-WEG",
+      "alarmClass": "SCM-2"
+    },
+    "cover": {
+      "product": "allrisk",
+      "voluntaryExcess": 250,
+      "claimFreeYears": 8,
+      "paymentTerm": "M",
+      "options": [
+        {
+          "code": "RB"
+        },
+        {
+          "code": "PH"
+        }
+      ]
+    }
+  }
+}

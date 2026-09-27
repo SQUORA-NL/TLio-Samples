@@ -1,0 +1,15 @@
+{
+  "title": "3. Reshape the whole document",
+  "narrative": "'add' makes room, 'move' relocates values into it. Three commands turn a flat legacy shape into a nested one — the kind of migration that's normally a hand-written script.",
+  "document": {
+    "orderId": "ORD-1042",
+    "customerName": "Alice Chen",
+    "customerEmail": "alice@example.com",
+    "status": "approved"
+  },
+  "commands": [
+    { "command": "add", "path": "$.customer", "value": {} },
+    { "command": "move", "fromPath": "$.customerName", "toPath": "$.customer.name" },
+    { "command": "move", "fromPath": "$.customerEmail", "toPath": "$.customer.email" }
+  ]
+}

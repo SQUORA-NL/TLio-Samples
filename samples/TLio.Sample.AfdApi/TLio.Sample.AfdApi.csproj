@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+  </PropertyGroup>
+
+  <!--
+    Demo API for the SIVI AFD 1.0 / AFD Short / AFD 2.0 conversion scripts under Scripts/.
+
+    Those scripts, and where they come from, are maintained in a separate repo
+    (SQUORA/TLIO-Afd — source/sivi exports, tools/generate_afd_scripts.py, afd-mappings.json).
+    This project is a consumer, not the source of truth: it bundles a snapshot of the three
+    generated scripts and a few sample messages so the conversion can be demonstrated with
+    nothing but this repo checked out. Regenerate that snapshot from TLIO-Afd's own generator
+    when its catalogue changes; nothing here edits the scripts by hand.
+  -->
+  <ItemGroup>
+    <PackageReference Include="TLio.Json" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Client" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.ETL" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.Text" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.Math" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.FormatConverter" Version="$(TLioVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Scripts/**/*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleInput/**/*.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleInput/**/*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

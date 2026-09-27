@@ -1,0 +1,23 @@
+services:
+  tlio-plugin-api:
+    image: tlio-sample-docker-plugin:latest
+    container_name: tlio-plugin-api
+    build:
+      context: ../..
+      dockerfile: samples/TLio.Sample.DockerPlugin/Dockerfile
+      args:
+        # Empty = the newest TLio 1.x on nuget.org. Pin one with TLIO_VERSION=1.1.0 docker compose build.
+        TLIO_VERSION: ${TLIO_VERSION:-}
+    ports:
+      - "5000:8080"
+    volumes:
+      - ./plugins:/plugins
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - NUPLANE_PLUGINS_PATH=/plugins
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

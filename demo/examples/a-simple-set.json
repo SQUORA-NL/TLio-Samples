@@ -1,0 +1,12 @@
+{
+  "title": "1. A JSON document, edited",
+  "narrative": "The document is JSON. The script is JSON too — but it's a list of instructions, not data. 'set' changes a value at a path.",
+  "document": {
+    "orderId": "ORD-1042",
+    "customer": "Alice Chen",
+    "status": "pending"
+  },
+  "commands": [
+    { "command": "set", "path": "$.status", "value": "approved" }
+  ]
+}

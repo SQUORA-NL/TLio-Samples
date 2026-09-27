@@ -1,0 +1,14 @@
+{
+  "title": "2. Now it computes things",
+  "narrative": "A value can be an expression, not just a literal — '=datetime()' and '=newGuid()' run live, on the server, every time the script executes. This is where 'JSON config' turns into 'a programming language'.",
+  "document": {
+    "orderId": "ORD-1042",
+    "customer": "Alice Chen",
+    "status": "approved",
+    "total": 129.5
+  },
+  "commands": [
+    { "command": "add", "path": "$.processedAt", "value": "=datetime()" },
+    { "command": "add", "path": "$.confirmationId", "value": "=newGuid()" }
+  ]
+}

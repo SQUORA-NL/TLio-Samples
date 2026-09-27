@@ -1,0 +1,94 @@
+{
+ "commonTechnical": [
+  {
+   "AL_ENTITEI": "AL",
+   "AL_ATYDMSG": "09:30:00",
+   "AL_VRWRKCD": "0"
+  }
+ ],
+ "coverage": [
+  {
+   "CA_ENTITEI": "CA",
+   "CA_ENTREF": "Contractdocument.PK.PP.CA",
+   "CA_VRWRKCD": "0",
+   "CA_VERZSOM": 18000.0,
+   "CA_POLICID": [
+    "Contractdocument.PK.PP"
+   ],
+   "CA_DEKOMS": "Casco personenauto",
+   "CA_INGDAT": "2026-01-01",
+   "CA_GEBIED": [
+    "EU"
+   ]
+  }
+ ],
+ "document": [
+  {
+   "BY_ENTITEI": "BY",
+   "BY_ENTREF": "Contractdocument.BY",
+   "BY_VRWRKCD": "0",
+   "BY_VOLGNUM": 1,
+   "BY_INGDAT": "2026-01-02",
+   "BY_INGTYD": "08:15:00",
+   "BY_BYLOMS": "Polisblad",
+   "BY_BYLSRT": "11",
+   "BY_ELECTR": true,
+   "BY_EXT": "PDF"
+  }
+ ],
+ "masterAgreement": [
+  {
+   "PK_ENTITEI": "PK",
+   "PK_ENTREF": "Contractdocument.PK",
+   "PK_INGDAT": "2026-01-01",
+   "PK_VRWRKCD": "0",
+   "PK_NUMMER": "PKT-2026-100"
+  }
+ ],
+ "object": [
+  {
+   "OB_ENTITEI": "OB",
+   "OB_ENTREF": "Contractdocument.PK.PP.CA.OB",
+   "OB_VRWRKCD": "0",
+   "OB_COVREF": [
+    "Contractdocument.PK.PP.CA"
+   ],
+   "OB_NWE": 21000,
+   "OB_MERK": "Toyota",
+   "OB_BOUWJR": 2022,
+   "OB_MODEL": "Yaris",
+   "OB_KENTEKE": "XY456Z",
+   "OB_KENTOVP": true
+  }
+ ],
+ "party": [
+  {
+   "VP_ENTITEI": "VP",
+   "VP_ENTREF": "Contractdocument.PK.PP.VP",
+   "VP_VRWRKCD": "0",
+   "VP_POLICID": [
+    "Contractdocument.PK.PP"
+   ],
+   "VP_ANAAM": "Bakker",
+   "VP_VOORL": "C.D.",
+   "VP_GESLACH": "V",
+   "VP_GEBDAT": "1975-03-10"
+  }
+ ],
+ "policy": [
+  {
+   "PP_ENTITEI": "PP",
+   "PP_ENTREF": "Contractdocument.PK.PP",
+   "PP_VRWRKCD": "0",
+   "PP_INGDAT": "2026-01-01",
+   "PP_BETTERM": 12,
+   "PP_NUMMER": "POL-100",
+   "PP_BRANCHE": "020",
+   "PP_INGTIJD": "12:00:00",
+   "PP_MASAGRE": [
+    "Contractdocument.PK"
+   ],
+   "PP_RCCONTR": false
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+[
+  { "command": "setProperties", "path": "$.customer.billing",
+    "title": "Wrap the innermost complex objects first",
+    "description": "billing.contact must already be an array by the time billing itself is wrapped, or wrapping billing clones contact away in its pre-wrap shape — see docs/ai-ref/commands/SetProperties.md.",
+    "properties": "=scriptpath(*,['object'],true)", "value": "=toArray()" },
+
+  { "command": "setProperties", "path": "$.customer",
+    "title": "Wrap what's left under customer",
+    "description": "address and the now fully-wrapped billing both become one-element arrays; customerNumber and name are primitives and stay untouched.",
+    "properties": "=scriptpath(*,['object'],true)", "value": "=toArray()" }
+]

@@ -1,0 +1,356 @@
+<script>
+
+  <add path="/afdMessage/rates"
+       title="The rate book"
+       description="One command carries every table the rating needs. Everything below only looks things up in it; a new postcode or roof type is a data edit here, not a script change.">
+    <value>
+      <postcodeZones>
+        <item><pc4>8355</pc4><region>Giethoorn</region><zone>landelijk</zone><regionFactor>0.94</regionFactor></item>
+        <item><pc4>4331</pc4><region>Middelburg</region><zone>landelijk</zone><regionFactor>0.97</regionFactor></item>
+        <item><pc4>8011</pc4><region>Zwolle</region><zone>stedelijk</zone><regionFactor>1.02</regionFactor></item>
+        <item><pc4>9711</pc4><region>Groningen</region><zone>stedelijk</zone><regionFactor>1.06</regionFactor></item>
+        <item><pc4>7511</pc4><region>Enschede</region><zone>stedelijk</zone><regionFactor>1.08</regionFactor></item>
+        <item><pc4>5611</pc4><region>Eindhoven</region><zone>stedelijk</zone><regionFactor>1.12</regionFactor></item>
+        <item><pc4>3512</pc4><region>Utrecht</region><zone>stedelijk</zone><regionFactor>1.18</regionFactor></item>
+        <item><pc4>1017</pc4><region>Amsterdam</region><zone>grootstedelijk</zone><regionFactor>1.32</regionFactor></item>
+      </postcodeZones>
+      <roofTypes>
+        <item><code>PANNEN</code><description>Pannendak</description><roofFactor>1.00</roofFactor></item>
+        <item><code>LEI</code><description>Leien dak</description><roofFactor>1.10</roofFactor></item>
+        <item><code>PLAT-BITUMEN</code><description>Plat dak, bitumen</description><roofFactor>1.15</roofFactor></item>
+        <item><code>RIET</code><description>Rieten kap</description><roofFactor>1.85</roofFactor></item>
+      </roofTypes>
+      <wallTypes>
+        <item><code>PREFAB-BETON</code><description>Prefab beton</description><wallFactor>0.95</wallFactor></item>
+        <item><code>STEEN</code><description>Steen</description><wallFactor>1.00</wallFactor></item>
+        <item><code>HOUT</code><description>Houtskeletbouw</description><wallFactor>1.40</wallFactor></item>
+      </wallTypes>
+      <securityClasses>
+        <item><code>SCM-0</code><description>Geen beveiliging</description><securityFactor>1.10</securityFactor></item>
+        <item><code>SCM-1</code><description>Basisbeveiliging</description><securityFactor>1.00</securityFactor></item>
+        <item><code>SCM-2</code><description>Verbeterde beveiliging</description><securityFactor>0.95</securityFactor></item>
+        <item><code>SCM-3</code><description>Alarminstallatie</description><securityFactor>0.90</securityFactor></item>
+        <item><code>SCM-4</code><description>Alarm met meldkamer</description><securityFactor>0.86</securityFactor></item>
+      </securityClasses>
+      <occupancyTypes>
+        <item><code>PERMANENT</code><description>Permanent bewoond</description><occupancyFactor>1.00</occupancyFactor></item>
+        <item><code>VERHUURD</code><description>Verhuurd</description><occupancyFactor>1.25</occupancyFactor></item>
+        <item><code>RECREATIEF</code><description>Recreatief gebruik</description><occupancyFactor>1.35</occupancyFactor></item>
+        <item><code>LEEGSTAND</code><description>Leegstand</description><occupancyFactor>1.75</occupancyFactor></item>
+      </occupancyTypes>
+      <productRates>
+        <item><code>WONEN-WOONPAKKET</code><opstalPromillage>1.35</opstalPromillage><inboedelPromillage>2.10</inboedelPromillage></item>
+      </productRates>
+      <coverageTariffs>
+        <item><code>GLAS</code><description>Glasdekking</description><premiumPerMonth>4.15</premiumPerMonth></item>
+        <item><code>AVP</code><description>Aansprakelijkheid particulieren</description><premiumPerMonth>3.60</premiumPerMonth></item>
+        <item><code>RB</code><description>Rechtsbijstand</description><premiumPerMonth>2.95</premiumPerMonth></item>
+        <item><code>TUIN</code><description>Tuin en bestrating</description><premiumPerMonth>1.85</premiumPerMonth></item>
+        <item><code>KOSTBAARHEDEN</code><description>Kostbaarheden buitenshuis</description><premiumPerMonth>2.40</premiumPerMonth></item>
+      </coverageTariffs>
+      <paymentTerms>
+        <item><code>M</code><description>Per maand</description><monthsPerTerm>1</monthsPerTerm><termsPerYear>12</termsPerYear><termFactor>1.00</termFactor><policyCostsPerTerm>0.55</policyCostsPerTerm></item>
+        <item><code>K</code><description>Per kwartaal</description><monthsPerTerm>3</monthsPerTerm><termsPerYear>4</termsPerYear><termFactor>0.99</termFactor><policyCostsPerTerm>1.50</policyCostsPerTerm></item>
+        <item><code>H</code><description>Per halfjaar</description><monthsPerTerm>6</monthsPerTerm><termsPerYear>2</termsPerYear><termFactor>0.98</termFactor><policyCostsPerTerm>2.75</policyCostsPerTerm></item>
+        <item><code>J</code><description>Per jaar</description><monthsPerTerm>12</monthsPerTerm><termsPerYear>1</termsPerYear><termFactor>0.96</termFactor><policyCostsPerTerm>5.00</policyCostsPerTerm></item>
+      </paymentTerms>
+      <excessDiscounts>
+        <item><amount>0</amount><excessFactor>1.05</excessFactor></item>
+        <item><amount>100</amount><excessFactor>1.00</excessFactor></item>
+        <item><amount>250</amount><excessFactor>0.97</excessFactor></item>
+        <item><amount>500</amount><excessFactor>0.93</excessFactor></item>
+        <item><amount>1000</amount><excessFactor>0.88</excessFactor></item>
+      </excessDiscounts>
+      <rules>
+        <insuranceTaxRate>0.21</insuranceTaxRate>
+        <thatchInspectionExcess>500</thatchInspectionExcess>
+        <contractDurationYears>1</contractDurationYears>
+      </rules>
+    </value>
+  </add>
+
+  <put path="/afdMessage/calc/pc4"
+       title="PC4 from the postal code"
+       description="The zone table is keyed on the four digits; the risk address is the object's own, not the policyholder's."
+       value="=substring(/afdMessage/policy/objects/object[1]/postalCode, 0, 4)"/>
+
+  <put path="/afdMessage/calc/quoteYear"
+       title="Quote year"
+       description="Dated from messageDate, never from =datetime(), so a run tomorrow still reproduces output.xml."
+       value="=datePart(/afdMessage/messageHeader/messageDate, 'year')"/>
+
+  <put path="/afdMessage/calc/buildingAge"
+       title="Building age"
+       description="constructionYear is a year, not a date, so this is a subtraction — not the dateDiff the car sample uses for a birth date."
+       value="=subtract(/afdMessage/calc/quoteYear, /afdMessage/policy/objects/object[1]/constructionYear)"/>
+
+  <put path="/afdMessage/calc/holderAge"
+       title="Policyholder age"
+       description="Whole years on the message date. dateDiff counts birthdays, so it is right on the birthday and right in a leap year."
+       value="=dateDiff(/afdMessage/policy/parties/party[1]/dateOfBirth, /afdMessage/messageHeader/messageDate, 'years')"/>
+
+  <decisionTable path="/afdMessage" title="Building age band"
+                 description="A band is a range, and a range is rule text — so this stays a table where the bonus-malus ladder became one clamp.">
+    <decisionTable>
+      <inputs><item><name>age</name><path>/afdMessage/calc/buildingAge</path></item></inputs>
+      <outputs>
+        <item><name>band</name><path>/afdMessage/calc/buildingAgeBand</path></item>
+        <item><name>factor</name><path>/afdMessage/calc/buildingAgeFactor</path></item>
+      </outputs>
+      <rules>
+        <item><priority>1</priority><conditions><age>&lt;10</age></conditions><results><band>nieuwbouw</band><factor>0.92</factor></results></item>
+        <item><priority>2</priority><conditions><age>&gt;=10 &amp;&amp; &lt;30</age></conditions><results><band>10 t/m 29 jaar</band><factor>1.00</factor></results></item>
+        <item><priority>3</priority><conditions><age>&gt;=30 &amp;&amp; &lt;50</age></conditions><results><band>30 t/m 49 jaar</band><factor>1.08</factor></results></item>
+        <item><priority>4</priority><conditions><age>&gt;=50 &amp;&amp; &lt;75</age></conditions><results><band>50 t/m 74 jaar</band><factor>1.15</factor></results></item>
+        <item><priority>5</priority><conditions><age>&gt;=75</age></conditions><results><band>75 jaar en ouder</band><factor>1.22</factor></results></item>
+      </rules>
+    </decisionTable>
+  </decisionTable>
+
+  <decisionTable path="/afdMessage" title="Contents sum band"
+                 description="Decides whether the guarantee against underinsurance applies. Below the floor the insurer prices the cover but does not give the guarantee.">
+    <decisionTable>
+      <inputs><item><name>sum</name><path>/afdMessage/policy/objects/object[2]/insuredSumAmount</path></item></inputs>
+      <outputs>
+        <item><name>band</name><path>/afdMessage/calc/contentsBand</path></item>
+        <item><name>guarantee</name><path>/afdMessage/calc/underinsuranceGuarantee</path></item>
+      </outputs>
+      <rules>
+        <item><priority>1</priority><conditions><sum>&lt;50000</sum></conditions><results><band>beperkt</band><guarantee>NEE</guarantee></results></item>
+        <item><priority>2</priority><conditions><sum>&gt;=50000 &amp;&amp; &lt;150000</sum></conditions><results><band>standaard</band><guarantee>JA</guarantee></results></item>
+        <item><priority>3</priority><conditions><sum>&gt;=150000</sum></conditions><results><band>uitgebreid</band><guarantee>JA</guarantee></results></item>
+      </rules>
+    </decisionTable>
+  </decisionTable>
+
+  <decisionTable path="/afdMessage" title="Acceptance"
+                 description="Four inputs, first match wins, and defaultResults is the accept path — so the rules only have to state the exceptions.">
+    <decisionTable>
+      <inputs>
+        <item><name>occupancy</name><path>/afdMessage/policy/objects/object[1]/occupancyCode</path></item>
+        <item><name>monument</name><path>/afdMessage/policy/objects/object[1]/monumentIndicator</path></item>
+        <item><name>roof</name><path>/afdMessage/policy/objects/object[1]/roofTypeCode</path></item>
+        <item><name>rebuild</name><path>/afdMessage/policy/objects/object[1]/rebuildValueAmount</path></item>
+      </inputs>
+      <outputs>
+        <item><name>decision</name><path>/afdMessage/calc/decision</path></item>
+        <item><name>reason</name><path>/afdMessage/calc/decisionReason</path></item>
+      </outputs>
+      <rules>
+        <item><priority>1</priority><conditions><occupancy>=LEEGSTAND</occupancy></conditions>
+              <results><decision>AFGEWEZEN</decision><reason>Leegstaand pand - niet verzekerbaar op dit product.</reason></results></item>
+        <item><priority>2</priority><conditions><monument>=true</monument></conditions>
+              <results><decision>BEOORDELEN</decision><reason>Monumentaal pand - handmatige acceptatie en taxatie vereist.</reason></results></item>
+        <item><priority>3</priority><conditions><rebuild>&gt;1000000</rebuild></conditions>
+              <results><decision>BEOORDELEN</decision><reason>Herbouwwaarde boven EUR 1.000.000 - handmatige acceptatie.</reason></results></item>
+        <item><priority>4</priority><conditions><roof>=RIET</roof></conditions>
+              <results><decision>GEACCEPTEERD-MET-CLAUSULE</decision><reason>Rieten kap - geaccepteerd onder de rietdekkersclausule.</reason></results></item>
+      </rules>
+      <defaultResults><decision>GEACCEPTEERD</decision><reason>Voldoet aan de standaard acceptatierichtlijnen.</reason></defaultResults>
+    </decisionTable>
+  </decisionTable>
+
+  <put path="/afdMessage/calc/opstal"
+       title="Opstal premium"
+       description="The whole lookup is in the path: item[code = /…/roofTypeCode] joins the rate book to the request in XPath itself, so no lookup command is needed. Promillage over herbouwwaarde, so the product is divided by 12000 — 1000 for the per-mille and 12 for the month."
+       value="=round(=divide(=multiply(/afdMessage/policy/objects/object[1]/rebuildValueAmount, /afdMessage/rates/productRates/item[code = /afdMessage/policy/productCode]/opstalPromillage, /afdMessage/rates/postcodeZones/item[pc4 = /afdMessage/calc/pc4]/regionFactor, /afdMessage/rates/roofTypes/item[code = /afdMessage/policy/objects/object[1]/roofTypeCode]/roofFactor, /afdMessage/rates/wallTypes/item[code = /afdMessage/policy/objects/object[1]/wallTypeCode]/wallFactor, /afdMessage/calc/buildingAgeFactor, /afdMessage/rates/securityClasses/item[code = /afdMessage/policy/objects/object[1]/securityClassCode]/securityFactor, /afdMessage/rates/occupancyTypes/item[code = /afdMessage/policy/objects/object[1]/occupancyCode]/occupancyFactor, /afdMessage/rates/excessDiscounts/item[amount = /afdMessage/policy/voluntaryExcessAmount]/excessFactor), 12000), 2)"/>
+
+  <put path="/afdMessage/calc/inboedel"
+       title="Inboedel premium"
+       description="Contents do not age with the building, so the building-age factor is deliberately absent here — the same reason the roof and wall factors are."
+       value="=round(=divide(=multiply(/afdMessage/policy/objects/object[2]/insuredSumAmount, /afdMessage/rates/productRates/item[code = /afdMessage/policy/productCode]/inboedelPromillage, /afdMessage/rates/postcodeZones/item[pc4 = /afdMessage/calc/pc4]/regionFactor, /afdMessage/rates/securityClasses/item[code = /afdMessage/policy/objects/object[2]/securityClassCode]/securityFactor, /afdMessage/rates/excessDiscounts/item[amount = /afdMessage/policy/voluntaryExcessAmount]/excessFactor), 12000), 2)"/>
+
+  <put path="/afdMessage/calc/options"
+       title="Additional coverages per month"
+       description="XPath compares two node-sets: item[code = …/coverage/coverageCode] keeps every tariff row whose code matches ANY requested coverage. Opstal and inboedel are not in the tariff table, so the join picks out exactly the options."
+       value="=round(=sum(/afdMessage/rates/coverageTariffs/item[code = /afdMessage/policy/coverages/coverage/coverageCode]/premiumPerMonth), 2)"/>
+
+  <put path="/afdMessage/calc/netPerMonth" title="Net per month"
+       description="Everything is monthly until the payment-term step."
+       value="=round(=sum(/afdMessage/calc/opstal, /afdMessage/calc/inboedel, /afdMessage/calc/options), 2)"/>
+
+  <put path="/afdMessage/calc/netPerTerm" title="Net per term"
+       description="Months in the term, then the term discount — paying less often is cheaper."
+       value="=round(=multiply(/afdMessage/calc/netPerMonth, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/monthsPerTerm, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/termFactor), 2)"/>
+
+  <put path="/afdMessage/calc/taxableBase" title="Taxable base"
+       description="Policy costs are taxed too, so they are added before the assurantiebelasting, not after."
+       value="=round(=sum(/afdMessage/calc/netPerTerm, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/policyCostsPerTerm), 2)"/>
+
+  <put path="/afdMessage/calc/insuranceTax" title="Assurantiebelasting"
+       value="=round(=multiply(/afdMessage/calc/taxableBase, /afdMessage/rates/rules/insuranceTaxRate), 2)"/>
+
+  <put path="/afdMessage/calc/grossPerTerm" title="Gross per term"
+       value="=round(=sum(/afdMessage/calc/taxableBase, /afdMessage/calc/insuranceTax), 2)"/>
+
+  <put path="/afdMessage/calc/grossPerYear" title="Gross per year"
+       value="=round(=multiply(/afdMessage/calc/grossPerTerm, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/termsPerYear), 2)"/>
+
+  <put path="/afdMessage/policy/coverages/coverage[1]"
+       title="Opstal coverage entity"
+       description="A predicate addresses the line by its code rather than its position, so the order of the requested coverages is not part of the contract here — unlike the car sample, which reads coverages[0] and [1] by index.">
+    <value>
+      <entityType>coverage</entityType>
+      <coverageCode>OPSTAL</coverageCode>
+      <description>Opstal - herbouwwaarde, met garantie tegen onderverzekering</description>
+      <coverageTypeCode>HOOFDDEKKING</coverageTypeCode>
+      <insuredSumAmount>=fetch(/afdMessage/policy/objects/object[1]/rebuildValueAmount)</insuredSumAmount>
+      <excessAmount>=fetch(/afdMessage/policy/voluntaryExcessAmount)</excessAmount>
+      <premiumAmount>=fetch(/afdMessage/calc/opstal)</premiumAmount>
+      <statusCode>GEACCEPTEERD</statusCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/coverages/coverage[2]"
+       title="Inboedel coverage entity">
+    <value>
+      <entityType>coverage</entityType>
+      <coverageCode>INBOEDEL</coverageCode>
+      <description>Inboedel - nieuwwaarde</description>
+      <coverageTypeCode>HOOFDDEKKING</coverageTypeCode>
+      <insuredSumAmount>=fetch(/afdMessage/policy/objects/object[2]/insuredSumAmount)</insuredSumAmount>
+      <valuablesSumAmount>=fetch(/afdMessage/policy/objects/object[2]/valuablesSumAmount)</valuablesSumAmount>
+      <excessAmount>=fetch(/afdMessage/policy/voluntaryExcessAmount)</excessAmount>
+      <premiumAmount>=fetch(/afdMessage/calc/inboedel)</premiumAmount>
+      <underinsuranceGuarantee>=fetch(/afdMessage/calc/underinsuranceGuarantee)</underinsuranceGuarantee>
+      <statusCode>GEACCEPTEERD</statusCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/coverages/coverage[3]"
+       title="Glas coverage entity"
+       description="The tariff comes out of the same table the options total was summed from — one number, addressed twice, never copied.">
+    <value>
+      <entityType>coverage</entityType>
+      <coverageCode>GLAS</coverageCode>
+      <description>=fetch(/afdMessage/rates/coverageTariffs/item[code='GLAS']/description)</description>
+      <coverageTypeCode>AANVULLEND</coverageTypeCode>
+      <premiumAmount>=fetch(/afdMessage/rates/coverageTariffs/item[code='GLAS']/premiumPerMonth)</premiumAmount>
+      <statusCode>GEACCEPTEERD</statusCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/coverages/coverage[4]"
+       title="AVP coverage entity">
+    <value>
+      <entityType>coverage</entityType>
+      <coverageCode>AVP</coverageCode>
+      <description>=fetch(/afdMessage/rates/coverageTariffs/item[code='AVP']/description)</description>
+      <coverageTypeCode>AANVULLEND</coverageTypeCode>
+      <insuredSumAmount>1250000</insuredSumAmount>
+      <premiumAmount>=fetch(/afdMessage/rates/coverageTariffs/item[code='AVP']/premiumPerMonth)</premiumAmount>
+      <statusCode>GEACCEPTEERD</statusCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/messageHeader/messageTypeCode"
+       title="The message changes type"
+       description="Same envelope, same messageId — an offerteaanvraag comes back as a polisaanmaak.">POLISAANMAAK</put>
+
+  <put path="/afdMessage/policy/policyNumber" title="Policy number"
+       description="The quotation number carries into the policy number, so the two stay traceable to each other."
+       value="=concat('POL-', =substring(/afdMessage/policy/quotationNumber, 4, 12))"/>
+
+  <put path="/afdMessage/policy/policyStatusCode" title="Policy status">ACTIEF</put>
+  <put path="/afdMessage/policy/insurerCode" title="Insurer code">SQ</put>
+  <put path="/afdMessage/policy/productName" title="Product name">Squora Woonpakket</put>
+
+  <put path="/afdMessage/policy/expiryDate" title="Expiry date"
+       description="One contract year from the commencement date. dateAdd does the calendar arithmetic, so 29 February clamps rather than overflowing."
+       value="=dateAdd(/afdMessage/policy/commencementDate, /afdMessage/rates/rules/contractDurationYears, 'years')"/>
+
+  <put path="/afdMessage/policy/contractDurationYears"
+       value="=fetch(/afdMessage/rates/rules/contractDurationYears)"/>
+
+  <put path="/afdMessage/policy/riskProfile"
+       title="Risk profile"
+       description="An insurer extension, not an AFD entity — it records which rate-book rows the premium was built from, so a later re-rate can be compared against this one.">
+    <value>
+      <entityType>riskProfile</entityType>
+      <pc4>=fetch(/afdMessage/calc/pc4)</pc4>
+      <region>=fetch(/afdMessage/rates/postcodeZones/item[pc4 = /afdMessage/calc/pc4]/region)</region>
+      <zone>=fetch(/afdMessage/rates/postcodeZones/item[pc4 = /afdMessage/calc/pc4]/zone)</zone>
+      <regionFactor>=fetch(/afdMessage/rates/postcodeZones/item[pc4 = /afdMessage/calc/pc4]/regionFactor)</regionFactor>
+      <buildingAge>=fetch(/afdMessage/calc/buildingAge)</buildingAge>
+      <buildingAgeBand>=fetch(/afdMessage/calc/buildingAgeBand)</buildingAgeBand>
+      <buildingAgeFactor>=fetch(/afdMessage/calc/buildingAgeFactor)</buildingAgeFactor>
+      <roofDescription>=fetch(/afdMessage/rates/roofTypes/item[code = /afdMessage/policy/objects/object[1]/roofTypeCode]/description)</roofDescription>
+      <roofFactor>=fetch(/afdMessage/rates/roofTypes/item[code = /afdMessage/policy/objects/object[1]/roofTypeCode]/roofFactor)</roofFactor>
+      <wallFactor>=fetch(/afdMessage/rates/wallTypes/item[code = /afdMessage/policy/objects/object[1]/wallTypeCode]/wallFactor)</wallFactor>
+      <securityFactor>=fetch(/afdMessage/rates/securityClasses/item[code = /afdMessage/policy/objects/object[1]/securityClassCode]/securityFactor)</securityFactor>
+      <occupancyFactor>=fetch(/afdMessage/rates/occupancyTypes/item[code = /afdMessage/policy/objects/object[1]/occupancyCode]/occupancyFactor)</occupancyFactor>
+      <excessFactor>=fetch(/afdMessage/rates/excessDiscounts/item[amount = /afdMessage/policy/voluntaryExcessAmount]/excessFactor)</excessFactor>
+      <contentsBand>=fetch(/afdMessage/calc/contentsBand)</contentsBand>
+      <holderAge>=fetch(/afdMessage/calc/holderAge)</holderAge>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/premium"
+       title="Premium entity"
+       description="Both the term amount and the annual amount are stated, because the frequency is a policy attribute and the reader should not have to multiply.">
+    <value>
+      <entityType>premium</entityType>
+      <premiumFrequencyCode>=fetch(/afdMessage/policy/premiumFrequencyCode)</premiumFrequencyCode>
+      <premiumFrequencyDescription>=fetch(/afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/description)</premiumFrequencyDescription>
+      <opstalPremiumPerMonth>=fetch(/afdMessage/calc/opstal)</opstalPremiumPerMonth>
+      <inboedelPremiumPerMonth>=fetch(/afdMessage/calc/inboedel)</inboedelPremiumPerMonth>
+      <additionalPremiumPerMonth>=fetch(/afdMessage/calc/options)</additionalPremiumPerMonth>
+      <netPremiumPerMonth>=fetch(/afdMessage/calc/netPerMonth)</netPremiumPerMonth>
+      <netPremiumPerTerm>=fetch(/afdMessage/calc/netPerTerm)</netPremiumPerTerm>
+      <policyCostsPerTerm>=fetch(/afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/policyCostsPerTerm)</policyCostsPerTerm>
+      <insuranceTaxRate>=fetch(/afdMessage/rates/rules/insuranceTaxRate)</insuranceTaxRate>
+      <insuranceTaxAmount>=fetch(/afdMessage/calc/insuranceTax)</insuranceTaxAmount>
+      <grossPremiumPerTerm>=fetch(/afdMessage/calc/grossPerTerm)</grossPremiumPerTerm>
+      <grossPremiumPerYear>=fetch(/afdMessage/calc/grossPerYear)</grossPremiumPerYear>
+      <collectionMethodCode>=fetch(/afdMessage/policy/collectionMethodCode)</collectionMethodCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/acceptance"
+       title="Acceptance entity"
+       description="The decision and its reason, written as an entity so a clause can be added under it by the ifElse blocks below.">
+    <value>
+      <entityType>acceptance</entityType>
+      <decisionCode>=fetch(/afdMessage/calc/decision)</decisionCode>
+      <decisionReason>=fetch(/afdMessage/calc/decisionReason)</decisionReason>
+      <assessedOn>=fetch(/afdMessage/messageHeader/messageDate)</assessedOn>
+    </value>
+  </put>
+
+  <ifElse title="Rietdekkersclausule"
+          description="A thatched roof is accepted, but only under a clause with its own excess and an inspection term. What is conditional is a whole node, not a value — so this stays an ifElse where the casco premium became one =if."
+          condition="=equals(/afdMessage/policy/objects/object[1]/roofTypeCode, 'RIET')">
+    <ifScript>
+      <put path="/afdMessage/policy/acceptance/clauses/thatchedRoof"
+           title="RIET-01"
+           description="clauses does not exist yet — writing into it is what creates it.">
+        <value>
+          <clauseCode>RIET-01</clauseCode>
+          <clauseText>Rieten kap: schoorsteen en rookkanalen jaarlijks vegen; bliksemafleider verplicht binnen 6 maanden na ingangsdatum.</clauseText>
+          <extraExcessAmount>=fetch(/afdMessage/rates/rules/thatchInspectionExcess)</extraExcessAmount>
+          <inspectionRequired>JA</inspectionRequired>
+          <inspectionDueDate>=dateAdd(/afdMessage/policy/commencementDate, 6, 'months')</inspectionDueDate>
+        </value>
+      </put>
+    </ifScript>
+  </ifElse>
+
+  <ifElse title="Onderverzekeringsclausule"
+          description="Below the contents floor the premium is still charged, but the guarantee against underinsurance is not given — the policy has to say so."
+          condition="=equals(/afdMessage/calc/underinsuranceGuarantee, 'NEE')">
+    <ifScript>
+      <put path="/afdMessage/policy/acceptance/clauses/underinsurance" title="ONDERVERZEKERING-01">
+        <value>
+          <clauseCode>ONDERVERZEKERING-01</clauseCode>
+          <clauseText>Verzekerd bedrag inboedel ligt onder de ondergrens voor de garantie tegen onderverzekering; bij schade geldt de evenredigheidsregel.</clauseText>
+        </value>
+      </put>
+    </ifScript>
+  </ifElse>
+
+  <remove path="/afdMessage/calc" title="Drop the working area"
+          description="Everything it held that belongs on the policy has been written to a policy entity."/>
+  <remove path="/afdMessage/rates" title="Drop the rate book"
+          description="It came in with the script, not with the message, so it leaves with the script."/>
+
+</script>

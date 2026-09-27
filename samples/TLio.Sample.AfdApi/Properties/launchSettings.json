@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "TLio.Sample.AfdApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61513;http://localhost:61514"
+    }
+  }
+}

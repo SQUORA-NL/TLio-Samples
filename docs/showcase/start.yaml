@@ -1,0 +1,55 @@
+name: Ada Lovelace
+padded: '  spaced  '
+numbers:
+  - 3
+  - 1
+  - 4
+tags:
+  - alpha
+  - beta
+people:
+  - id: p1
+    score: 10
+  - id: p2
+    score: 20
+nested:
+  deep:
+    value: buried
+flagText: 'true'
+emptyField: null
+dates:
+  - 2024-03-01
+  - 2024-01-15
+  - 2024-02-01
+ref: $.name
+mergeSource:
+  extra: merged-in
+mergeTarget:
+  kept: still-here
+arrSource:
+  list:
+    - s1
+arrTarget:
+  list:
+    - t1
+etl:
+  src:
+    user:
+      name: Alice
+      city: Amsterdam
+  rows:
+    - id: r1
+      qty: 2
+    - id: r2
+      qty: 5
+  resolveRef:
+    code: A
+  lookup:
+    - code: A
+      label: Alpha
+dt:
+  status: active
+trip:
+  user:
+    name: Alice
+    city: Amsterdam

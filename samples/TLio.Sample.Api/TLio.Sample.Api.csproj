@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TLio.Json" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Xml" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Yaml" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Client" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.ETL" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.Math" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.Text" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.TimeDate" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.FormatConverter" Version="$(TLioVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="scripts-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts/**/*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleInput/**/*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleInput/**/*.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleInput/**/*.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

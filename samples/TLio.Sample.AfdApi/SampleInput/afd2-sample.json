@@ -1,0 +1,210 @@
+{
+ "_afdIssues": [
+  {
+   "issue": "unmappedLabels",
+   "attempted": "map to an AFD 2.0 attribute or entity",
+   "reason": "key not in the embedded mapping table; moved to the element's _afdQuarantine (first 24 per message), any further ones kept in place",
+   "labels": [
+    "PP_FOOBAR"
+   ]
+  },
+  {
+   "issue": "unknownEntity",
+   "attempted": "map the AFD 1.0 entity tag to an AFD 2.0 entity",
+   "reason": "entity code not in the embedded entityCodes table; the entity is kept in $._afdQuarantine.unknownEntities",
+   "location": "Contractdocument.PK.PP[1].ZZ"
+  },
+  {
+   "issue": "unknownEntity",
+   "attempted": "map the AFD 1.0 entity tag to an AFD 2.0 entity",
+   "reason": "entity code not in the embedded entityCodes table; the entity is kept in $._afdQuarantine.unknownEntities",
+   "location": "Contractdocument.YY"
+  },
+  {
+   "issue": "typeConversion",
+   "path": "$.policy[1].effectiveDate",
+   "value": "2026",
+   "attempted": "J/N -> boolean, EEJJMMDD -> date, UUMM -> time, numeric string -> number",
+   "reason": "the value does not have the AFD 1.0 notation the type rule expects; kept as string"
+  },
+  {
+   "issue": "typeConversion",
+   "path": "$.policy[1].blanketAccountApplicable",
+   "value": "X",
+   "attempted": "J/N -> boolean, EEJJMMDD -> date, UUMM -> time, numeric string -> number",
+   "reason": "the value does not have the AFD 1.0 notation the type rule expects; kept as string"
+  },
+  {
+   "issue": "relationWithoutReference",
+   "attempted": "child.<parentEntity>Ref = parent.refKey",
+   "reason": "the child's entityType defines no reference attribute for this parent entity; the nesting is recorded here and dropped from the output",
+   "path": "$.party[0]._iss",
+   "parent": {
+    "entity": "masterAgreement",
+    "ref": "Contractdocument.PK"
+   }
+  }
+ ],
+ "_afdQuarantine": {
+  "unknownEntities": [
+   {
+    "ZZ_ONBEKEND": "quarantined",
+    "location": "Contractdocument.PK.PP[1].ZZ"
+   },
+   {
+    "YY_WAARDE": "quarantined with the source skeleton",
+    "location": "Contractdocument.YY"
+   }
+  ]
+ },
+ "address": [
+  {
+   "entityType": "default",
+   "refKey": "Contractdocument.PK.VP.XA",
+   "processingCode": "0",
+   "partyRef": [
+    "Contractdocument.PK.VP"
+   ],
+   "addressKnown": true,
+   "city": "Utrecht",
+   "country": "NL",
+   "houseNumber": 12,
+   "postalCode": "1234AB",
+   "street": "Dorpsstraat"
+  }
+ ],
+ "commonTechnical": [
+  {
+   "entityType": "default",
+   "processingCode": "0",
+   "creationTime": "09:30:00"
+  }
+ ],
+ "coverage": [
+  {
+   "entityType": "hullVehicle",
+   "refKey": "Contractdocument.PK.PP[0].CA",
+   "processingCode": "0",
+   "effectiveDate": "2026-01-01",
+   "policyRef": [
+    "Contractdocument.PK.PP[0]"
+   ],
+   "sumInsured": 25000.5,
+   "coverageDescription": "Casco personenauto",
+   "coverageAreaCode": [
+    "EU"
+   ]
+  },
+  {
+   "entityType": "building",
+   "refKey": "Contractdocument.PK.PP[1].OP",
+   "processingCode": "0",
+   "effectiveDate": "2026-01-01",
+   "policyRef": [
+    "Contractdocument.PK.PP[1]"
+   ],
+   "sumInsured": 350000
+  }
+ ],
+ "document": [
+  {
+   "entityType": "default",
+   "refKey": "Contractdocument.BY",
+   "processingCode": "0",
+   "sequenceNumber": 1,
+   "effectiveDate": "2026-01-02",
+   "effectiveTimeOnStartDate": "08:15:00",
+   "attachmentDescription": "Polisblad",
+   "attachmentType": "11",
+   "electronicallySigned": true,
+   "fileExtension": "PDF"
+  }
+ ],
+ "masterAgreement": [
+  {
+   "entityType": "package",
+   "refKey": "Contractdocument.PK",
+   "processingCode": "0",
+   "effectiveDate": "2026-01-01",
+   "contractNumber": "PKT-2026-001"
+  }
+ ],
+ "object": [
+  {
+   "entityType": "motorVehicle",
+   "refKey": "Contractdocument.PK.PP[0].CA.OB",
+   "processingCode": "0",
+   "coverageRef": [
+    "Contractdocument.PK.PP[0].CA"
+   ],
+   "newValue": 38500,
+   "constructionYear": 2021,
+   "make": "Volkswagen",
+   "model": "ID.3",
+   "licensePlate": "AB123C",
+   "vehicleRegisteredToPolicyHolder": true,
+   "currentVehicleColors": [
+    "grijs"
+   ],
+   "areasVisitedOrCrossed": [
+    "NL",
+    "DE"
+   ]
+  },
+  {
+   "entityType": "building",
+   "refKey": "Contractdocument.PK.PP[1].OP.BA",
+   "processingCode": "0",
+   "city": "Utrecht",
+   "houseNumber": 12,
+   "postalCode": "1234AB",
+   "street": "Dorpsstraat",
+   "coverageRef": [
+    "Contractdocument.PK.PP[1].OP"
+   ],
+   "constructionYear": 1932,
+   "buildingWithMultipleHouseNumbers": true
+  }
+ ],
+ "party": [
+  {
+   "entityType": "policyHolder",
+   "refKey": "Contractdocument.PK.VP",
+   "processingCode": "0",
+   "birthDate": "1980-05-15",
+   "surname": "Jansen",
+   "initials": "A.B.",
+   "gender": "M"
+  }
+ ],
+ "policy": [
+  {
+   "entityType": "policyDetails",
+   "refKey": "Contractdocument.PK.PP[0]",
+   "processingCode": "0",
+   "effectiveDate": "2026-01-01",
+   "masterAgreementRef": [
+    "Contractdocument.PK"
+   ],
+   "contractNumber": "POL-001",
+   "paymentTermInMonths": 12,
+   "businessLine": "020",
+   "startTimeContract": "12:00:00",
+   "blanketAccountApplicable": false
+  },
+  {
+   "entityType": "policyDetails",
+   "refKey": "Contractdocument.PK.PP[1]",
+   "processingCode": "0",
+   "effectiveDate": "2026",
+   "_afdQuarantine": {
+    "PP_FOOBAR": "?"
+   },
+   "masterAgreementRef": [
+    "Contractdocument.PK"
+   ],
+   "contractNumber": "POL-002",
+   "blanketAccountApplicable": "X"
+  }
+ ]
+}

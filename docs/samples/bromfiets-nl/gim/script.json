@@ -1,0 +1,1901 @@
+[
+  {
+    "command": "add",
+    "path": "$.tarieven",
+    "title": "The rate book (tarieven)",
+    "description": "Nh1816 bromfietsverzekering, 2018-07-18 — vehicle-type codes, the age-category-to-BM-basis table, the 25-step bonus-malus ladder, WA premiums (5 categories x 4 vehicle types), casco premiums (31 catalog-value brackets x 5 categories x 4 vehicle types) and the one accident-cover combination this product prices. Everything below only looks things up in it.",
+    "value": {
+      "version": "Nh1816 bromfiets, 2018-07-18",
+      "rules": {
+        "grossToNetFactor": 0.8,
+        "insuranceTaxRate": 0.21
+      },
+      "vehicleTypes": [
+        { "code": "62", "vehicleType": "Brommer" },
+        { "code": "63", "vehicleType": "Snorfiets" },
+        { "code": "60", "vehicleType": "Brommobiel" },
+        { "code": "13", "vehicleType": "HS E-bike" }
+      ],
+      "riskCategoryBmBasis": [
+        { "category": "A", "bmBasis": 4 },
+        { "category": "B", "bmBasis": 5 },
+        { "category": "C", "bmBasis": 6 },
+        { "category": "D", "bmBasis": 6 },
+        { "category": "E", "bmBasis": 8 }
+      ],
+      "bmLadder": [
+        { "bmStep": 25, "bmFactor": 0.2 },
+        { "bmStep": 24, "bmFactor": 0.2 },
+        { "bmStep": 23, "bmFactor": 0.2 },
+        { "bmStep": 22, "bmFactor": 0.2 },
+        { "bmStep": 21, "bmFactor": 0.2 },
+        { "bmStep": 20, "bmFactor": 0.2 },
+        { "bmStep": 19, "bmFactor": 0.2 },
+        { "bmStep": 18, "bmFactor": 0.2 },
+        { "bmStep": 17, "bmFactor": 0.2 },
+        { "bmStep": 16, "bmFactor": 0.2 },
+        { "bmStep": 15, "bmFactor": 0.225 },
+        { "bmStep": 14, "bmFactor": 0.25 },
+        { "bmStep": 13, "bmFactor": 0.3 },
+        { "bmStep": 12, "bmFactor": 0.325 },
+        { "bmStep": 11, "bmFactor": 0.35 },
+        { "bmStep": 10, "bmFactor": 0.4 },
+        { "bmStep": 9, "bmFactor": 0.45 },
+        { "bmStep": 8, "bmFactor": 0.5 },
+        { "bmStep": 7, "bmFactor": 0.55 },
+        { "bmStep": 6, "bmFactor": 0.6 },
+        { "bmStep": 5, "bmFactor": 0.65 },
+        { "bmStep": 4, "bmFactor": 0.75 },
+        { "bmStep": 3, "bmFactor": 0.85 },
+        { "bmStep": 2, "bmFactor": 0.95 },
+        { "bmStep": 1, "bmFactor": 1.25 }
+      ],
+      "waPremiums": [
+        { "category": "A", "vehicleType": "Brommer", "premium": 457.5 },
+        { "category": "A", "vehicleType": "Snorfiets", "premium": 324.52 },
+        { "category": "A", "vehicleType": "HS E-bike", "premium": 457.5 },
+        { "category": "A", "vehicleType": "Brommobiel", "premium": 835.7 },
+        { "category": "B", "vehicleType": "Brommer", "premium": 417.24 },
+        { "category": "B", "vehicleType": "Snorfiets", "premium": 285.48 },
+        { "category": "B", "vehicleType": "HS E-bike", "premium": 417.24 },
+        { "category": "B", "vehicleType": "Brommobiel", "premium": 835.7 },
+        { "category": "C", "vehicleType": "Brommer", "premium": 309.88 },
+        { "category": "C", "vehicleType": "Snorfiets", "premium": 241.56 },
+        { "category": "C", "vehicleType": "HS E-bike", "premium": 309.88 },
+        { "category": "C", "vehicleType": "Brommobiel", "premium": 619.76 },
+        { "category": "D", "vehicleType": "Brommer", "premium": 309.88 },
+        { "category": "D", "vehicleType": "Snorfiets", "premium": 241.56 },
+        { "category": "D", "vehicleType": "HS E-bike", "premium": 309.88 },
+        { "category": "D", "vehicleType": "Brommobiel", "premium": 619.76 },
+        { "category": "E", "vehicleType": "Brommer", "premium": 225.7 },
+        { "category": "E", "vehicleType": "Snorfiets", "premium": 162.26 },
+        { "category": "E", "vehicleType": "HS E-bike", "premium": 225.7 },
+        { "category": "E", "vehicleType": "Brommobiel", "premium": 450.18 }
+      ],
+      "cascoPremiums": [
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1000, "premium": 481 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1000, "premium": 407 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1000, "premium": 351 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1000, "premium": 336 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1000, "premium": 336 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1100, "premium": 519 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1100, "premium": 440 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1100, "premium": 380 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1100, "premium": 362 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1100, "premium": 362 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1200, "premium": 550 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1200, "premium": 467 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1200, "premium": 403 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1200, "premium": 382 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1200, "premium": 382 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1300, "premium": 595 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1300, "premium": 505 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1300, "premium": 432 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1300, "premium": 413 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1300, "premium": 413 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1400, "premium": 635 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1400, "premium": 539 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1400, "premium": 462 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1400, "premium": 444 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1400, "premium": 444 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1500, "premium": 807 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1500, "premium": 700 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1500, "premium": 622 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1500, "premium": 611 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1500, "premium": 611 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1600, "premium": 873 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1600, "premium": 758 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1600, "premium": 675 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1600, "premium": 665 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1600, "premium": 665 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1700, "premium": 917 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1700, "premium": 795 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1700, "premium": 712 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1700, "premium": 697 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1700, "premium": 697 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1800, "premium": 959 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1800, "premium": 831 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1800, "premium": 744 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1800, "premium": 728 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1800, "premium": 728 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 1900, "premium": 1001 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 1900, "premium": 866 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 1900, "premium": 769 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 1900, "premium": 759 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 1900, "premium": 759 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 2000, "premium": 1165 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 2000, "premium": 1020 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 2000, "premium": 931 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 2000, "premium": 915 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 2000, "premium": 915 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 2250, "premium": 1281 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 2250, "premium": 1120 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 2250, "premium": 1018 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 2250, "premium": 1005 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 2250, "premium": 1005 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 2500, "premium": 1507 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 2500, "premium": 1327 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 2500, "premium": 1218 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 2500, "premium": 1202 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 2500, "premium": 1202 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 2750, "premium": 1628 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 2750, "premium": 1432 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 2750, "premium": 1308 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 2750, "premium": 1296 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 2750, "premium": 1296 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 3000, "premium": 1753 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 3000, "premium": 1538 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 3000, "premium": 1412 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 3000, "premium": 1395 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 3000, "premium": 1395 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 3250, "premium": 1804 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 3250, "premium": 1584 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 3250, "premium": 1447 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 3250, "premium": 1433 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 3250, "premium": 1433 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 3500, "premium": 1850 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 3500, "premium": 1627 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 3500, "premium": 1489 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 3500, "premium": 1474 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 3500, "premium": 1474 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 3750, "premium": 1891 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 3750, "premium": 1665 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 3750, "premium": 1520 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 3750, "premium": 1505 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 3750, "premium": 1505 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 4000, "premium": 1927 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 4000, "premium": 1696 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 4000, "premium": 1548 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 4000, "premium": 1532 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 4000, "premium": 1532 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 5000, "premium": 2121 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 5000, "premium": 1862 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 5000, "premium": 1682 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 5000, "premium": 1661 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 5000, "premium": 1661 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 6000, "premium": 2333 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 6000, "premium": 2047 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 6000, "premium": 1850 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 6000, "premium": 1827 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 6000, "premium": 1827 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 7000, "premium": 2567 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 7000, "premium": 2253 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 7000, "premium": 2035 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 7000, "premium": 2009 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 7000, "premium": 2009 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 8000, "premium": 2823 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 8000, "premium": 2477 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 8000, "premium": 2239 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 8000, "premium": 2211 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 8000, "premium": 2211 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 9000, "premium": 3105 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 9000, "premium": 2726 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 9000, "premium": 2436 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 9000, "premium": 2431 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 9000, "premium": 2431 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 10000, "premium": 3415 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 10000, "premium": 2997 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 10000, "premium": 2709 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 10000, "premium": 2675 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 10000, "premium": 2675 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 11000, "premium": 3758 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 11000, "premium": 3298 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 11000, "premium": 2981 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 11000, "premium": 2942 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 11000, "premium": 2942 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 12000, "premium": 4133 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 12000, "premium": 3627 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 12000, "premium": 3279 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 12000, "premium": 3236 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 12000, "premium": 3236 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 13000, "premium": 4547 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 13000, "premium": 3990 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 13000, "premium": 3606 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 13000, "premium": 3560 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 13000, "premium": 3560 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 14000, "premium": 5001 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 14000, "premium": 4390 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 14000, "premium": 3967 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 14000, "premium": 3917 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 14000, "premium": 3917 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 15000, "premium": 5502 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 15000, "premium": 4829 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 15000, "premium": 4364 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 15000, "premium": 4308 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 15000, "premium": 4308 },
+        { "vehicleType": "Brommer", "category": "A", "maxCatalogValue": 16000, "premium": 6002 },
+        { "vehicleType": "Brommer", "category": "B", "maxCatalogValue": 16000, "premium": 5268 },
+        { "vehicleType": "Brommer", "category": "C", "maxCatalogValue": 16000, "premium": 4761 },
+        { "vehicleType": "Brommer", "category": "D", "maxCatalogValue": 16000, "premium": 4700 },
+        { "vehicleType": "Brommer", "category": "E", "maxCatalogValue": 16000, "premium": 4700 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1000, "premium": 431 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1000, "premium": 397 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1000, "premium": 350 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1000, "premium": 327 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1000, "premium": 327 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1100, "premium": 466 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1100, "premium": 427 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1100, "premium": 376 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1100, "premium": 351 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1100, "premium": 351 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1200, "premium": 497 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1200, "premium": 455 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1200, "premium": 397 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1200, "premium": 369 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1200, "premium": 369 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1300, "premium": 535 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1300, "premium": 490 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1300, "premium": 426 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1300, "premium": 398 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1300, "premium": 398 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1400, "premium": 574 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1400, "premium": 524 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1400, "premium": 455 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1400, "premium": 417 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1400, "premium": 417 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1500, "premium": 739 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1500, "premium": 682 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1500, "premium": 612 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1500, "premium": 568 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1500, "premium": 568 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1600, "premium": 796 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1600, "premium": 731 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1600, "premium": 658 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1600, "premium": 623 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1600, "premium": 623 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1700, "premium": 836 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1700, "premium": 767 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1700, "premium": 688 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1700, "premium": 661 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1700, "premium": 661 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1800, "premium": 875 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1800, "premium": 802 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1800, "premium": 718 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1800, "premium": 688 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1800, "premium": 688 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 1900, "premium": 913 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 1900, "premium": 836 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 1900, "premium": 746 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 1900, "premium": 714 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 1900, "premium": 714 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 2000, "premium": 1076 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 2000, "premium": 991 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 2000, "premium": 894 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 2000, "premium": 857 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 2000, "premium": 857 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 2250, "premium": 1174 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 2250, "premium": 1079 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 2250, "premium": 975 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 2250, "premium": 955 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 2250, "premium": 955 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 2500, "premium": 1388 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 2500, "premium": 1279 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 2500, "premium": 1165 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 2500, "premium": 1143 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 2500, "premium": 1143 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 2750, "premium": 1501 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 2750, "premium": 1380 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 2750, "premium": 1252 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 2750, "premium": 1233 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 2750, "premium": 1233 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 3000, "premium": 1612 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 3000, "premium": 1480 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 3000, "premium": 1341 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 3000, "premium": 1324 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 3000, "premium": 1324 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 3250, "premium": 1655 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 3250, "premium": 1520 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 3250, "premium": 1378 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 3250, "premium": 1354 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 3250, "premium": 1354 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 3500, "premium": 1700 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 3500, "premium": 1558 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 3500, "premium": 1416 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 3500, "premium": 1385 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 3500, "premium": 1385 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 3750, "premium": 1738 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 3750, "premium": 1593 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 3750, "premium": 1447 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 3750, "premium": 1420 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 3750, "premium": 1420 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 4000, "premium": 1773 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 4000, "premium": 1628 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 4000, "premium": 1475 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 4000, "premium": 1456 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 4000, "premium": 1456 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 5000, "premium": 1951 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 5000, "premium": 1787 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 5000, "premium": 1603 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 5000, "premium": 1579 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 5000, "premium": 1579 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 6000, "premium": 2147 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 6000, "premium": 1965 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 6000, "premium": 1763 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 6000, "premium": 1736 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 6000, "premium": 1736 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 7000, "premium": 2362 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 7000, "premium": 2163 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 7000, "premium": 1939 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 7000, "premium": 1909 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 7000, "premium": 1909 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 8000, "premium": 2597 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 8000, "premium": 2378 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 8000, "premium": 2133 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 8000, "premium": 2101 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 8000, "premium": 2101 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 9000, "premium": 2857 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 9000, "premium": 2617 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 9000, "premium": 2321 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 9000, "premium": 2310 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 9000, "premium": 2310 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 10000, "premium": 3142 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 10000, "premium": 2877 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 10000, "premium": 2581 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 10000, "premium": 2542 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 10000, "premium": 2542 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 11000, "premium": 3458 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 11000, "premium": 3166 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 11000, "premium": 2840 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 11000, "premium": 2796 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 11000, "premium": 2796 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 12000, "premium": 3803 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 12000, "premium": 3482 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 12000, "premium": 3124 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 12000, "premium": 3075 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 12000, "premium": 3075 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 13000, "premium": 4184 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 13000, "premium": 3830 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 13000, "premium": 3436 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 13000, "premium": 3383 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 13000, "premium": 3383 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 14000, "premium": 4601 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 14000, "premium": 4214 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 14000, "premium": 3780 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 14000, "premium": 3723 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 14000, "premium": 3723 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 15000, "premium": 5062 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 15000, "premium": 4635 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 15000, "premium": 4158 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 15000, "premium": 4094 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 15000, "premium": 4094 },
+        { "vehicleType": "Snorfiets", "category": "A", "maxCatalogValue": 16000, "premium": 5522 },
+        { "vehicleType": "Snorfiets", "category": "B", "maxCatalogValue": 16000, "premium": 5057 },
+        { "vehicleType": "Snorfiets", "category": "C", "maxCatalogValue": 16000, "premium": 4536 },
+        { "vehicleType": "Snorfiets", "category": "D", "maxCatalogValue": 16000, "premium": 4467 },
+        { "vehicleType": "Snorfiets", "category": "E", "maxCatalogValue": 16000, "premium": 4467 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1000, "premium": 481 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1000, "premium": 407 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1000, "premium": 351 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1000, "premium": 336 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1000, "premium": 336 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1100, "premium": 519 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1100, "premium": 440 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1100, "premium": 380 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1100, "premium": 362 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1100, "premium": 362 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1200, "premium": 550 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1200, "premium": 467 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1200, "premium": 403 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1200, "premium": 382 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1200, "premium": 382 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1300, "premium": 595 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1300, "premium": 505 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1300, "premium": 432 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1300, "premium": 413 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1300, "premium": 413 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1400, "premium": 635 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1400, "premium": 539 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1400, "premium": 462 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1400, "premium": 444 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1400, "premium": 444 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1500, "premium": 807 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1500, "premium": 700 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1500, "premium": 622 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1500, "premium": 611 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1500, "premium": 611 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1600, "premium": 873 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1600, "premium": 758 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1600, "premium": 675 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1600, "premium": 665 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1600, "premium": 665 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1700, "premium": 917 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1700, "premium": 795 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1700, "premium": 712 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1700, "premium": 697 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1700, "premium": 697 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1800, "premium": 959 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1800, "premium": 831 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1800, "premium": 744 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1800, "premium": 728 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1800, "premium": 728 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 1900, "premium": 1001 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 1900, "premium": 866 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 1900, "premium": 769 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 1900, "premium": 759 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 1900, "premium": 759 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 2000, "premium": 1165 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 2000, "premium": 1020 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 2000, "premium": 931 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 2000, "premium": 915 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 2000, "premium": 915 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 2250, "premium": 1281 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 2250, "premium": 1120 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 2250, "premium": 1018 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 2250, "premium": 1005 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 2250, "premium": 1005 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 2500, "premium": 1507 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 2500, "premium": 1327 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 2500, "premium": 1218 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 2500, "premium": 1202 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 2500, "premium": 1202 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 2750, "premium": 1628 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 2750, "premium": 1432 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 2750, "premium": 1308 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 2750, "premium": 1296 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 2750, "premium": 1296 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 3000, "premium": 1753 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 3000, "premium": 1538 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 3000, "premium": 1412 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 3000, "premium": 1395 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 3000, "premium": 1395 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 3250, "premium": 1804 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 3250, "premium": 1584 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 3250, "premium": 1447 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 3250, "premium": 1433 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 3250, "premium": 1433 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 3500, "premium": 1850 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 3500, "premium": 1627 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 3500, "premium": 1489 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 3500, "premium": 1474 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 3500, "premium": 1474 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 3750, "premium": 1891 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 3750, "premium": 1665 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 3750, "premium": 1520 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 3750, "premium": 1505 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 3750, "premium": 1505 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 4000, "premium": 1927 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 4000, "premium": 1696 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 4000, "premium": 1548 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 4000, "premium": 1532 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 4000, "premium": 1532 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 5000, "premium": 2121 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 5000, "premium": 1862 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 5000, "premium": 1682 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 5000, "premium": 1661 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 5000, "premium": 1661 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 6000, "premium": 2333 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 6000, "premium": 2047 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 6000, "premium": 1850 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 6000, "premium": 1827 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 6000, "premium": 1827 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 7000, "premium": 2567 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 7000, "premium": 2253 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 7000, "premium": 2035 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 7000, "premium": 2009 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 7000, "premium": 2009 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 8000, "premium": 2823 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 8000, "premium": 2477 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 8000, "premium": 2239 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 8000, "premium": 2211 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 8000, "premium": 2211 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 9000, "premium": 3105 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 9000, "premium": 2726 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 9000, "premium": 2436 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 9000, "premium": 2431 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 9000, "premium": 2431 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 10000, "premium": 3415 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 10000, "premium": 2997 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 10000, "premium": 2709 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 10000, "premium": 2675 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 10000, "premium": 2675 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 11000, "premium": 3758 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 11000, "premium": 3298 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 11000, "premium": 2981 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 11000, "premium": 2942 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 11000, "premium": 2942 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 12000, "premium": 4133 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 12000, "premium": 3627 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 12000, "premium": 3279 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 12000, "premium": 3236 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 12000, "premium": 3236 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 13000, "premium": 4547 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 13000, "premium": 3990 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 13000, "premium": 3606 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 13000, "premium": 3560 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 13000, "premium": 3560 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 14000, "premium": 5001 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 14000, "premium": 4390 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 14000, "premium": 3967 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 14000, "premium": 3917 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 14000, "premium": 3917 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 15000, "premium": 5502 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 15000, "premium": 4829 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 15000, "premium": 4364 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 15000, "premium": 4308 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 15000, "premium": 4308 },
+        { "vehicleType": "HS E-bike", "category": "A", "maxCatalogValue": 16000, "premium": 6002 },
+        { "vehicleType": "HS E-bike", "category": "B", "maxCatalogValue": 16000, "premium": 5268 },
+        { "vehicleType": "HS E-bike", "category": "C", "maxCatalogValue": 16000, "premium": 4761 },
+        { "vehicleType": "HS E-bike", "category": "D", "maxCatalogValue": 16000, "premium": 4700 },
+        { "vehicleType": "HS E-bike", "category": "E", "maxCatalogValue": 16000, "premium": 4700 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1000, "premium": 431 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1000, "premium": 397 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1000, "premium": 350 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1000, "premium": 327 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1000, "premium": 327 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1100, "premium": 466 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1100, "premium": 427 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1100, "premium": 376 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1100, "premium": 351 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1100, "premium": 351 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1200, "premium": 497 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1200, "premium": 455 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1200, "premium": 397 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1200, "premium": 369 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1200, "premium": 369 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1300, "premium": 535 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1300, "premium": 490 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1300, "premium": 426 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1300, "premium": 398 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1300, "premium": 398 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1400, "premium": 574 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1400, "premium": 524 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1400, "premium": 455 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1400, "premium": 417 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1400, "premium": 417 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1500, "premium": 739 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1500, "premium": 682 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1500, "premium": 612 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1500, "premium": 568 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1500, "premium": 568 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1600, "premium": 796 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1600, "premium": 731 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1600, "premium": 658 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1600, "premium": 623 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1600, "premium": 623 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1700, "premium": 836 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1700, "premium": 767 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1700, "premium": 688 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1700, "premium": 661 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1700, "premium": 661 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1800, "premium": 875 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1800, "premium": 802 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1800, "premium": 718 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1800, "premium": 688 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1800, "premium": 688 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 1900, "premium": 913 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 1900, "premium": 836 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 1900, "premium": 746 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 1900, "premium": 714 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 1900, "premium": 714 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 2000, "premium": 1076 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 2000, "premium": 991 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 2000, "premium": 894 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 2000, "premium": 857 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 2000, "premium": 857 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 2250, "premium": 1174 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 2250, "premium": 1079 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 2250, "premium": 975 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 2250, "premium": 955 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 2250, "premium": 955 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 2500, "premium": 1388 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 2500, "premium": 1279 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 2500, "premium": 1165 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 2500, "premium": 1143 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 2500, "premium": 1143 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 2750, "premium": 1501 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 2750, "premium": 1380 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 2750, "premium": 1252 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 2750, "premium": 1233 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 2750, "premium": 1233 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 3000, "premium": 1612 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 3000, "premium": 1480 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 3000, "premium": 1341 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 3000, "premium": 1324 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 3000, "premium": 1324 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 3250, "premium": 1655 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 3250, "premium": 1520 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 3250, "premium": 1378 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 3250, "premium": 1354 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 3250, "premium": 1354 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 3500, "premium": 1700 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 3500, "premium": 1558 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 3500, "premium": 1416 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 3500, "premium": 1385 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 3500, "premium": 1385 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 3750, "premium": 1738 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 3750, "premium": 1593 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 3750, "premium": 1447 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 3750, "premium": 1420 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 3750, "premium": 1420 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 4000, "premium": 1773 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 4000, "premium": 1628 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 4000, "premium": 1475 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 4000, "premium": 1456 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 4000, "premium": 1456 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 5000, "premium": 1951 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 5000, "premium": 1787 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 5000, "premium": 1603 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 5000, "premium": 1579 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 5000, "premium": 1579 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 6000, "premium": 2147 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 6000, "premium": 1965 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 6000, "premium": 1763 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 6000, "premium": 1736 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 6000, "premium": 1736 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 7000, "premium": 2362 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 7000, "premium": 2163 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 7000, "premium": 1939 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 7000, "premium": 1909 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 7000, "premium": 1909 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 8000, "premium": 2597 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 8000, "premium": 2378 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 8000, "premium": 2133 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 8000, "premium": 2101 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 8000, "premium": 2101 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 9000, "premium": 2857 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 9000, "premium": 2617 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 9000, "premium": 2321 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 9000, "premium": 2310 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 9000, "premium": 2310 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 10000, "premium": 3142 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 10000, "premium": 2877 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 10000, "premium": 2581 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 10000, "premium": 2542 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 10000, "premium": 2542 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 11000, "premium": 3458 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 11000, "premium": 3166 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 11000, "premium": 2840 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 11000, "premium": 2796 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 11000, "premium": 2796 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 12000, "premium": 3803 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 12000, "premium": 3482 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 12000, "premium": 3124 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 12000, "premium": 3075 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 12000, "premium": 3075 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 13000, "premium": 4184 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 13000, "premium": 3830 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 13000, "premium": 3436 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 13000, "premium": 3383 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 13000, "premium": 3383 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 14000, "premium": 4601 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 14000, "premium": 4214 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 14000, "premium": 3780 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 14000, "premium": 3723 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 14000, "premium": 3723 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 15000, "premium": 5062 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 15000, "premium": 4635 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 15000, "premium": 4158 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 15000, "premium": 4094 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 15000, "premium": 4094 },
+        { "vehicleType": "Brommobiel", "category": "A", "maxCatalogValue": 16000, "premium": 5522 },
+        { "vehicleType": "Brommobiel", "category": "B", "maxCatalogValue": 16000, "premium": 5057 },
+        { "vehicleType": "Brommobiel", "category": "C", "maxCatalogValue": 16000, "premium": 4536 },
+        { "vehicleType": "Brommobiel", "category": "D", "maxCatalogValue": 16000, "premium": 4467 },
+        { "vehicleType": "Brommobiel", "category": "E", "maxCatalogValue": 16000, "premium": 4467 }
+      ],
+      "accidentsTariff": [
+        {
+          "code": "01001",
+          "sumDeath": 2500,
+          "sumDisability": 12500,
+          "premium": 20
+        }
+      ],
+      "excludedBrands": [
+        "Micro",
+        "Microcar",
+        "Ligier",
+        "JDM",
+        "Chatenet",
+        "Chat",
+        "Car",
+        "Aixam",
+        "Multitruck",
+        "Mega",
+        "Simpa",
+        "Ape Shinga",
+        "E-Bikez",
+        "Cannondale",
+        "TREK",
+        "Bikkel",
+        "Stromer-QICQ",
+        "Pro E-bike",
+        "Batavus",
+        "Merida",
+        "Gazelle",
+        "PUCH",
+        "Giant",
+        "KOGA",
+        "Multicycle",
+        "Dutch-ID",
+        "Flyer",
+        "Keola",
+        "Votani",
+        "RAP",
+        "Sparta",
+        "E-Bike4all",
+        "BH Bikes",
+        "Riese & Müller",
+        "Kalkhoff",
+        "QWIC",
+        "Klever",
+        "Segway",
+        "Oxford",
+        "A-Bike",
+        "Cube",
+        "Dutchebike",
+        "Rose",
+        "BSP",
+        "Vogue Bike",
+        "Hercules",
+        "Cross",
+        "Eco Traveller",
+        "Gepida",
+        "Ideal",
+        "Stella",
+        "Brinckers",
+        "Brinke",
+        "Spiked"
+      ],
+      "excludedModels": [
+        "Micro",
+        "Microcar",
+        "Ligier",
+        "JDM",
+        "Chatenet",
+        "Chat",
+        "Car",
+        "Aixam",
+        "Multitruck",
+        "Mega",
+        "Simpa",
+        "Ape Shinga",
+        "E-Bikez",
+        "Cannondale",
+        "TREK",
+        "Bikkel",
+        "Stromer-QICQ",
+        "Pro E-bike",
+        "Batavus",
+        "Merida",
+        "Gazelle",
+        "PUCH",
+        "Giant",
+        "KOGA",
+        "Multicycle",
+        "Dutch-ID",
+        "Flyer",
+        "Keola",
+        "Votani",
+        "RAP",
+        "Sparta",
+        "E-Bike4all",
+        "BH Bikes",
+        "Riese & Müller",
+        "Kalkhoff",
+        "QWIC",
+        "Klever",
+        "Segway",
+        "Oxford",
+        "A-Bike",
+        "Cube",
+        "Dutchebike",
+        "Rose",
+        "BSP",
+        "Vogue Bike",
+        "Hercules",
+        "Cross",
+        "Eco Traveller",
+        "Gepida",
+        "Ideal",
+        "Stella",
+        "Brinckers",
+        "Brinke",
+        "Spiked"
+      ],
+      "excludedTypes": [
+        "Micro",
+        "Microcar",
+        "Ligier",
+        "JDM",
+        "Chatenet",
+        "Chat",
+        "Car",
+        "Aixam",
+        "Multitruck",
+        "Mega",
+        "Simpa",
+        "Ape Shinga",
+        "E-Bikez",
+        "Cannondale",
+        "TREK",
+        "Bikkel",
+        "Stromer-QICQ",
+        "Pro E-bike",
+        "Batavus",
+        "Merida",
+        "Gazelle",
+        "PUCH",
+        "Giant",
+        "KOGA",
+        "Multicycle",
+        "Dutch-ID",
+        "Flyer",
+        "Keola",
+        "Votani",
+        "RAP",
+        "Sparta",
+        "E-Bike4all",
+        "BH Bikes",
+        "Riese & Müller",
+        "Kalkhoff",
+        "QWIC",
+        "Klever",
+        "Segway",
+        "Oxford",
+        "A-Bike",
+        "Cube",
+        "Dutchebike",
+        "Rose",
+        "BSP",
+        "Vogue Bike",
+        "Hercules",
+        "Cross",
+        "Eco Traveller",
+        "Gepida",
+        "Ideal",
+        "Stella",
+        "Brinckers",
+        "Brinke",
+        "Spiked"
+      ],
+      "dubiousPostcodes": [
+        "1067WZ",
+        "1182JL",
+        "1185ZH",
+        "1186ZV",
+        "1188CD",
+        "1422NJ",
+        "1448EA",
+        "1625NZ",
+        "1701HJ",
+        "1703EV",
+        "1813KB",
+        "1816KB",
+        "1816MD",
+        "1816XN",
+        "1901NT",
+        "2497NC",
+        "2525KA",
+        "2525LP",
+        "2531RH",
+        "2542PR",
+        "2548AH",
+        "2548MV",
+        "2548ZA",
+        "2554BW",
+        "2591CZ",
+        "2593ZA",
+        "2801RZ",
+        "2802AA",
+        "3251BK",
+        "3552AE",
+        "3712BV",
+        "3813BC",
+        "3813NT",
+        "3905XN",
+        "3906XC",
+        "4002AW",
+        "4003AR",
+        "4006PD",
+        "4386NH",
+        "4612PG",
+        "4613RE",
+        "4641RV",
+        "4651PD",
+        "4661TA",
+        "4826ND",
+        "4873HE",
+        "5213XS",
+        "5215XD",
+        "5216SZ",
+        "5223GV",
+        "5256PW",
+        "5271DA",
+        "5384WC",
+        "5508VZ",
+        "5563CC",
+        "5581VV",
+        "5600AC",
+        "5615HL",
+        "5624EA",
+        "5626CG",
+        "5627NZ",
+        "5629CG",
+        "5641AA",
+        "5641JH",
+        "5642JB",
+        "5646KZ",
+        "5657BA",
+        "5691PH",
+        "5705BJ",
+        "5711TP",
+        "5845HR",
+        "5912PH",
+        "5912PN",
+        "5928NJ",
+        "5953MC",
+        "6005KH",
+        "6006SK",
+        "6021NA",
+        "6035PK",
+        "6071PW",
+        "6081CS",
+        "6121HZ",
+        "6137LA",
+        "6174RZ",
+        "6211EP",
+        "6215JC",
+        "6215JL",
+        "6229VG",
+        "6269AX",
+        "6367AZ",
+        "6691EZ",
+        "6871NH",
+        "7415DX",
+        "7609LA",
+        "8012BX",
+        "8013XZ",
+        "8014BH",
+        "8014BK",
+        "8014NV",
+        "8016HL",
+        "8016LJ",
+        "8017HC",
+        "8017ND",
+        "8021ER",
+        "8022CM",
+        "8024AG",
+        "8024DL",
+        "8025AC",
+        "8031LM",
+        "8031MD",
+        "8031TL",
+        "8032MD",
+        "8033GA",
+        "8042ED",
+        "8042MH",
+        "8043JG",
+        "8043PH",
+        "8043RB",
+        "8043TA",
+        "8043TE",
+        "8131PA",
+        "8409CJ",
+        "8532PZ",
+        "8802PA",
+        "9076GE",
+        "9103SP",
+        "9207AL",
+        "9251MN",
+        "9581TR",
+        "9665TZ",
+        "9673BL",
+        "9712JP",
+        "9751PZ",
+        "9932AB",
+        "9971CH",
+        "1965NT"
+      ]
+    }
+  },
+  {
+    "command": "put",
+    "path": "$.calc.ratingAge",
+    "title": "Rating age (as of 1 January)",
+    "description": "The source worksheet rates on the driver's age on 1 January of the tariff year, not on the tariff date itself — a deliberate policy-year stability choice. We derive '1 January' from the tariff date instead of TODAY(), so a run next year reproduces this output.",
+    "value": "=dateDiff($.request.policyholder.birthDate,=concat(=datePart($.request.product.tariffDate,'year'),'-01-01'),'years')"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.eligibilityAge",
+    "title": "Eligibility age (as of the tariff date)",
+    "description": "A separate, exact age — the source worksheet's 'too young' check compares the birth date to today directly, so this uses the tariff date rather than the 1-January age above.",
+    "value": "=dateDiff($.request.policyholder.birthDate,$.request.product.tariffDate,'years')"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.tooYoung",
+    "title": "Driver under 16",
+    "description": "WA and casco are not rated at all below this age; the accident cover has no such guard in the source, so it stays unguarded here too.",
+    "value": "=lessThan($.calc.eligibilityAge,16)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.catalogValueTotal",
+    "title": "Catalog value including accessories",
+    "description": "The casco tables bracket on this combined value, not on the catalog value alone.",
+    "value": "=sum($.request.vehicle.catalogValue,$.request.vehicle.accessoriesValue)"
+  },
+  {
+    "command": "decisionTable",
+    "path": "$",
+    "title": "Risk category (age band)",
+    "description": "16 or younger is category A (also the source's own fallback for an unmapped age); five bands cover the rest. This collapses the worksheet's 115-row per-age lookup — every age in a band maps to the same category, so the band is the rule.",
+    "decisionTable": {
+      "inputs": [
+        {
+          "name": "age",
+          "path": "$.calc.ratingAge"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "category",
+          "path": "$.calc.riskCategory"
+        }
+      ],
+      "rules": [
+        {
+          "priority": 1,
+          "conditions": {
+            "age": "<17"
+          },
+          "results": {
+            "category": "A"
+          }
+        },
+        {
+          "priority": 2,
+          "conditions": {
+            "age": ">=17 && <19"
+          },
+          "results": {
+            "category": "B"
+          }
+        },
+        {
+          "priority": 3,
+          "conditions": {
+            "age": ">=19 && <23"
+          },
+          "results": {
+            "category": "C"
+          }
+        },
+        {
+          "priority": 4,
+          "conditions": {
+            "age": ">=23 && <24"
+          },
+          "results": {
+            "category": "D"
+          }
+        },
+        {
+          "priority": 5,
+          "conditions": {
+            "age": ">=24"
+          },
+          "results": {
+            "category": "E"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "command": "decisionTable",
+    "path": "$",
+    "title": "Vehicle type (from the SIVI object-sort code)",
+    "description": "62/63/60/13 are the codes this tariff prices; an unrecognised code falls back to Brommer, matching the source worksheet's own IFERROR default.",
+    "decisionTable": {
+      "inputs": [
+        {
+          "name": "code",
+          "path": "$.request.vehicle.typeCode"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "vehicleType",
+          "path": "$.calc.vehicleType"
+        }
+      ],
+      "rules": [
+        {
+          "priority": 1,
+          "conditions": {
+            "code": "=62"
+          },
+          "results": {
+            "vehicleType": "Brommer"
+          }
+        },
+        {
+          "priority": 2,
+          "conditions": {
+            "code": "=63"
+          },
+          "results": {
+            "vehicleType": "Snorfiets"
+          }
+        },
+        {
+          "priority": 3,
+          "conditions": {
+            "code": "=60"
+          },
+          "results": {
+            "vehicleType": "Brommobiel"
+          }
+        },
+        {
+          "priority": 4,
+          "conditions": {
+            "code": "=13"
+          },
+          "results": {
+            "vehicleType": "HS E-bike"
+          }
+        }
+      ],
+      "defaultResults": {
+        "vehicleType": "Brommer"
+      }
+    }
+  },
+  {
+    "command": "decisionTable",
+    "path": "$",
+    "title": "Casco catalog-value bracket",
+    "description": "The casco tables price a value 'up to and including' 31 brackets; this is the ceiling-lookup the source worksheet does with an approximate-match HLOOKUP. Values above the top bracket are capped at it — the source's own acceptance rules would decline them outright, which is out of scope here (see the README).",
+    "decisionTable": {
+      "inputs": [
+        {
+          "name": "value",
+          "path": "$.calc.catalogValueTotal"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "bracket",
+          "path": "$.calc.cascoBracket"
+        }
+      ],
+      "rules": [
+        {
+          "priority": 1,
+          "conditions": {
+            "value": "<=1000"
+          },
+          "results": {
+            "bracket": 1000
+          }
+        },
+        {
+          "priority": 2,
+          "conditions": {
+            "value": ">1000 && <=1100"
+          },
+          "results": {
+            "bracket": 1100
+          }
+        },
+        {
+          "priority": 3,
+          "conditions": {
+            "value": ">1100 && <=1200"
+          },
+          "results": {
+            "bracket": 1200
+          }
+        },
+        {
+          "priority": 4,
+          "conditions": {
+            "value": ">1200 && <=1300"
+          },
+          "results": {
+            "bracket": 1300
+          }
+        },
+        {
+          "priority": 5,
+          "conditions": {
+            "value": ">1300 && <=1400"
+          },
+          "results": {
+            "bracket": 1400
+          }
+        },
+        {
+          "priority": 6,
+          "conditions": {
+            "value": ">1400 && <=1500"
+          },
+          "results": {
+            "bracket": 1500
+          }
+        },
+        {
+          "priority": 7,
+          "conditions": {
+            "value": ">1500 && <=1600"
+          },
+          "results": {
+            "bracket": 1600
+          }
+        },
+        {
+          "priority": 8,
+          "conditions": {
+            "value": ">1600 && <=1700"
+          },
+          "results": {
+            "bracket": 1700
+          }
+        },
+        {
+          "priority": 9,
+          "conditions": {
+            "value": ">1700 && <=1800"
+          },
+          "results": {
+            "bracket": 1800
+          }
+        },
+        {
+          "priority": 10,
+          "conditions": {
+            "value": ">1800 && <=1900"
+          },
+          "results": {
+            "bracket": 1900
+          }
+        },
+        {
+          "priority": 11,
+          "conditions": {
+            "value": ">1900 && <=2000"
+          },
+          "results": {
+            "bracket": 2000
+          }
+        },
+        {
+          "priority": 12,
+          "conditions": {
+            "value": ">2000 && <=2250"
+          },
+          "results": {
+            "bracket": 2250
+          }
+        },
+        {
+          "priority": 13,
+          "conditions": {
+            "value": ">2250 && <=2500"
+          },
+          "results": {
+            "bracket": 2500
+          }
+        },
+        {
+          "priority": 14,
+          "conditions": {
+            "value": ">2500 && <=2750"
+          },
+          "results": {
+            "bracket": 2750
+          }
+        },
+        {
+          "priority": 15,
+          "conditions": {
+            "value": ">2750 && <=3000"
+          },
+          "results": {
+            "bracket": 3000
+          }
+        },
+        {
+          "priority": 16,
+          "conditions": {
+            "value": ">3000 && <=3250"
+          },
+          "results": {
+            "bracket": 3250
+          }
+        },
+        {
+          "priority": 17,
+          "conditions": {
+            "value": ">3250 && <=3500"
+          },
+          "results": {
+            "bracket": 3500
+          }
+        },
+        {
+          "priority": 18,
+          "conditions": {
+            "value": ">3500 && <=3750"
+          },
+          "results": {
+            "bracket": 3750
+          }
+        },
+        {
+          "priority": 19,
+          "conditions": {
+            "value": ">3750 && <=4000"
+          },
+          "results": {
+            "bracket": 4000
+          }
+        },
+        {
+          "priority": 20,
+          "conditions": {
+            "value": ">4000 && <=5000"
+          },
+          "results": {
+            "bracket": 5000
+          }
+        },
+        {
+          "priority": 21,
+          "conditions": {
+            "value": ">5000 && <=6000"
+          },
+          "results": {
+            "bracket": 6000
+          }
+        },
+        {
+          "priority": 22,
+          "conditions": {
+            "value": ">6000 && <=7000"
+          },
+          "results": {
+            "bracket": 7000
+          }
+        },
+        {
+          "priority": 23,
+          "conditions": {
+            "value": ">7000 && <=8000"
+          },
+          "results": {
+            "bracket": 8000
+          }
+        },
+        {
+          "priority": 24,
+          "conditions": {
+            "value": ">8000 && <=9000"
+          },
+          "results": {
+            "bracket": 9000
+          }
+        },
+        {
+          "priority": 25,
+          "conditions": {
+            "value": ">9000 && <=10000"
+          },
+          "results": {
+            "bracket": 10000
+          }
+        },
+        {
+          "priority": 26,
+          "conditions": {
+            "value": ">10000 && <=11000"
+          },
+          "results": {
+            "bracket": 11000
+          }
+        },
+        {
+          "priority": 27,
+          "conditions": {
+            "value": ">11000 && <=12000"
+          },
+          "results": {
+            "bracket": 12000
+          }
+        },
+        {
+          "priority": 28,
+          "conditions": {
+            "value": ">12000 && <=13000"
+          },
+          "results": {
+            "bracket": 13000
+          }
+        },
+        {
+          "priority": 29,
+          "conditions": {
+            "value": ">13000 && <=14000"
+          },
+          "results": {
+            "bracket": 14000
+          }
+        },
+        {
+          "priority": 30,
+          "conditions": {
+            "value": ">14000 && <=15000"
+          },
+          "results": {
+            "bracket": 15000
+          }
+        },
+        {
+          "priority": 31,
+          "conditions": {
+            "value": ">15000 && <=16000"
+          },
+          "results": {
+            "bracket": 16000
+          }
+        }
+      ],
+      "defaultResults": {
+        "bracket": 16000
+      }
+    }
+  },
+  {
+    "command": "put",
+    "path": "$.calc.lookup",
+    "title": "Open the lookup node",
+    "description": "One node holding every join key, so one resolve can fetch four tables at once.",
+    "value": {
+      "category": "=fetch($.calc.riskCategory)",
+      "vehicleType": "=fetch($.calc.vehicleType)",
+      "maxCatalogValue": "=fetch($.calc.cascoBracket)",
+      "accidentsCode": "=fetch($.request.coverage.accidents.code)",
+      "accidentsSumDeath": "=fetch($.request.coverage.accidents.sumDeath)",
+      "accidentsSumDisability": "=fetch($.request.coverage.accidents.sumDisability)"
+    }
+  },
+  {
+    "command": "resolve",
+    "path": "$.calc.lookup",
+    "title": "Four tables, one command",
+    "description": "BM basis by risk category, WA premium, casco premium and the accident-cover tariff — every rate this quote needs except the bonus-malus ladder itself, which needs the BM step this resolve is about to help compute.",
+    "resolveSettings": [
+      {
+        "referencesCollectionPath": "$.tarieven.riskCategoryBmBasis[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.category",
+            "referenceKeyPath": "@.category"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.bmBasis",
+            "value": "@.bmBasis"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.tarieven.waPremiums[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.category",
+            "referenceKeyPath": "@.category"
+          },
+          {
+            "keyPath": "@.vehicleType",
+            "referenceKeyPath": "@.vehicleType"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.waPremium",
+            "value": "@.premium"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.tarieven.cascoPremiums[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.vehicleType",
+            "referenceKeyPath": "@.vehicleType"
+          },
+          {
+            "keyPath": "@.category",
+            "referenceKeyPath": "@.category"
+          },
+          {
+            "keyPath": "@.maxCatalogValue",
+            "referenceKeyPath": "@.maxCatalogValue"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.cascoPremium",
+            "value": "@.premium"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.tarieven.accidentsTariff[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.accidentsCode",
+            "referenceKeyPath": "@.code"
+          },
+          {
+            "keyPath": "@.accidentsSumDeath",
+            "referenceKeyPath": "@.sumDeath"
+          },
+          {
+            "keyPath": "@.accidentsSumDisability",
+            "referenceKeyPath": "@.sumDisability"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.accidentsPremium",
+            "value": "@.premium"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "command": "put",
+    "path": "$.calc.lookup.bmStep",
+    "title": "Bonus-malus step",
+    "description": "BM basis for the risk category, plus claim-free years, plus any extra steps, held inside the ladder's 1-25 range.",
+    "value": "=clamp(=sum($.calc.lookup.bmBasis,$.request.policyholder.claimFreeYears,$.request.product.extraBmSteps),1,25)"
+  },
+  {
+    "command": "resolve",
+    "path": "$.calc.lookup",
+    "title": "Bonus-malus ladder",
+    "description": "A second resolve, because the BM step this joins on only exists after the first one ran.",
+    "resolveSettings": [
+      {
+        "referencesCollectionPath": "$.tarieven.bmLadder[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.bmStep",
+            "referenceKeyPath": "@.bmStep"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.bmFactor",
+            "value": "@.bmFactor"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "command": "put",
+    "path": "$.calc.wa.nettoBasis",
+    "title": "WA — netto basis premie",
+    "description": "Gross tariff premium, times the bonus-malus factor, with the tariff's standard 20% commission stripped back out. Zero if WA was not selected, or the driver is under 16.",
+    "value": "=if($.calc.tooYoung,0,=if(=equals($.request.coverage.wa.code,'02001'),=round(=multiply($.tarieven.rules.grossToNetFactor,$.calc.lookup.waPremium,$.calc.lookup.bmFactor),2),0))"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.casco.nettoBasis",
+    "title": "Casco — netto basis premie",
+    "description": "Same shape as WA, from the catalog-value-bracketed casco table.",
+    "value": "=if($.calc.tooYoung,0,=if(=equals($.request.coverage.casco.code,'02002'),=round(=multiply($.tarieven.rules.grossToNetFactor,$.calc.lookup.cascoPremium,$.calc.lookup.bmFactor),2),0))"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.accidents.nettoBasis",
+    "title": "Ongevallen inzittenden — netto basis premie",
+    "description": "No bonus-malus factor on this cover, and the source worksheet requires WA to be selected too — accident cover is never sold standalone. No age guard either: the source does not gate this line on 'too young'.",
+    "value": "=if(=equals($.request.coverage.wa.code,'02001'),=round(=multiply($.tarieven.rules.grossToNetFactor,=coalesce($.calc.lookup.accidentsPremium,0)),2),0)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.pkgFactor",
+    "title": "Package discount factor",
+    "description": "Discounts are stored as negative percentages, so 1 + pct/100 is already a reduction.",
+    "value": "=sum(1,=divide($.request.policy.packageDiscountPct,100))"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.grpFactor",
+    "title": "Group discount factor",
+    "value": "=sum(1,=divide($.request.product.groupDiscountPct,100))"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.advFactor",
+    "title": "Advice discount factor",
+    "description": "The source worksheet always applies this discount (its 'apply advice discount?' cell is hardcoded 'j' for every coverage) rather than asking per quote, so we do the same.",
+    "value": "=sum(1,=divide($.request.product.adviceDiscountPct,100))"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.wa.netto",
+    "title": "wa — netto product premie",
+    "description": "Package, group and advice discount applied on top of the netto basis premie.",
+    "value": "=round(=multiply($.calc.wa.nettoBasis,$.calc.pkgFactor,$.calc.grpFactor,$.calc.advFactor),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.casco.netto",
+    "title": "casco — netto product premie",
+    "description": "Package, group and advice discount applied on top of the netto basis premie.",
+    "value": "=round(=multiply($.calc.casco.nettoBasis,$.calc.pkgFactor,$.calc.grpFactor,$.calc.advFactor),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.accidents.netto",
+    "title": "accidents — netto product premie",
+    "description": "Package, group and advice discount applied on top of the netto basis premie.",
+    "value": "=round(=multiply($.calc.accidents.nettoBasis,$.calc.pkgFactor,$.calc.grpFactor,$.calc.advFactor),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.commissionFactor",
+    "title": "Commission factor",
+    "description": "The actual, agreed commission (0-38%) is added back on top of the netto product premie — this is what the source worksheet calls the 'totaal product premie'.",
+    "value": "=sum(1,=divide($.request.product.commissionPct,100))"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.wa.bruto",
+    "title": "wa — totaal product premie",
+    "description": "Netto product premie plus the agreed commission. This is what the AFD summary table calls 'bruto'.",
+    "value": "=round(=multiply($.calc.wa.netto,$.calc.commissionFactor),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.casco.bruto",
+    "title": "casco — totaal product premie",
+    "description": "Netto product premie plus the agreed commission. This is what the AFD summary table calls 'bruto'.",
+    "value": "=round(=multiply($.calc.casco.netto,$.calc.commissionFactor),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.accidents.bruto",
+    "title": "accidents — totaal product premie",
+    "description": "Netto product premie plus the agreed commission. This is what the AFD summary table calls 'bruto'.",
+    "value": "=round(=multiply($.calc.accidents.netto,$.calc.commissionFactor),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.wa.tax",
+    "title": "WA — assurantiebelasting",
+    "description": "21% over the totaal product premie.",
+    "value": "=round(=multiply($.tarieven.rules.insuranceTaxRate,$.calc.wa.bruto),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.casco.tax",
+    "title": "Casco — assurantiebelasting",
+    "value": "=round(=multiply($.tarieven.rules.insuranceTaxRate,$.calc.casco.bruto),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.accidents.tax",
+    "title": "Ongevallen inzittenden — assurantiebelasting",
+    "description": "Exempt by law — a personal-accident cover, not a damage cover.",
+    "value": 0
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.netBasisPremiumTotal",
+    "title": "Netto basis premie (per term)",
+    "description": "Every monthly amount above is scaled to the payment term the same way: sum, times months in the term, divided by 12.",
+    "value": "=round(=divide(=multiply(=sum($.calc.wa.nettoBasis,$.calc.casco.nettoBasis,$.calc.accidents.nettoBasis),$.request.product.paymentTermMonths),12),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.netProductPremiumTotal",
+    "title": "Netto product premie (per term)",
+    "value": "=round(=divide(=multiply(=sum($.calc.wa.netto,$.calc.casco.netto,$.calc.accidents.netto),$.request.product.paymentTermMonths),12),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.totaalProductPremiumTotal",
+    "title": "Totaal product premie (per term)",
+    "description": "The AFD summary table's 'bruto', totalled — includes the re-added commission, excludes tax.",
+    "value": "=round(=divide(=multiply(=sum($.calc.wa.bruto,$.calc.casco.bruto,$.calc.accidents.bruto),$.request.product.paymentTermMonths),12),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.insuranceTaxTotal",
+    "title": "Assurantiebelasting (per term)",
+    "value": "=round(=divide(=multiply(=sum($.calc.wa.tax,$.calc.casco.tax,$.calc.accidents.tax),$.request.product.paymentTermMonths),12),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.commissionTotal",
+    "title": "Provisie (per term)",
+    "description": "Totaal product premie minus netto product premie.",
+    "value": "=round(=subtract($.calc.totals.totaalProductPremiumTotal,$.calc.totals.netProductPremiumTotal),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.totalPremiumDue",
+    "title": "Totaal premie (per term)",
+    "description": "What is actually collected each term.",
+    "value": "=sum($.calc.totals.totaalProductPremiumTotal,$.calc.totals.insuranceTaxTotal)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.netAdvicePremiumTotal",
+    "title": "Netto advies premie (per term, working figure)",
+    "description": "Package and group discount only, no advice discount — the figure the source worksheet's advice-discount breakdown is measured against. Not itself part of the output; it only exists to produce the next line.",
+    "value": "=round(=divide(=multiply(=sum(=multiply($.calc.wa.nettoBasis,$.calc.pkgFactor,$.calc.grpFactor),=multiply($.calc.casco.nettoBasis,$.calc.pkgFactor,$.calc.grpFactor),=multiply($.calc.accidents.nettoBasis,$.calc.pkgFactor,$.calc.grpFactor)),$.request.product.paymentTermMonths),12),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.calc.totals.adviceDiscountAmount",
+    "title": "Advieskorting (bedrag, per term)",
+    "description": "Negative, because a discount is a negative amount here, matching the source worksheet's own convention.",
+    "value": "=round(=subtract($.calc.totals.netProductPremiumTotal,$.calc.totals.netAdvicePremiumTotal),2)"
+  },
+  {
+    "command": "put",
+    "path": "$.premiums",
+    "title": "Premium per coverage",
+    "description": "One object per coverage line, each with the same three figures the GIM output layer names Btp (bruto), Ntp (netto) and Tass (assurantiebelasting).",
+    "value": {
+      "wa": {
+        "afdCode": "02001",
+        "bruto": "=fetch($.calc.wa.bruto)",
+        "netto": "=fetch($.calc.wa.netto)",
+        "assurantiebelasting": "=fetch($.calc.wa.tax)"
+      },
+      "casco": {
+        "afdCode": "02002",
+        "bruto": "=fetch($.calc.casco.bruto)",
+        "netto": "=fetch($.calc.casco.netto)",
+        "assurantiebelasting": "=fetch($.calc.casco.tax)"
+      },
+      "accidents": {
+        "afdCode": "01001",
+        "bruto": "=fetch($.calc.accidents.bruto)",
+        "netto": "=fetch($.calc.accidents.netto)",
+        "assurantiebelasting": "=fetch($.calc.accidents.tax)"
+      }
+    }
+  },
+  {
+    "command": "put",
+    "path": "$.summary",
+    "title": "Policy summary (kassabon)",
+    "description": "The receipt-style totals the source worksheet builds at the bottom of the calculation sheet, GIM field codes PP_NJP / PP_NTPEXCP / PP_NTPINKA / PP_TPP / PP_TASS / PP_TTOT / PP_TKRT — see the README for the full mapping.",
+    "value": {
+      "riskCategory": "=fetch($.calc.riskCategory)",
+      "vehicleType": "=fetch($.calc.vehicleType)",
+      "catalogValueTotal": "=fetch($.calc.catalogValueTotal)",
+      "bonusMalusStep": "=fetch($.calc.lookup.bmStep)",
+      "bonusMalusPremiumPct": "=round(=multiply($.calc.lookup.bmFactor,100),1)",
+      "netBasisPremiumTotal": "=fetch($.calc.totals.netBasisPremiumTotal)",
+      "netProductPremiumTotal": "=fetch($.calc.totals.netProductPremiumTotal)",
+      "totaalProductPremiumTotal": "=fetch($.calc.totals.totaalProductPremiumTotal)",
+      "commissionTotal": "=fetch($.calc.totals.commissionTotal)",
+      "insuranceTaxTotal": "=fetch($.calc.totals.insuranceTaxTotal)",
+      "totalPremiumDue": "=fetch($.calc.totals.totalPremiumDue)",
+      "adviceDiscountAmount": "=fetch($.calc.totals.adviceDiscountAmount)"
+    }
+  },
+  {
+    "command": "put",
+    "path": "$.calc.checks",
+    "title": "Acceptance checks (OUT_..._Xg_Xm)",
+    "description": "Every rule the source worksheet's Xg_Xm sheet still runs live — 22 of its 24 rows. Two are left out: msg 8 ('ouder dan 75 jaar') and msg 9 ('leeftijd minus schadevrije jaren') are hardcoded FALSE in the source itself, each with a note that the validation number and the message text disagree ('wat is hier de bedoeling? Bespreken met Paul W. voorlopig uitschakelen') — genuinely disabled pending a decision that was never made, not something this script should silently re-enable.",
+    "value": {
+      "birthDateIncomplete": "=equals($.request.policyholder.birthDate,'')",
+      "catalogValueNotFilled": "=and(=equals($.calc.catalogValueTotal,0),=equals($.request.coverage.casco.code,'02002'))",
+      "catalogValueNegative": "=and(=lessThan($.calc.catalogValueTotal,0),=equals($.request.coverage.casco.code,'02002'))",
+      "waRequired": "=notEquals($.request.coverage.wa.code,'02001')",
+      "accidentCombinationInvalid": "=and(=equals($.request.coverage.accidents.code,'01001'),=or(=notEquals($.request.coverage.accidents.sumDeath,2500),=notEquals($.request.coverage.accidents.sumDisability,12500)))",
+      "driverTooYoung": "=fetch($.calc.tooYoung)",
+      "driverTooOld": "=greaterOrEqual($.calc.eligibilityAge,85)",
+      "brandExcluded": "=in($.request.vehicle.brand,$.tarieven.excludedBrands)",
+      "modelExcluded": "=in($.request.vehicle.model,$.tarieven.excludedModels)",
+      "typeExcluded": "=in($.request.vehicle.type,$.tarieven.excludedTypes)",
+      "claimFreeYearsNotFilled": "=not(=exists($.request.policyholder.claimFreeYears))",
+      "vehicleTypeUnknown": "=not(=in($.request.vehicle.typeCode,'62','63','60','13'))",
+      "waCodeLengthInvalid": "=and(=notEquals($.request.coverage.wa.code,''),=notEquals(=length($.request.coverage.wa.code),5))",
+      "caCodeLengthInvalid": "=and(=notEquals($.request.coverage.casco.code,''),=notEquals(=length($.request.coverage.casco.code),5))",
+      "poCodeLengthInvalid": "=and(=notEquals($.request.coverage.accidents.code,''),=notEquals(=length($.request.coverage.accidents.code),5))",
+      "catalogValueExceedsEbike": "=and(=equals($.calc.vehicleType,'HS E-bike'),=greaterThan($.calc.catalogValueTotal,8000))",
+      "catalogValueExceedsBromSnor": "=and(=in($.calc.vehicleType,'Brommer','Snorfiets'),=greaterThan($.calc.catalogValueTotal,4000))",
+      "catalogValueExceedsBrommobiel": "=and(=equals($.calc.vehicleType,'Brommobiel'),=greaterThan($.calc.catalogValueTotal,16000))",
+      "dubiousPostcode": "=in($.request.policyholder.postcode,$.tarieven.dubiousPostcodes)",
+      "startDateBeforeClaimDate": "=and(=exists($.request.claim.date),=lessThan($.request.product.startDate,$.request.claim.date))",
+      "startDateTooFarInPast": "=greaterThan(=dateDiff($.request.product.startDate,$.request.product.tariffDate,'days'),4)",
+      "cascoRequiresApprovedLock": "=and(=equals($.request.coverage.casco.code,'02002'),=equals($.request.vehicle.approvedLock,'N'))"
+    }
+  },
+  {
+    "command": "put",
+    "path": "$.acceptance.decision",
+    "title": "Acceptance decision",
+    "description": "Declined if any Hard check fired; the one Soft check ('Bel 807', a suspicious postcode) never blocks acceptance on its own.",
+    "value": "=if(=or($.calc.checks.birthDateIncomplete,$.calc.checks.catalogValueNotFilled,$.calc.checks.catalogValueNegative,$.calc.checks.waRequired,$.calc.checks.accidentCombinationInvalid,$.calc.checks.driverTooYoung,$.calc.checks.driverTooOld,$.calc.checks.brandExcluded,$.calc.checks.modelExcluded,$.calc.checks.typeExcluded,$.calc.checks.claimFreeYearsNotFilled,$.calc.checks.vehicleTypeUnknown,$.calc.checks.waCodeLengthInvalid,$.calc.checks.caCodeLengthInvalid,$.calc.checks.poCodeLengthInvalid,$.calc.checks.catalogValueExceedsEbike,$.calc.checks.catalogValueExceedsBromSnor,$.calc.checks.catalogValueExceedsBrommobiel,$.calc.checks.startDateBeforeClaimDate,$.calc.checks.startDateTooFarInPast,$.calc.checks.cascoRequiresApprovedLock),'afgewezen','geaccepteerd')"
+  },
+  {
+    "command": "put",
+    "path": "$.acceptance.messages",
+    "title": "Acceptance messages",
+    "description": "One row per rule, `active` true or false — the same shape as the source's own OUT_GimData_Contractdocument_Xg_Xm array, which lists every rule with an Active column rather than only the ones that fired. `shownToUser` false marks the rules the source annotated 'Geen validatie om aan de gebruiker te tonen' (WA verplicht, the three dekkingscode-length checks) — they still decide `acceptance.decision`, they are just not meant as customer-facing text.",
+    "value": [
+      { "code": 1, "ruling": "Hard", "text": "De geboortedatum is niet volledig", "shownToUser": true, "active": "=fetch($.calc.checks.birthDateIncomplete)" },
+      { "code": 2, "ruling": "Hard", "text": "De cataloguswaarde is niet gevuld", "shownToUser": true, "active": "=fetch($.calc.checks.catalogValueNotFilled)" },
+      { "code": 3, "ruling": "Hard", "text": "De cataloguswaarde is niet juist gevuld", "shownToUser": true, "active": "=fetch($.calc.checks.catalogValueNegative)" },
+      { "code": 4, "ruling": "Hard", "text": "WA dekking is verplicht", "shownToUser": false, "active": "=fetch($.calc.checks.waRequired)" },
+      { "code": 5, "ruling": "Hard", "text": "De geselecteerde combinatie bij ongevallen in/opzittenden is niet mogelijk", "shownToUser": true, "active": "=fetch($.calc.checks.accidentCombinationInvalid)" },
+      { "code": 6, "ruling": "Hard", "text": "De bestuurder is jonger dan 16 jaar, acceptatie is dan niet mogelijk", "shownToUser": true, "active": "=fetch($.calc.checks.driverTooYoung)" },
+      { "code": 7, "ruling": "Hard", "text": "De bestuurder is ouder dan 85 jaar, acceptatie is dan niet mogelijk", "shownToUser": true, "active": "=fetch($.calc.checks.driverTooOld)" },
+      { "code": 10, "ruling": "Hard", "text": "Dit merk is uitgesloten", "shownToUser": true, "active": "=fetch($.calc.checks.brandExcluded)" },
+      { "code": 11, "ruling": "Hard", "text": "Dit model is uitgesloten", "shownToUser": true, "active": "=fetch($.calc.checks.modelExcluded)" },
+      { "code": 12, "ruling": "Hard", "text": "Dit type is uitgesloten", "shownToUser": true, "active": "=fetch($.calc.checks.typeExcluded)" },
+      { "code": 13, "ruling": "Hard", "text": "De schadevrije jaren zijn niet gevuld", "shownToUser": true, "active": "=fetch($.calc.checks.claimFreeYearsNotFilled)" },
+      { "code": 14, "ruling": "Hard", "text": "Het voertuigsoort is onbekend", "shownToUser": true, "active": "=fetch($.calc.checks.vehicleTypeUnknown)" },
+      { "code": 15, "ruling": "Hard", "text": "WA dekkingscode incorrect: bestaat niet uit 5 tekens", "shownToUser": false, "active": "=fetch($.calc.checks.waCodeLengthInvalid)" },
+      { "code": 16, "ruling": "Hard", "text": "Casco dekkingscode incorrect: bestaat niet uit 5 tekens", "shownToUser": false, "active": "=fetch($.calc.checks.caCodeLengthInvalid)" },
+      { "code": 17, "ruling": "Hard", "text": "Ongevallen dekkingscode incorrect: bestaat niet uit 5 tekens", "shownToUser": false, "active": "=fetch($.calc.checks.poCodeLengthInvalid)" },
+      { "code": 18, "ruling": "Hard", "text": "De cataloguswaarde van de E-Bike is hoger dan € 8.000, dit is niet mogelijk", "shownToUser": true, "active": "=fetch($.calc.checks.catalogValueExceedsEbike)" },
+      { "code": 19, "ruling": "Hard", "text": "De cataloguswaarde van de brom-/snorfiets is hoger dan € 4.000, dit is niet mogelijk", "shownToUser": true, "active": "=fetch($.calc.checks.catalogValueExceedsBromSnor)" },
+      { "code": 20, "ruling": "Hard", "text": "De cataloguswaarde van de brommobiel is hoger dan € 16.000, dit is niet mogelijk", "shownToUser": true, "active": "=fetch($.calc.checks.catalogValueExceedsBrommobiel)" },
+      { "code": 21, "ruling": "Soft", "text": "Bel 807", "shownToUser": true, "active": "=fetch($.calc.checks.dubiousPostcode)" },
+      { "code": 22, "ruling": "Hard", "text": "De ingangsdatum mag niet voor de schadedatum liggen", "shownToUser": true, "active": "=fetch($.calc.checks.startDateBeforeClaimDate)" },
+      { "code": 23, "ruling": "Hard", "text": "De ingangsdatum mag niet meer dan 4 dagen in het verleden liggen", "shownToUser": true, "active": "=fetch($.calc.checks.startDateTooFarInPast)" },
+      { "code": 24, "ruling": "Hard", "text": "Er is een CASCO dekking geselecteerd, een ART goedgekeurd slot is dan verplicht", "shownToUser": true, "active": "=fetch($.calc.checks.cascoRequiresApprovedLock)" }
+    ]
+  },
+  {
+    "command": "remove",
+    "path": "$.calc",
+    "title": "Drop the working area",
+    "description": "Scratch space, not part of the answer."
+  },
+  {
+    "command": "remove",
+    "path": "$.tarieven",
+    "title": "Drop the rate book",
+    "description": "It came from the script, so it leaves with it."
+  },
+  {
+    "command": "rename",
+    "path": "$.request",
+    "title": "request becomes quote",
+    "description": "What is left is the quote as received plus the premium it produced.",
+    "name": "quote"
+  }
+]

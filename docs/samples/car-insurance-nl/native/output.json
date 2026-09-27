@@ -1,0 +1,163 @@
+{
+  "quote": {
+    "quoteId": "OFF-2026-004821",
+    "quotedOn": "2026-08-21",
+    "requestedStartDate": "2026-09-01",
+    "channel": "intermediair",
+    "intermediary": {
+      "agentNumber": "AG-4471",
+      "name": "Van Dijk Assurantiën"
+    },
+    "applicant": {
+      "initials": "S.M.",
+      "prefix": "de",
+      "lastName": "Vries",
+      "birthDate": "1991-11-04",
+      "licenceIssuedOn": "2011-06-14",
+      "street": "Keizersgracht",
+      "houseNumber": "212",
+      "postcode": "1017EA",
+      "city": "Amsterdam",
+      "country": "NL",
+      "email": "s.devries@example.nl",
+      "iban": "NL91ABNA0417164300"
+    },
+    "vehicle": {
+      "licencePlate": "XN-123-K",
+      "modelCode": "VW-GOLF-18-TSI",
+      "firstRegistration": "2019-03-15",
+      "catalogValue": 28950,
+      "currentValue": 14200,
+      "annualMileage": 12000,
+      "primaryUse": "PARTICULIER",
+      "parking": "OPENBARE-WEG",
+      "alarmClass": "SCM-2"
+    },
+    "cover": {
+      "product": "allrisk",
+      "voluntaryExcess": 250,
+      "claimFreeYears": 8,
+      "paymentTerm": "M",
+      "options": [
+        {
+          "code": "RB"
+        },
+        {
+          "code": "PH"
+        }
+      ]
+    }
+  },
+  "policy": {
+    "policyNumber": "POL-2026-004821",
+    "quoteId": "OFF-2026-004821",
+    "insurer": "Squora Schadeverzekeringen N.V.",
+    "product": "Squora Autoverzekering",
+    "coverLabel": "Allrisk (volledig casco)",
+    "status": "geaccepteerd",
+    "issuedOn": "2026-08-21",
+    "startDate": "2026-09-01",
+    "renewalDate": "2027-09-01",
+    "intermediary": {
+      "agentNumber": "AG-4471",
+      "name": "Van Dijk Assurantiën"
+    },
+    "policyholder": {
+      "name": "S.M. de Vries",
+      "birthDate": "1991-11-04",
+      "age": 34,
+      "licenceSince": "2011-06-14",
+      "licenceYears": 15,
+      "address": "Keizersgracht 212",
+      "postcode": "1017EA",
+      "city": "Amsterdam",
+      "email": "s.devries@example.nl",
+      "iban": "NL91ABNA0417164300"
+    },
+    "vehicle": {
+      "licencePlate": "XN-123-K",
+      "make": "Volkswagen",
+      "model": "Golf 1.8 TSI",
+      "fuel": "BENZINE",
+      "weightClass": "1051-1250",
+      "powerKw": 132,
+      "firstRegistration": "2019-03-15",
+      "vehicleAge": 7,
+      "catalogValue": 28950,
+      "currentValue": 14200,
+      "annualMileage": 12000,
+      "usage": "Particulier gebruik",
+      "parking": "Openbare weg",
+      "security": "SCM klasse 2 - alarmsysteem"
+    },
+    "riskProfile": {
+      "region": "Amsterdam Grachtengordel",
+      "regionZone": 5,
+      "regionFactor": 1.28,
+      "ageBand": "30 t/m 64",
+      "ageFactor": 1.0,
+      "mileageBand": "7.501 - 15.000 km",
+      "mileageFactor": 1.0,
+      "usageFactor": 1.0,
+      "securityFactor": 0.97,
+      "parkingFactor": 1.0,
+      "claimFreeYears": 8,
+      "bonusMalusStep": 10,
+      "bonusMalusLabel": "WA 60% / casco 50%",
+      "bmWaFactor": 0.4,
+      "bmCascoFactor": 0.5,
+      "voluntaryExcess": 250,
+      "excessFactor": 0.92
+    },
+    "coverages": [
+      {
+        "code": "WA",
+        "name": "Wettelijke aansprakelijkheid",
+        "basis": "wettelijk verplicht",
+        "insuredAmount": 6900000,
+        "excess": 0,
+        "premiumPerMonth": 10.96
+      },
+      {
+        "code": "CASCO",
+        "name": "Allrisk (volledig casco)",
+        "basis": "volledig casco over dagwaarde",
+        "insuredAmount": 14200,
+        "excess": 250,
+        "premiumPerMonth": 35.14
+      },
+      {
+        "code": "RB",
+        "name": "Rechtsbijstand motorrijtuigen",
+        "basis": "aanvullende dekking",
+        "premiumPerMonth": 3.25
+      },
+      {
+        "code": "PH",
+        "name": "Pechhulp Nederland",
+        "basis": "aanvullende dekking",
+        "premiumPerMonth": 2.1
+      }
+    ],
+    "premium": {
+      "currency": "EUR",
+      "paymentTerm": "Per maand",
+      "termsPerYear": 12,
+      "liabilityPerMonth": 10.96,
+      "cascoPerMonth": 35.14,
+      "optionsPerMonth": 5.35,
+      "netPerMonth": 51.45,
+      "netPerTerm": 51.45,
+      "policyCostsPerTerm": 1.25,
+      "insuranceTaxRate": 0.21,
+      "insuranceTaxPerTerm": 11.07,
+      "grossPerTerm": 63.77,
+      "grossPerYear": 765.24
+    },
+    "underwriting": {
+      "decision": "geaccepteerd",
+      "reason": "Voldoet aan de standaard acceptatierichtlijnen.",
+      "totalExcess": 250
+    }
+  }
+}

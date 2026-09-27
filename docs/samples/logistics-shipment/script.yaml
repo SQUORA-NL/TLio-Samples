@@ -1,0 +1,298 @@
+- command: add
+  path: $.ref
+  title: Tariff, country and service reference data
+  description: >-
+    HS chapters that need an export licence, the customs status of a destination country,
+    and the service levels. Adding a country is a data edit here, not a script change.
+  value:
+    countries:
+      - code: NL
+        name: Nederland
+        customsUnion: EU
+      - code: DE
+        name: Duitsland
+        customsUnion: EU
+      - code: BE
+        name: Belgie
+        customsUnion: EU
+      - code: 'NO'
+        name: Noorwegen
+        customsUnion: EER
+      - code: CH
+        name: Zwitserland
+        customsUnion: DERDE-LAND
+      - code: GB
+        name: Verenigd Koninkrijk
+        customsUnion: DERDE-LAND
+    tariffChapters:
+      - hsCode: '8483.40'
+        chapter: '84'
+        description: Machines en mechanische toestellen
+        dutyRatePercent: 0
+        licenceRequired: 'NEE'
+      - hsCode: '8482.10'
+        chapter: '84'
+        description: Kogellagers
+        dutyRatePercent: 0
+        licenceRequired: 'NEE'
+      - hsCode: '2710.19'
+        chapter: '27'
+        description: Aardolie en bereidingen daarvan
+        dutyRatePercent: 3.5
+        licenceRequired: 'JA'
+    serviceLevels:
+      - code: EXPRESS
+        maxTransitDays: 1
+        surchargePercent: 45
+      - code: PRIORITY
+        maxTransitDays: 3
+        surchargePercent: 15
+      - code: STANDARD
+        maxTransitDays: 7
+        surchargePercent: 0
+
+- command: resolve
+  path: $.booking.goods[*]
+  title: Give every goods line its tariff data
+  description: >-
+    The per-element form of resolve: one command, every line, each matched on its own HS code.
+    YAML uses the same path language as JSON, so this block is character-for-character what the
+    JSON notation would hold - only the syntax around it differs.
+  resolveSettings:
+    - referencesCollectionPath: $.ref.tariffChapters[*]
+      resolveKeys:
+        - keyPath: '@.hsCode'
+          referenceKeyPath: '@.hsCode'
+      values:
+        - targetPath: '@.tariffDescription'
+          value: '@.description'
+        - targetPath: '@.dutyRatePercent'
+          value: '@.dutyRatePercent'
+        - targetPath: '@.licenceRequired'
+          value: '@.licenceRequired'
+
+- command: put
+  path: $.calc
+  title: The two keys the country table is joined on
+  description: >-
+    resolve matches a key on the node it is given, so the node has to hold that key first.
+    The origin of a shipment is the consignor's country, not the country of origin of the goods -
+    those are different questions and the manifest answers both.
+  value:
+    originCode: '=fetch($.booking.consignor.countryCode)'
+    destinationCode: '=fetch($.booking.consignee.countryCode)'
+
+- command: resolve
+  path: $.calc
+  title: Customs status of origin and destination
+  description: One command, two settings, two countries - the same table joined twice on different keys.
+  resolveSettings:
+    - referencesCollectionPath: $.ref.countries[*]
+      resolveKeys:
+        - keyPath: '@.destinationCode'
+          referenceKeyPath: '@.code'
+      values:
+        - targetPath: '@.destinationName'
+          value: '@.name'
+        - targetPath: '@.destinationUnion'
+          value: '@.customsUnion'
+    - referencesCollectionPath: $.ref.countries[*]
+      resolveKeys:
+        - keyPath: '@.originCode'
+          referenceKeyPath: '@.code'
+      values:
+        - targetPath: '@.originUnion'
+          value: '@.customsUnion'
+
+- command: put
+  path: $.calc.grossWeightKg
+  title: Total gross weight
+  value: '=sum($.booking.packages[*].grossWeightKg)'
+
+- command: put
+  path: $.calc.volumeM3
+  title: Total volume
+  value: '=round(=sum($.booking.packages[*].volumeM3),2)'
+
+- command: put
+  path: $.calc.netWeightKg
+  title: Total net weight
+  value: '=sum($.booking.goods[*].netWeightKg)'
+
+- command: put
+  path: $.calc.invoiceValueEur
+  title: Total invoice value
+  value: '=round(=sum($.booking.goods[*].valueEur),2)'
+
+- command: put
+  path: $.calc.chargeableWeightKg
+  title: Chargeable weight
+  description: >-
+    Road freight charges on whichever is greater, actual weight or volumetric weight at
+    333 kg per cubic metre. =if picks between two values and evaluates only the branch it takes.
+  value: '=round(=if(=greaterThan(=multiply($.calc.volumeM3,333),$.calc.grossWeightKg),=multiply($.calc.volumeM3,333),$.calc.grossWeightKg),1)'
+
+- command: decisionTable
+  path: $
+  title: Customs regime
+  description: >-
+    Whether a shipment needs an export declaration is not arithmetic, it is a rule about two
+    customs unions - so it is a table. defaultResults is the intra-EU path.
+  decisionTable:
+    inputs:
+      - name: origin
+        path: $.calc.originUnion
+      - name: destination
+        path: $.calc.destinationUnion
+    outputs:
+      - name: regime
+        path: $.calc.customsRegime
+      - name: declaration
+        path: $.calc.declarationType
+      - name: proof
+        path: $.calc.originProof
+    rules:
+      - priority: 1
+        conditions:
+          origin: '=EU'
+          destination: '=EU'
+        results:
+          regime: INTRACOMMUNAUTAIR
+          declaration: GEEN
+          proof: GEEN
+      - priority: 2
+        conditions:
+          origin: '=EU'
+          destination: '=EER'
+        results:
+          regime: UITVOER-EER
+          declaration: EX-A
+          proof: EUR.1
+      - priority: 3
+        conditions:
+          origin: '=EU'
+          destination: '=DERDE-LAND'
+        results:
+          regime: UITVOER-DERDE-LAND
+          declaration: EX-A
+          proof: OORSPRONGSCERTIFICAAT
+    defaultResults:
+      regime: ONBEKEND
+      declaration: HANDMATIG
+      proof: HANDMATIG
+
+- command: decisionTable
+  path: $
+  title: Service level
+  description: The requested transit time decides the service level and its surcharge.
+  decisionTable:
+    inputs:
+      - name: days
+        path: $.booking.requestedTransitDays
+    outputs:
+      - name: level
+        path: $.calc.serviceLevel
+    rules:
+      - priority: 1
+        conditions:
+          days: '<=1'
+        results:
+          level: EXPRESS
+      - priority: 2
+        conditions:
+          days: '>1 && <=3'
+        results:
+          level: PRIORITY
+      - priority: 3
+        conditions:
+          days: '>3'
+        results:
+          level: STANDARD
+
+- command: resolve
+  path: $.calc
+  title: Price the service level
+  description: The level was decided by a rule; what it costs is a table row.
+  resolveSettings:
+    - referencesCollectionPath: $.ref.serviceLevels[*]
+      resolveKeys:
+        - keyPath: '@.serviceLevel'
+          referenceKeyPath: '@.code'
+      values:
+        - targetPath: '@.surchargePercent'
+          value: '@.surchargePercent'
+
+- command: put
+  path: $.manifest
+  title: The carrier manifest
+  description: >-
+    One object-valued put builds the whole document; every =fetch inside it is evaluated as the
+    object is written, at any depth.
+  value:
+    documentType: VRACHTBRIEF
+    manifestNumber: "=concat('MF-',$.booking.bookingReference)"
+    issuedOn: '=fetch($.booking.bookedOn)'
+    modeOfTransport: '=fetch($.booking.modeOfTransport)'
+    incoterms: '=fetch($.booking.incoterms)'
+    route:
+      from: '=concat($.booking.consignor.city,'', '',$.booking.consignor.countryCode)'
+      to: '=concat($.booking.consignee.city,'', '',$.booking.consignee.countryCode)'
+      destinationName: '=fetch($.calc.destinationName)'
+    consignor:
+      name: '=fetch($.booking.consignor.name)'
+      eoriNumber: '=fetch($.booking.consignor.eoriNumber)'
+      addressLine: "=concat($.booking.consignor.street,' ',$.booking.consignor.houseNumber)"
+      postalCode: '=fetch($.booking.consignor.postalCode)'
+      city: '=fetch($.booking.consignor.city)'
+      countryCode: '=fetch($.booking.consignor.countryCode)'
+    consignee:
+      name: '=fetch($.booking.consignee.name)'
+      eoriNumber: '=fetch($.booking.consignee.eoriNumber)'
+      addressLine: "=concat($.booking.consignee.street,' ',$.booking.consignee.houseNumber)"
+      postalCode: '=fetch($.booking.consignee.postalCode)'
+      city: '=fetch($.booking.consignee.city)'
+      countryCode: '=fetch($.booking.consignee.countryCode)'
+    service:
+      level: '=fetch($.calc.serviceLevel)'
+      requestedTransitDays: '=fetch($.booking.requestedTransitDays)'
+      surchargePercent: '=fetch($.calc.surchargePercent)'
+    totals:
+      packageCount: '=count($.booking.packages[*])'
+      grossWeightKg: '=fetch($.calc.grossWeightKg)'
+      netWeightKg: '=fetch($.calc.netWeightKg)'
+      volumeM3: '=fetch($.calc.volumeM3)'
+      chargeableWeightKg: '=fetch($.calc.chargeableWeightKg)'
+      invoiceValueEur: '=fetch($.calc.invoiceValueEur)'
+      currency: EUR
+    customs:
+      regime: '=fetch($.calc.customsRegime)'
+      declarationType: '=fetch($.calc.declarationType)'
+      originProof: '=fetch($.calc.originProof)'
+      originCountries: '=distinct($.booking.goods[*].countryOfOrigin)'
+    packages: '=sortby($.booking.packages,''packageNumber'')'
+    goods: '=fetch($.booking.goods)'
+
+- command: ifElse
+  title: Export licence note
+  description: >-
+    A goods line in a licensed tariff chapter stops the shipment until the licence is on file.
+    What is conditional is a whole node, so this stays an ifElse.
+  condition: "=greaterThan(=count($.booking.goods[?(@.licenceRequired=='JA')]),0)"
+  ifScript:
+    - command: put
+      path: $.manifest.customs.licence
+      title: Licence hold
+      value:
+        holdCode: VERGUNNING-VEREIST
+        holdText: >-
+          Een of meer goederenregels vallen onder een vergunningplichtig tariefhoofdstuk.
+          Zending niet vrijgeven voordat de uitvoervergunning is geregistreerd.
+        status: OPEN
+
+- command: remove
+  path: $.calc
+  title: Drop the working area
+
+- command: remove
+  path: $.ref
+  title: Drop the reference data

@@ -1,0 +1,182 @@
+{
+  "order": {
+    "orderNumber": "WEB-2026-77413",
+    "placedOn": "2026-08-21",
+    "channel": "WEBSHOP",
+    "currency": "EUR",
+    "customer": {
+      "customerNumber": "CU-30188",
+      "name": "Bakkerij Molenaar V.O.F.",
+      "email": "inkoop@molenaar.example.nl",
+      "vatNumber": "NL812345678B01"
+    },
+    "shipTo": {
+      "attention": "Ontvangst magazijn",
+      "street": "Havenweg",
+      "houseNumber": "9c",
+      "postalCode": "1976BW",
+      "city": "IJmuiden",
+      "countryCode": "NL"
+    },
+    "requestedDeliveryDate": "2026-08-26",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "sku": "FL-T55-25",
+        "description": "Tarwebloem type 55, 25 kg",
+        "quantity": 8,
+        "unitPriceExclVat": 18.4,
+        "lineAmountExclVat": 147.2,
+        "weightGrams": 200000,
+        "vatCategory": "LAAG",
+        "pickLocation": "A-01-14",
+        "pickZone": "BULK",
+        "handlingUnit": "PALLET",
+        "vatRatePercent": 9
+      },
+      {
+        "lineNumber": 2,
+        "sku": "GI-DRY-05",
+        "description": "Droge gist, 500 g",
+        "quantity": 12,
+        "unitPriceExclVat": 6.75,
+        "lineAmountExclVat": 81.0,
+        "weightGrams": 6000,
+        "vatCategory": "LAAG",
+        "pickLocation": "C-07-02",
+        "pickZone": "KOEL",
+        "handlingUnit": "DOOS",
+        "vatRatePercent": 9
+      },
+      {
+        "lineNumber": 3,
+        "sku": "VP-BOX-32",
+        "description": "Vouwdoos 320x220x80, 100 st",
+        "quantity": 4,
+        "unitPriceExclVat": 23.1,
+        "lineAmountExclVat": 92.4,
+        "weightGrams": 14000,
+        "vatCategory": "HOOG",
+        "pickLocation": "B-03-11",
+        "pickZone": "BULK",
+        "handlingUnit": "PALLET",
+        "vatRatePercent": 21
+      },
+      {
+        "lineNumber": 4,
+        "sku": "SC-CLN-10",
+        "description": "Bakplaatreiniger, 10 L",
+        "quantity": 2,
+        "unitPriceExclVat": 41.5,
+        "lineAmountExclVat": 83.0,
+        "weightGrams": 21000,
+        "vatCategory": "HOOG",
+        "pickLocation": "D-02-05",
+        "pickZone": "GEVAAR",
+        "handlingUnit": "DOOS",
+        "vatRatePercent": 21
+      }
+    ]
+  },
+  "fulfilment": {
+    "documentType": "PICKLIST",
+    "pickListNumber": "PL-WEB-2026-77413",
+    "orderNumber": "WEB-2026-77413",
+    "createdOn": "2026-08-21",
+    "requestedDeliveryDate": "2026-08-26",
+    "shipTo": {
+      "name": "Bakkerij Molenaar V.O.F.",
+      "attention": "Ontvangst magazijn",
+      "addressLine": "Havenweg 9c",
+      "postalCode": "1976BW",
+      "city": "IJmuiden",
+      "countryCode": "NL"
+    },
+    "carriage": {
+      "carrier": "Nedcargo",
+      "serviceCode": "NL-PALLET",
+      "band": "PALLET",
+      "totalWeightKg": 241,
+      "shippingCostExclVat": 62.0
+    },
+    "zones": [
+      "BULK",
+      "KOEL",
+      "GEVAAR"
+    ],
+    "lineCount": 4,
+    "lines": [
+      {
+        "lineNumber": 1,
+        "sku": "FL-T55-25",
+        "description": "Tarwebloem type 55, 25 kg",
+        "quantity": 8,
+        "unitPriceExclVat": 18.4,
+        "lineAmountExclVat": 147.2,
+        "weightGrams": 200000,
+        "vatCategory": "LAAG",
+        "pickLocation": "A-01-14",
+        "pickZone": "BULK",
+        "handlingUnit": "PALLET",
+        "vatRatePercent": 9
+      },
+      {
+        "lineNumber": 3,
+        "sku": "VP-BOX-32",
+        "description": "Vouwdoos 320x220x80, 100 st",
+        "quantity": 4,
+        "unitPriceExclVat": 23.1,
+        "lineAmountExclVat": 92.4,
+        "weightGrams": 14000,
+        "vatCategory": "HOOG",
+        "pickLocation": "B-03-11",
+        "pickZone": "BULK",
+        "handlingUnit": "PALLET",
+        "vatRatePercent": 21
+      },
+      {
+        "lineNumber": 2,
+        "sku": "GI-DRY-05",
+        "description": "Droge gist, 500 g",
+        "quantity": 12,
+        "unitPriceExclVat": 6.75,
+        "lineAmountExclVat": 81.0,
+        "weightGrams": 6000,
+        "vatCategory": "LAAG",
+        "pickLocation": "C-07-02",
+        "pickZone": "KOEL",
+        "handlingUnit": "DOOS",
+        "vatRatePercent": 9
+      },
+      {
+        "lineNumber": 4,
+        "sku": "SC-CLN-10",
+        "description": "Bakplaatreiniger, 10 L",
+        "quantity": 2,
+        "unitPriceExclVat": 41.5,
+        "lineAmountExclVat": 83.0,
+        "weightGrams": 21000,
+        "vatCategory": "HOOG",
+        "pickLocation": "D-02-05",
+        "pickZone": "GEVAAR",
+        "handlingUnit": "DOOS",
+        "vatRatePercent": 21
+      }
+    ],
+    "totals": {
+      "goodsExclVat": 403.6,
+      "shippingExclVat": 62.0,
+      "netExclVat": 465.6,
+      "vatAmount": 97.78,
+      "grandTotalInclVat": 563.38,
+      "currency": "EUR"
+    },
+    "handlingNotes": {
+      "hazardous": {
+        "noteCode": "ADR-BEPERKT",
+        "noteText": "Bevat reinigingsmiddel in beperkte hoeveelheid (ADR LQ). Apart aanleveren en niet stapelen met levensmiddelen.",
+        "separatePallet": true
+      }
+    }
+  }
+}

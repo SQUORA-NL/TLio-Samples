@@ -1,0 +1,35 @@
+{
+  "request": {
+    "policy": {
+      "packageDiscountPct": -5
+    },
+    "product": {
+      "tariffDate": "2026-09-01",
+      "startDate": "2026-09-01",
+      "paymentTermMonths": 12,
+      "extraBmSteps": 0,
+      "groupDiscountPct": 0,
+      "adviceDiscountPct": -3,
+      "commissionPct": 15
+    },
+    "policyholder": {
+      "postcode": "7511AB",
+      "birthDate": "2003-08-20",
+      "claimFreeYears": 5
+    },
+    "vehicle": {
+      "typeCode": "62",
+      "brand": "Yamaha",
+      "model": "Aerox",
+      "type": "Standaard",
+      "catalogValue": 1800,
+      "accessoriesValue": 50,
+      "approvedLock": "J"
+    },
+    "coverage": {
+      "wa": { "code": "02001" },
+      "casco": { "code": "02002" },
+      "accidents": { "code": "01001", "sumDeath": 2500, "sumDisability": 12500 }
+    }
+  }
+}

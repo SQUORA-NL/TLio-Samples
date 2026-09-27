@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLio — Azure Days Demo</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #151b23;
+    --panel-alt: #1c2530;
+    --border: #2a3441;
+    --text: #e6edf3;
+    --muted: #8b96a5;
+    --accent: #58a6ff;
+    --accent-strong: #79c0ff;
+    --good: #3fb950;
+    --warn: #d29922;
+    --bad: #f85149;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header {
+    padding: 20px 28px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  header h1 {
+    margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  header h1 span { color: var(--accent-strong); }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+  .endpoint {
+    display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted);
+  }
+  .endpoint input {
+    width: 300px; background: var(--panel-alt); border: 1px solid var(--border); color: var(--text);
+    border-radius: 6px; padding: 6px 10px; font-family: var(--mono); font-size: 13px;
+  }
+
+  .examples {
+    display: flex; gap: 10px; padding: 14px 28px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border); background: var(--panel);
+  }
+  .examples button {
+    background: var(--panel-alt); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 16px; font-size: 14px; cursor: pointer;
+    text-align: left; transition: border-color .15s, transform .1s;
+  }
+  .examples button:hover { border-color: var(--accent); }
+  .examples button:active { transform: scale(0.98); }
+  .examples button .num {
+    display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center;
+    border-radius: 50%; background: var(--accent); color: #001428; font-weight: 700; font-size: 12px;
+    margin-right: 8px;
+  }
+  #narrative {
+    padding: 6px 28px 0; color: var(--accent-strong); font-size: 14px; min-height: 22px;
+  }
+
+  main {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border);
+    height: calc(100vh - 172px);
+  }
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; height: auto; }
+  }
+  .pane { background: var(--bg); display: flex; flex-direction: column; min-height: 0; }
+  .pane-header {
+    padding: 12px 20px; font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--muted); display: flex; justify-content: space-between; align-items: center;
+  }
+  .field { padding: 0 20px 16px; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .field label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  textarea {
+    flex: 1; width: 100%; resize: none; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+    font-family: var(--mono); font-size: 14px; line-height: 1.5; padding: 12px;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); }
+
+  #runBtn {
+    margin: 0 20px 18px; padding: 14px; font-size: 16px; font-weight: 700;
+    background: var(--accent); color: #001428; border: none; border-radius: 8px; cursor: pointer;
+  }
+  #runBtn:hover { background: var(--accent-strong); }
+  #runBtn:disabled { opacity: .6; cursor: default; }
+
+  #resultBox {
+    flex: 1; margin: 0 20px 14px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px; overflow: auto; font-family: var(--mono); font-size: 14px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  #resultBox.ok { border-color: var(--good); }
+  #resultBox.fail { border-color: var(--bad); }
+
+  #logBox {
+    margin: 0 20px 20px; max-height: 160px; overflow: auto; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: var(--mono);
+    font-size: 12.5px;
+  }
+  #logBox .entry { padding: 2px 0; }
+  #logBox .Information { color: var(--muted); }
+  #logBox .Warning { color: var(--warn); }
+  #logBox .Error, #logBox .Critical { color: var(--bad); }
+  #logBox .plain { color: var(--bad); }
+
+  .status { font-size: 12px; color: var(--muted); }
+  .status.ok { color: var(--good); }
+  .status.fail { color: var(--bad); }
+
+  .iterations {
+    display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted);
+  }
+  .iterations input {
+    width: 90px; background: var(--panel-alt); border: 1px solid var(--border); color: var(--text);
+    border-radius: 6px; padding: 6px 8px; font-family: var(--mono); font-size: 13px;
+  }
+
+  #benchmarkBox {
+    margin: 0 20px 14px; padding: 16px; background: var(--panel);
+    border: 1px solid var(--accent); border-radius: 8px;
+  }
+  #benchmarkBox .bench-title {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 12px;
+  }
+  .bench-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-family: var(--mono); font-size: 13px; }
+  .bench-label { width: 130px; flex-shrink: 0; color: var(--muted); }
+  .bench-bar-track { flex: 1; background: var(--panel-alt); border-radius: 4px; height: 20px; overflow: hidden; }
+  .bench-bar { height: 100%; border-radius: 4px; transition: width .4s ease; }
+  .bench-bar.naive { background: var(--warn); }
+  .bench-bar.compiled { background: var(--good); }
+  .bench-value { width: 100px; text-align: right; flex-shrink: 0; }
+  .bench-speedup {
+    margin-top: 4px; font-size: 22px; font-weight: 700; color: var(--accent-strong); text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>TL<span>io</span> — turn JSON into a programming language</h1>
+    <p>Edit the document or the script on the left, hit Run, watch it transform on the right.</p>
+  </div>
+  <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+    <div class="endpoint">
+      <label for="baseUrl">Function URL</label>
+      <input id="baseUrl" spellcheck="false" value="http://localhost:7071/Transform">
+    </div>
+    <div class="iterations">
+      <label for="iterationsInput">Iterations</label>
+      <input id="iterationsInput" type="number" min="1" max="20000" placeholder="1">
+    </div>
+  </div>
+</header>
+
+<div class="examples">
+  <button data-example="examples/a-simple-set.json"><span class="num">1</span>Set a value</button>
+  <button data-example="examples/b-function-datetime.json"><span class="num">2</span>Call a function</button>
+  <button data-example="examples/c-copy-move.json"><span class="num">3</span>Reshape the document</button>
+  <button data-example="examples/d-precompiled-performance.json"><span class="num">4</span>Compile once, run many</button>
+</div>
+<div id="narrative"></div>
+
+<main>
+  <section class="pane">
+    <div class="pane-header">Input</div>
+    <div class="field" style="flex: 0 0 40%;">
+      <label for="documentInput">Document (JSON)</label>
+      <textarea id="documentInput" spellcheck="false"></textarea>
+    </div>
+    <div class="field">
+      <label for="commandsInput">TLio script — commands (JSON array)</label>
+      <textarea id="commandsInput" spellcheck="false"></textarea>
+    </div>
+    <button id="runBtn">▶ Run (Ctrl/Cmd + Enter)</button>
+  </section>
+
+  <section class="pane">
+    <div class="pane-header">
+      <span>Output</span>
+      <span id="status" class="status"></span>
+    </div>
+    <div id="resultBox">Press Run to transform the document.</div>
+    <div id="benchmarkBox" hidden>
+      <div class="bench-title">Parse every time vs. compile once</div>
+      <div class="bench-row">
+        <span class="bench-label">engine.Execute()</span>
+        <div class="bench-bar-track"><div id="naiveBar" class="bench-bar naive" style="width:0"></div></div>
+        <span id="naiveValue" class="bench-value"></span>
+      </div>
+      <div class="bench-row">
+        <span class="bench-label">compiled.Execute()</span>
+        <div class="bench-bar-track"><div id="compiledBar" class="bench-bar compiled" style="width:0"></div></div>
+        <span id="compiledValue" class="bench-value"></span>
+      </div>
+      <div id="speedupLine" class="bench-speedup"></div>
+    </div>
+    <div class="pane-header" style="padding-top:0;">Log</div>
+    <div id="logBox"></div>
+  </section>
+</main>
+
+<script>
+(function () {
+  const baseUrlInput    = document.getElementById('baseUrl');
+  const iterationsInput = document.getElementById('iterationsInput');
+  const documentInput   = document.getElementById('documentInput');
+  const commandsInput   = document.getElementById('commandsInput');
+  const runBtn          = document.getElementById('runBtn');
+  const resultBox       = document.getElementById('resultBox');
+  const benchmarkBox    = document.getElementById('benchmarkBox');
+  const naiveBar        = document.getElementById('naiveBar');
+  const compiledBar     = document.getElementById('compiledBar');
+  const naiveValue      = document.getElementById('naiveValue');
+  const compiledValue   = document.getElementById('compiledValue');
+  const speedupLine     = document.getElementById('speedupLine');
+  const logBox          = document.getElementById('logBox');
+  const statusEl        = document.getElementById('status');
+  const narrativeEl     = document.getElementById('narrative');
+
+  const STORAGE_KEY = 'tlio-demo-function-url';
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) baseUrlInput.value = saved;
+  baseUrlInput.addEventListener('change', () => localStorage.setItem(STORAGE_KEY, baseUrlInput.value));
+
+  async function loadExample(path) {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error(`Could not load ${path}: HTTP ${res.status}`);
+    const example = await res.json();
+    documentInput.value = JSON.stringify(example.document, null, 2);
+    commandsInput.value = JSON.stringify(example.commands, null, 2);
+    iterationsInput.value = example.iterations && example.iterations > 1 ? example.iterations : '';
+    narrativeEl.textContent = example.narrative ? `${example.title} — ${example.narrative}` : (example.title || '');
+    resultBox.textContent = 'Press Run to transform the document.';
+    resultBox.className = '';
+    benchmarkBox.hidden = true;
+    logBox.innerHTML = '';
+    statusEl.textContent = '';
+    statusEl.className = 'status';
+  }
+
+  document.querySelectorAll('.examples button').forEach(btn => {
+    btn.addEventListener('click', () => loadExample(btn.dataset.example).catch(showFatal));
+  });
+
+  function showFatal(err) {
+    resultBox.textContent = String(err.message || err);
+    resultBox.className = 'fail';
+    benchmarkBox.hidden = true;
+  }
+
+  function renderBenchmark(benchmark) {
+    if (!benchmark) {
+      benchmarkBox.hidden = true;
+      return;
+    }
+    benchmarkBox.hidden = false;
+    const max = Math.max(benchmark.naiveMs, benchmark.compiledTotalMs, 1);
+    naiveBar.style.width = `${(benchmark.naiveMs / max) * 100}%`;
+    compiledBar.style.width = `${(benchmark.compiledTotalMs / max) * 100}%`;
+    naiveValue.textContent = `${benchmark.naiveMs} ms`;
+    compiledValue.textContent = `${benchmark.compiledTotalMs} ms`;
+    speedupLine.textContent =
+      `${benchmark.iterations.toLocaleString()} runs — compiled was ${benchmark.speedup}× faster`;
+  }
+
+  function renderLog(entries) {
+    logBox.innerHTML = '';
+    if (!entries || entries.length === 0) {
+      logBox.innerHTML = '<div class="entry" style="color:var(--muted)">(no log entries)</div>';
+      return;
+    }
+    entries.forEach(entry => {
+      const match = /^\[(\w+)\]/.exec(entry);
+      const level = match ? match[1] : 'plain';
+      const div = document.createElement('div');
+      div.className = `entry ${level}`;
+      div.textContent = entry;
+      logBox.appendChild(div);
+    });
+  }
+
+  async function run() {
+    let document_, commands;
+    try {
+      document_ = documentInput.value;
+      JSON.parse(document_); // validate — the API wants the raw text either way
+    } catch (err) {
+      showFatal(new Error(`Document is not valid JSON: ${err.message}`));
+      return;
+    }
+    try {
+      commands = JSON.parse(commandsInput.value);
+      if (!Array.isArray(commands)) throw new Error('Commands must be a JSON array.');
+    } catch (err) {
+      showFatal(new Error(`Commands are not a valid JSON array: ${err.message}`));
+      return;
+    }
+
+    const iterations = parseInt(iterationsInput.value, 10);
+
+    runBtn.disabled = true;
+    statusEl.textContent = 'running…';
+    statusEl.className = 'status';
+    benchmarkBox.hidden = true;
+    const started = performance.now();
+
+    try {
+      const body = { document: document_, commands };
+      if (Number.isInteger(iterations) && iterations > 1) body.iterations = iterations;
+
+      const res = await fetch(baseUrlInput.value, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const elapsed = Math.round(performance.now() - started);
+      const payload = await res.json();
+
+      if (!res.ok) {
+        resultBox.textContent = payload.error || `HTTP ${res.status}`;
+        resultBox.className = 'fail';
+        statusEl.textContent = `HTTP ${res.status} · ${elapsed} ms`;
+        statusEl.className = 'status fail';
+        renderLog([]);
+        return;
+      }
+
+      resultBox.textContent = JSON.stringify(payload.result, null, 2);
+      resultBox.className = payload.success ? 'ok' : 'fail';
+      statusEl.textContent = `${payload.success ? 'success' : 'completed with warnings'} · ${elapsed} ms round trip`;
+      statusEl.className = `status ${payload.success ? 'ok' : 'fail'}`;
+      renderBenchmark(payload.benchmark);
+      renderLog(payload.log);
+    } catch (err) {
+      showFatal(new Error(`Request failed — is the function running at ${baseUrlInput.value}? (${err.message})`));
+      statusEl.textContent = 'request failed';
+      statusEl.className = 'status fail';
+    } finally {
+      runBtn.disabled = false;
+    }
+  }
+
+  runBtn.addEventListener('click', run);
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') run();
+  });
+
+  loadExample('examples/a-simple-set.json').catch(showFatal);
+})();
+</script>
+
+</body>
+</html>

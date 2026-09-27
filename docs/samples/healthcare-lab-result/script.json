@@ -1,0 +1,346 @@
+[
+  {
+    "command": "add",
+    "path": "/ORU_R01/map",
+    "title": "HL7 v2 code tables to FHIR code systems",
+    "description": "Three vocabularies that have to be crossed: the lab's own test codes to LOINC, the HL7 abnormal flag to an interpretation code, and the observation status. Adding a test is a data edit here.",
+    "value": {
+      "testCodes": [
+        {
+          "local": "KREAT",
+          "loinc": "2160-0",
+          "display": "Creatinine [Moles/volume] in Serum or Plasma"
+        },
+        {
+          "local": "EGFR",
+          "loinc": "33914-3",
+          "display": "Glomerular filtration rate/1.73 sq M.predicted"
+        },
+        {
+          "local": "UREUM",
+          "loinc": "3094-0",
+          "display": "Urea nitrogen [Mass/volume] in Serum or Plasma"
+        },
+        {
+          "local": "KALIUM",
+          "loinc": "2823-3",
+          "display": "Potassium [Moles/volume] in Serum or Plasma"
+        }
+      ],
+      "interpretations": [
+        {
+          "hl7": "N",
+          "code": "N",
+          "display": "Normal"
+        },
+        {
+          "hl7": "L",
+          "code": "L",
+          "display": "Low"
+        },
+        {
+          "hl7": "H",
+          "code": "H",
+          "display": "High"
+        },
+        {
+          "hl7": "LL",
+          "code": "LL",
+          "display": "Critical low"
+        },
+        {
+          "hl7": "HH",
+          "code": "HH",
+          "display": "Critical high"
+        }
+      ],
+      "statuses": [
+        {
+          "hl7": "P",
+          "fhir": "preliminary"
+        },
+        {
+          "hl7": "F",
+          "fhir": "final"
+        },
+        {
+          "hl7": "C",
+          "fhir": "corrected"
+        },
+        {
+          "hl7": "X",
+          "fhir": "cancelled"
+        }
+      ],
+      "genders": [
+        {
+          "hl7": "M",
+          "fhir": "male"
+        },
+        {
+          "hl7": "F",
+          "fhir": "female"
+        },
+        {
+          "hl7": "O",
+          "fhir": "other"
+        },
+        {
+          "hl7": "U",
+          "fhir": "unknown"
+        }
+      ],
+      "systems": {
+        "loinc": "http://loinc.org",
+        "ucum": "http://unitsofmeasure.org",
+        "interpretation": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+        "bsn": "http://fhir.nl/fhir/NamingSystem/bsn"
+      }
+    }
+  },
+  {
+    "command": "put",
+    "path": "/ORU_R01/calc/messageTime",
+    "title": "Message timestamp as ISO 8601",
+    "description": "HL7 v2 writes CCYYMMDDHHMMSS with no separators; FHIR wants an ISO instant. substring and concat is the whole conversion - there is no date type to parse into, because in XML, JSON and YAML alike a date is text.",
+    "value": "=concat(=substring(/ORU_R01/MSH/MSH.7,0,4),'-',=substring(/ORU_R01/MSH/MSH.7,4,2),'-',=substring(/ORU_R01/MSH/MSH.7,6,2),'T',=substring(/ORU_R01/MSH/MSH.7,8,2),':',=substring(/ORU_R01/MSH/MSH.7,10,2),':',=substring(/ORU_R01/MSH/MSH.7,12,2),'Z')"
+  },
+  {
+    "command": "put",
+    "path": "/ORU_R01/calc/collectedTime",
+    "title": "Specimen collection time as ISO 8601",
+    "value": "=concat(=substring(/ORU_R01/OBR/OBR.7,0,4),'-',=substring(/ORU_R01/OBR/OBR.7,4,2),'-',=substring(/ORU_R01/OBR/OBR.7,6,2),'T',=substring(/ORU_R01/OBR/OBR.7,8,2),':',=substring(/ORU_R01/OBR/OBR.7,10,2),':',=substring(/ORU_R01/OBR/OBR.7,12,2),'Z')"
+  },
+  {
+    "command": "put",
+    "path": "/ORU_R01/calc/birthDate",
+    "title": "Birth date as ISO 8601",
+    "value": "=concat(=substring(/ORU_R01/PID/PID.7,0,4),'-',=substring(/ORU_R01/PID/PID.7,4,2),'-',=substring(/ORU_R01/PID/PID.7,6,2))"
+  },
+  {
+    "command": "put",
+    "path": "/ORU_R01/bundle",
+    "title": "The whole FHIR bundle, in one command",
+    "description": "Every code crossing is an XPath predicate that joins the map to the message - item[local = /ORU_R01/OBX[1]/OBX.3]/loinc. The arrays are written with the canonical item element, which is what makes them JSON arrays rather than objects after the convert below.",
+    "value": {
+      "resourceType": "Bundle",
+      "type": "collection",
+      "timestamp": "=fetch(/ORU_R01/calc/messageTime)",
+      "identifier": {
+        "value": "=fetch(/ORU_R01/MSH/MSH.10)",
+        "assigner": "=fetch(/ORU_R01/MSH/MSH.4)"
+      },
+      "subject": {
+        "resourceType": "Patient",
+        "id": "=fetch(/ORU_R01/PID/PID.3)",
+        "identifier": [
+          {
+            "system": "=fetch(/ORU_R01/map/systems/bsn)",
+            "value": "=fetch(/ORU_R01/PID/PID.19)"
+          }
+        ],
+        "name": [
+          {
+            "family": "=fetch(/ORU_R01/PID/PID.5.1)",
+            "given": [
+              "=fetch(/ORU_R01/PID/PID.5.2)"
+            ]
+          }
+        ],
+        "gender": "=fetch(/ORU_R01/map/genders/item[hl7 = /ORU_R01/PID/PID.8]/fhir)",
+        "birthDate": "=fetch(/ORU_R01/calc/birthDate)"
+      },
+      "basedOn": {
+        "identifier": "=fetch(/ORU_R01/OBR/OBR.2)",
+        "panelCode": "=fetch(/ORU_R01/OBR/OBR.4)",
+        "requester": "=fetch(/ORU_R01/OBR/OBR.16)"
+      },
+      "observations": [
+        {
+          "resourceType": "Observation",
+          "status": "=fetch(/ORU_R01/map/statuses/item[hl7 = /ORU_R01/OBX[1]/OBX.11]/fhir)",
+          "category": "laboratory",
+          "code": {
+            "coding": [
+              {
+                "system": "=fetch(/ORU_R01/map/systems/loinc)",
+                "code": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[1]/OBX.3]/loinc)",
+                "display": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[1]/OBX.3]/display)"
+              }
+            ],
+            "text": "=fetch(/ORU_R01/OBX[1]/OBX.3)"
+          },
+          "valueQuantity": {
+            "value": "=fetch(/ORU_R01/OBX[1]/OBX.5)",
+            "unit": "=fetch(/ORU_R01/OBX[1]/OBX.6)",
+            "system": "=fetch(/ORU_R01/map/systems/ucum)"
+          },
+          "referenceRange": [
+            {
+              "text": "=fetch(/ORU_R01/OBX[1]/OBX.7)"
+            }
+          ],
+          "interpretation": [
+            {
+              "coding": [
+                {
+                  "system": "=fetch(/ORU_R01/map/systems/interpretation)",
+                  "code": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[1]/OBX.8]/code)",
+                  "display": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[1]/OBX.8]/display)"
+                }
+              ]
+            }
+          ],
+          "effectiveDateTime": "=fetch(/ORU_R01/calc/collectedTime)"
+        },
+        {
+          "resourceType": "Observation",
+          "status": "=fetch(/ORU_R01/map/statuses/item[hl7 = /ORU_R01/OBX[2]/OBX.11]/fhir)",
+          "category": "laboratory",
+          "code": {
+            "coding": [
+              {
+                "system": "=fetch(/ORU_R01/map/systems/loinc)",
+                "code": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[2]/OBX.3]/loinc)",
+                "display": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[2]/OBX.3]/display)"
+              }
+            ],
+            "text": "=fetch(/ORU_R01/OBX[2]/OBX.3)"
+          },
+          "valueQuantity": {
+            "value": "=fetch(/ORU_R01/OBX[2]/OBX.5)",
+            "unit": "=fetch(/ORU_R01/OBX[2]/OBX.6)",
+            "system": "=fetch(/ORU_R01/map/systems/ucum)"
+          },
+          "referenceRange": [
+            {
+              "text": "=fetch(/ORU_R01/OBX[2]/OBX.7)"
+            }
+          ],
+          "interpretation": [
+            {
+              "coding": [
+                {
+                  "system": "=fetch(/ORU_R01/map/systems/interpretation)",
+                  "code": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[2]/OBX.8]/code)",
+                  "display": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[2]/OBX.8]/display)"
+                }
+              ]
+            }
+          ],
+          "effectiveDateTime": "=fetch(/ORU_R01/calc/collectedTime)"
+        },
+        {
+          "resourceType": "Observation",
+          "status": "=fetch(/ORU_R01/map/statuses/item[hl7 = /ORU_R01/OBX[3]/OBX.11]/fhir)",
+          "category": "laboratory",
+          "code": {
+            "coding": [
+              {
+                "system": "=fetch(/ORU_R01/map/systems/loinc)",
+                "code": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[3]/OBX.3]/loinc)",
+                "display": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[3]/OBX.3]/display)"
+              }
+            ],
+            "text": "=fetch(/ORU_R01/OBX[3]/OBX.3)"
+          },
+          "valueQuantity": {
+            "value": "=fetch(/ORU_R01/OBX[3]/OBX.5)",
+            "unit": "=fetch(/ORU_R01/OBX[3]/OBX.6)",
+            "system": "=fetch(/ORU_R01/map/systems/ucum)"
+          },
+          "referenceRange": [
+            {
+              "text": "=fetch(/ORU_R01/OBX[3]/OBX.7)"
+            }
+          ],
+          "interpretation": [
+            {
+              "coding": [
+                {
+                  "system": "=fetch(/ORU_R01/map/systems/interpretation)",
+                  "code": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[3]/OBX.8]/code)",
+                  "display": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[3]/OBX.8]/display)"
+                }
+              ]
+            }
+          ],
+          "effectiveDateTime": "=fetch(/ORU_R01/calc/collectedTime)"
+        },
+        {
+          "resourceType": "Observation",
+          "status": "=fetch(/ORU_R01/map/statuses/item[hl7 = /ORU_R01/OBX[4]/OBX.11]/fhir)",
+          "category": "laboratory",
+          "code": {
+            "coding": [
+              {
+                "system": "=fetch(/ORU_R01/map/systems/loinc)",
+                "code": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[4]/OBX.3]/loinc)",
+                "display": "=fetch(/ORU_R01/map/testCodes/item[local = /ORU_R01/OBX[4]/OBX.3]/display)"
+              }
+            ],
+            "text": "=fetch(/ORU_R01/OBX[4]/OBX.3)"
+          },
+          "valueQuantity": {
+            "value": "=fetch(/ORU_R01/OBX[4]/OBX.5)",
+            "unit": "=fetch(/ORU_R01/OBX[4]/OBX.6)",
+            "system": "=fetch(/ORU_R01/map/systems/ucum)"
+          },
+          "referenceRange": [
+            {
+              "text": "=fetch(/ORU_R01/OBX[4]/OBX.7)"
+            }
+          ],
+          "interpretation": [
+            {
+              "coding": [
+                {
+                  "system": "=fetch(/ORU_R01/map/systems/interpretation)",
+                  "code": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[4]/OBX.8]/code)",
+                  "display": "=fetch(/ORU_R01/map/interpretations/item[hl7 = /ORU_R01/OBX[4]/OBX.8]/display)"
+                }
+              ]
+            }
+          ],
+          "effectiveDateTime": "=fetch(/ORU_R01/calc/collectedTime)"
+        }
+      ]
+    }
+  },
+  {
+    "command": "move",
+    "fromPath": "/ORU_R01/bundle",
+    "toPath": "/",
+    "title": "The bundle becomes the document",
+    "description": "move to / replaces the document body but keeps the root element's name, so the rename below is what finishes the job. The HL7 message, the map and the working area all go with the body they were part of."
+  },
+  {
+    "command": "rename",
+    "path": "/ORU_R01",
+    "name": "Bundle",
+    "title": "Name the root after what it now holds"
+  },
+  {
+    "command": "convert",
+    "to": "json",
+    "title": "Emit FHIR as JSON",
+    "description": "FHIR is defined in both XML and JSON, but JSON is what an API returns. inferTypes is on so that a lab value becomes a JSON number - FHIR's valueQuantity.value is decimal, not string. The cost is that any all-digit identifier becomes a number too, which the next command puts back.",
+    "settings": {
+      "inferTypes": true
+    }
+  },
+  {
+    "command": "move",
+    "fromPath": "$.Bundle",
+    "toPath": "$",
+    "title": "Unwrap the root element",
+    "description": "XML always has exactly one root element, so converting to JSON always produces a document with exactly one top-level key. FHIR wants the Bundle's fields at the top, so the wrapper is moved away. This is the one asymmetry between the two models that a convert cannot resolve on its own."
+  },
+  {
+    "command": "put",
+    "path": "$.subject.identifier[0].value",
+    "title": "A BSN is text, not a number",
+    "description": "This is the price of inferTypes. The AFD 1.0 sample takes the other route - convert first with inferTypes off, then type each field deliberately - and this one command is why that route is usually the better one.",
+    "value": "=toString($.subject.identifier[0].value)"
+  }
+]

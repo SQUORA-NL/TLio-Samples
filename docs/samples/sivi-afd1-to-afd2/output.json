@@ -1,0 +1,102 @@
+{
+  "afdMessage": {
+    "messageHeader": {
+      "messageId": "MSG-8f2c1d90",
+      "messageTypeCode": "OFFERTEAANVRAAG",
+      "afdVersion": "2.0",
+      "messageDate": "2026-08-21",
+      "sender": {
+        "entityType": "party",
+        "partyRoleCode": "INTERMEDIARY",
+        "agentNumber": "AG-4471",
+        "name": "Van Dijk Assurantiën"
+      },
+      "receiver": {
+        "entityType": "party",
+        "partyRoleCode": "INSURER",
+        "insurerCode": "SQ",
+        "name": "Squora Schadeverzekeringen N.V."
+      }
+    },
+    "policy": {
+      "entityType": "policy",
+      "quotationNumber": "OFF-2026-005177",
+      "policyNumber": null,
+      "productCode": "MOTOR-PERSONENAUTO",
+      "commencementDate": "2026-10-01",
+      "expiryDate": null,
+      "premiumFrequencyCode": "K",
+      "requestedCoverageCode": "ALLRISK",
+      "voluntaryExcessAmount": 500,
+      "claimFreeYears": 2,
+      "collectionMethodCode": "AUTOMATISCHE-INCASSO",
+      "parties": [
+        {
+          "entityType": "party",
+          "partyRoleCode": "VERZEKERINGNEMER",
+          "partyTypeCode": "NP",
+          "initials": "J.",
+          "surnamePrefix": "van der",
+          "surname": "Berg",
+          "dateOfBirth": "2003-02-17",
+          "genderCode": "M",
+          "street": "Deurningerstraat",
+          "houseNumber": "48",
+          "postalCode": "7511JM",
+          "city": "Enschede",
+          "countryCode": "NL",
+          "emailAddress": "j.vanderberg@example.nl",
+          "ibanAccountNumber": "NL02RABO0123456789"
+        },
+        {
+          "entityType": "party",
+          "partyRoleCode": "REGELMATIGE-BESTUURDER",
+          "partyTypeCode": "NP",
+          "initials": "J.",
+          "surnamePrefix": "van der",
+          "surname": "Berg",
+          "dateOfBirth": "2003-02-17",
+          "drivingLicenceIssueDate": "2022-05-09",
+          "drivingLicenceCategoryCode": "B"
+        }
+      ],
+      "objects": [
+        {
+          "entityType": "object",
+          "objectTypeCode": "MOTORRIJTUIG",
+          "licensePlate": "H-472-BZ",
+          "vehicleModelCode": "OPL-CORSA-12T",
+          "dateOfFirstAdmission": "2013-06-28",
+          "catalogueValueAmount": 19750,
+          "currentValueAmount": 4650,
+          "annualMileage": 9000,
+          "usageCode": "PARTICULIER",
+          "parkingCode": "OPENBARE-WEG",
+          "antiTheftClassCode": "SCM-1"
+        }
+      ],
+      "coverages": [
+        {
+          "entityType": "coverage",
+          "coverageCode": "WA",
+          "statusCode": "AANGEVRAAGD"
+        },
+        {
+          "entityType": "coverage",
+          "coverageCode": "CASCO",
+          "statusCode": "AANGEVRAAGD"
+        },
+        {
+          "entityType": "coverage",
+          "coverageCode": "RB",
+          "statusCode": "AANGEVRAAGD"
+        },
+        {
+          "entityType": "coverage",
+          "coverageCode": "OI",
+          "statusCode": "AANGEVRAAGD"
+        }
+      ]
+    }
+  }
+}
