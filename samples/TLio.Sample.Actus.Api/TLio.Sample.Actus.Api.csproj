@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+  </PropertyGroup>
+
+  <!--
+    Demo API for an ACTUS PAM (Principal at Maturity) contract, implemented entirely as TLio
+    scripts under Scripts/ — the schedule walk and the event fold both run through
+    TLio.Extensions.Looping (forEach/while), not native C#. See Scripts/README in this folder's
+    own README.md for the ACTUS event/formula mapping.
+  -->
+  <ItemGroup>
+    <PackageReference Include="TLio.Json" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Client" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.Math" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.Text" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.TimeDate" Version="$(TLioVersion)" />
+    <PackageReference Include="TLio.Extensions.Looping" Version="$(TLioVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Scripts/**/*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleInput/**/*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

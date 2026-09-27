@@ -1,0 +1,145 @@
+<afdMessage>
+  <messageHeader>
+    <messageId>MSG-c40d91f7</messageId>
+    <messageTypeCode>POLISAANMAAK</messageTypeCode>
+    <afdVersion>2.0</afdVersion>
+    <messageDate>2026-08-21</messageDate>
+    <sender>
+      <entityType>party</entityType>
+      <partyRoleCode>INTERMEDIARY</partyRoleCode>
+      <agentNumber>AG-2208</agentNumber>
+      <name>Hypotheekhuys Advies</name>
+    </sender>
+    <receiver>
+      <entityType>party</entityType>
+      <partyRoleCode>INSURER</partyRoleCode>
+      <insurerCode>SQ</insurerCode>
+      <name>Squora Levensverzekeringen N.V.</name>
+    </receiver>
+  </messageHeader>
+  <policy>
+    <entityType>policy</entityType>
+    <quotationNumber>OFF-2026-014390</quotationNumber>
+    <policyNumber>POL-2026-014390</policyNumber>
+    <productCode>LEVEN-ORV</productCode>
+    <commencementDate>2026-11-01</commencementDate>
+    <expiryDate>2056-11-01</expiryDate>
+    <durationYears>30</durationYears>
+    <premiumFrequencyCode>M</premiumFrequencyCode>
+    <premiumPaymentDurationYears>30</premiumPaymentDurationYears>
+    <collectionMethodCode>AUTOMATISCHE-INCASSO</collectionMethodCode>
+    <pledgeIndicator>true</pledgeIndicator>
+    <pledgeeName>Rabobank Hypotheken</pledgeeName>
+    <parties>
+      <party>
+        <entityType>party</entityType>
+        <partyRoleCode>VERZEKERINGNEMER</partyRoleCode>
+        <partyTypeCode>NP</partyTypeCode>
+        <initials>F.</initials>
+        <surname>Jansen</surname>
+        <dateOfBirth>1988-06-30</dateOfBirth>
+        <genderCode>M</genderCode>
+        <street>Zuiderpark</street>
+        <houseNumber>27</houseNumber>
+        <postalCode>3085HG</postalCode>
+        <city>Rotterdam</city>
+        <countryCode>NL</countryCode>
+        <emailAddress>f.jansen@example.nl</emailAddress>
+        <ibanAccountNumber>NL39INGB0002445588</ibanAccountNumber>
+        <smokerIndicator>false</smokerIndicator>
+        <professionCode>KANTOOR</professionCode>
+        <healthDeclarationDate>2026-08-18</healthDeclarationDate>
+      </party>
+      <party>
+        <entityType>party</entityType>
+        <partyRoleCode>BEGUNSTIGDE</partyRoleCode>
+        <partyTypeCode>NP</partyTypeCode>
+        <initials>S.</initials>
+        <surname>Jansen-Terpstra</surname>
+        <dateOfBirth>1990-01-22</dateOfBirth>
+        <genderCode>V</genderCode>
+        <beneficiaryRankNumber>1</beneficiaryRankNumber>
+      </party>
+    </parties>
+    <coverages>
+      <coverage>
+        <entityType>coverage</entityType>
+        <coverageCode>OVERLIJDEN</coverageCode>
+        <description>Annuitair dalende uitkering</description>
+        <coverageTypeCode>HOOFDDEKKING</coverageTypeCode>
+        <benefitTypeCode>ANNUITAIR-DALEND</benefitTypeCode>
+        <insuredSumAmount>350000</insuredSumAmount>
+        <annuityInterestRate>3.5</annuityInterestRate>
+        <premiumAmount>217.11</premiumAmount>
+        <premiumBasisCode>PER-JAAR</premiumBasisCode>
+        <statusCode>GEACCEPTEERD</statusCode>
+      </coverage>
+      <coverage>
+        <entityType>coverage</entityType>
+        <coverageCode>PREMIEVRIJSTELLING-AO</coverageCode>
+        <description>Premievrijstelling bij arbeidsongeschiktheid</description>
+        <coverageTypeCode>AANVULLEND</coverageTypeCode>
+        <surchargeRate>0.08</surchargeRate>
+        <premiumAmount>17.37</premiumAmount>
+        <premiumBasisCode>PER-JAAR</premiumBasisCode>
+        <statusCode>GEACCEPTEERD</statusCode>
+      </coverage>
+    </coverages>
+    <policyStatusCode>ACTIEF</policyStatusCode>
+    <insurerCode>SQ</insurerCode>
+    <productName>Squora Overlijdensrisicoverzekering</productName>
+    <riskProfile>
+      <entityType>riskProfile</entityType>
+      <ageAtStart>38</ageAtStart>
+      <ageAtEnd>68</ageAtEnd>
+      <ageBand>35-39</ageBand>
+      <genderCode>M</genderCode>
+      <mortalityRatePerMille>0.87</mortalityRatePerMille>
+      <smokerDescription>Niet-roker</smokerDescription>
+      <smokerFactor>1</smokerFactor>
+      <professionDescription>Kantoorberoep</professionDescription>
+      <professionFactor>1</professionFactor>
+      <benefitFactor>0.62</benefitFactor>
+      <durationBand>30 jaar en langer</durationBand>
+      <durationFactor>1.15</durationFactor>
+    </riskProfile>
+    <premium>
+      <entityType>premium</entityType>
+      <premiumFrequencyCode>M</premiumFrequencyCode>
+      <premiumFrequencyDescription>Per maand</premiumFrequencyDescription>
+      <riskPremiumPerYear>217.11</riskPremiumPerYear>
+      <riderPremiumPerYear>17.37</riderPremiumPerYear>
+      <netPremiumPerYear>234.48</netPremiumPerYear>
+      <netPremiumPerMonth>19.54</netPremiumPerMonth>
+      <netPremiumPerTerm>19.54</netPremiumPerTerm>
+      <policyCostsPerTerm>0.55</policyCostsPerTerm>
+      <insuranceTaxRate>0</insuranceTaxRate>
+      <insuranceTaxAmount>0</insuranceTaxAmount>
+      <taxExemptIndicator>JA</taxExemptIndicator>
+      <taxExemptionReason>Levensverzekering - vrijgesteld van assurantiebelasting (Wet op belastingen van rechtsverkeer art. 21).</taxExemptionReason>
+      <grossPremiumPerTerm>20.09</grossPremiumPerTerm>
+      <grossPremiumPerYear>241.08</grossPremiumPerYear>
+      <collectionMethodCode>AUTOMATISCHE-INCASSO</collectionMethodCode>
+    </premium>
+    <acceptance>
+      <entityType>acceptance</entityType>
+      <decisionCode>GEACCEPTEERD</decisionCode>
+      <decisionReason>Geaccepteerd op basis van de korte gezondheidsverklaring.</decisionReason>
+      <medicalEvidenceCode>KORTE-VERKLARING</medicalEvidenceCode>
+      <healthDeclarationDate>2026-08-18</healthDeclarationDate>
+      <assessedOn>2026-08-21</assessedOn>
+      <clauses>
+        <pledge>
+          <clauseCode>VERPANDING-01</clauseCode>
+          <clauseText>De rechten uit deze polis zijn verpand aan de hypothecair financier. Wijziging, afkoop of begunstiging uitsluitend met schriftelijke toestemming van de pandhouder.</clauseText>
+          <pledgeeName>Rabobank Hypotheken</pledgeeName>
+        </pledge>
+        <endAge>
+          <clauseCode>EINDLEEFTIJD-01</clauseCode>
+          <clauseText>De verzekering loopt door tot na het 65e levensjaar; de premie is vastgesteld op basis van de eindleeftijd en wordt gedurende de looptijd niet herzien.</clauseText>
+          <endAge>68</endAge>
+        </endAge>
+      </clauses>
+    </acceptance>
+  </policy>
+</afdMessage>

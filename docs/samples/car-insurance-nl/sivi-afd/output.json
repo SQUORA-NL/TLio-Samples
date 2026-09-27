@@ -1,0 +1,187 @@
+{
+  "afdMessage": {
+    "messageHeader": {
+      "messageId": "MSG-8f2c1d90",
+      "messageTypeCode": "POLISAANMAAK",
+      "afdVersion": "2.0",
+      "messageDate": "2026-08-21",
+      "sender": {
+        "entityType": "party",
+        "partyRoleCode": "INTERMEDIARY",
+        "agentNumber": "AG-4471",
+        "name": "Van Dijk Assurantiën"
+      },
+      "receiver": {
+        "entityType": "party",
+        "partyRoleCode": "INSURER",
+        "insurerCode": "SQ",
+        "name": "Squora Schadeverzekeringen N.V."
+      }
+    },
+    "policy": {
+      "entityType": "policy",
+      "quotationNumber": "OFF-2026-005177",
+      "policyNumber": "POL-2026-005177",
+      "productCode": "MOTOR-PERSONENAUTO",
+      "commencementDate": "2026-10-01",
+      "expiryDate": "2027-10-01",
+      "premiumFrequencyCode": "K",
+      "requestedCoverageCode": "ALLRISK",
+      "voluntaryExcessAmount": 500,
+      "claimFreeYears": 2,
+      "collectionMethodCode": "AUTOMATISCHE-INCASSO",
+      "parties": [
+        {
+          "entityType": "party",
+          "partyRoleCode": "VERZEKERINGNEMER",
+          "partyTypeCode": "NP",
+          "initials": "J.",
+          "surnamePrefix": "van der",
+          "surname": "Berg",
+          "dateOfBirth": "2003-02-17",
+          "genderCode": "M",
+          "street": "Deurningerstraat",
+          "houseNumber": "48",
+          "postalCode": "7511JM",
+          "city": "Enschede",
+          "countryCode": "NL",
+          "emailAddress": "j.vanderberg@example.nl",
+          "ibanAccountNumber": "NL02RABO0123456789"
+        },
+        {
+          "entityType": "party",
+          "partyRoleCode": "REGELMATIGE-BESTUURDER",
+          "partyTypeCode": "NP",
+          "initials": "J.",
+          "surnamePrefix": "van der",
+          "surname": "Berg",
+          "dateOfBirth": "2003-02-17",
+          "drivingLicenceIssueDate": "2022-05-09",
+          "drivingLicenceCategoryCode": "B"
+        }
+      ],
+      "objects": [
+        {
+          "entityType": "object",
+          "objectTypeCode": "MOTORRIJTUIG",
+          "licensePlate": "H-472-BZ",
+          "vehicleModelCode": "OPL-CORSA-12T",
+          "dateOfFirstAdmission": "2013-06-28",
+          "catalogueValueAmount": 19750,
+          "currentValueAmount": 4650,
+          "annualMileage": 9000,
+          "usageCode": "PARTICULIER",
+          "parkingCode": "OPENBARE-WEG",
+          "antiTheftClassCode": "SCM-1"
+        }
+      ],
+      "coverages": [
+        {
+          "entityType": "coverage",
+          "coverageCode": "WA",
+          "statusCode": "GEACCEPTEERD",
+          "description": "Wettelijke aansprakelijkheid motorrijtuigen",
+          "coverageTypeCode": "VERPLICHT",
+          "insuredAmount": 6900000,
+          "excessAmount": 0,
+          "premiumAmount": 18.42
+        },
+        {
+          "entityType": "coverage",
+          "coverageCode": "BEPERKTCASCO",
+          "statusCode": "GEACCEPTEERD",
+          "description": "Beperkt casco over dagwaarde",
+          "coverageTypeCode": "OPTIONEEL",
+          "insuredAmount": 4650,
+          "excessAmount": 500,
+          "premiumAmount": 6.84
+        },
+        {
+          "entityType": "coverage",
+          "coverageCode": "RB",
+          "statusCode": "GEACCEPTEERD",
+          "description": "Rechtsbijstand motorrijtuigen",
+          "coverageTypeCode": "AANVULLEND",
+          "premiumAmount": 3.25
+        },
+        {
+          "entityType": "coverage",
+          "coverageCode": "OI",
+          "statusCode": "GEACCEPTEERD",
+          "description": "Ongevallen inzittenden",
+          "coverageTypeCode": "AANVULLEND",
+          "premiumAmount": 1.85
+        }
+      ],
+      "policyStatusCode": "GEACCEPTEERD",
+      "insurerCode": "SQ",
+      "productName": "Squora Autoverzekering",
+      "grantedCoverageCode": "BEPERKTCASCO",
+      "contractDurationYears": 1,
+      "riskProfile": {
+        "entityType": "riskProfile",
+        "regionDescription": "Enschede Centrum",
+        "regionZone": 3,
+        "regionFactor": 0.98,
+        "driverAge": 23,
+        "driverAgeBand": "18 t/m 23",
+        "driverAgeFactor": 1.45,
+        "licenceYears": 4,
+        "vehicleAge": 13,
+        "vehicleMake": "Opel",
+        "vehicleModel": "Corsa 1.2 Turbo",
+        "fuelCode": "BENZINE",
+        "weightClass": "0951-1050",
+        "mileageBand": "7.501 - 15.000 km",
+        "mileageFactor": 1.0,
+        "usageDescription": "Particulier gebruik",
+        "usageFactor": 1.0,
+        "parkingDescription": "Openbare weg",
+        "parkingFactor": 1.0,
+        "securityDescription": "SCM klasse 1 - startonderbreker",
+        "securityFactor": 1.0,
+        "bonusMalusStep": 4,
+        "bonusMalusLabel": "WA 20% / casco 15%",
+        "bonusMalusWaFactor": 0.8,
+        "bonusMalusCascoFactor": 0.85,
+        "excessFactor": 0.85
+      },
+      "premium": {
+        "entityType": "premium",
+        "currencyCode": "EUR",
+        "premiumFrequencyCode": "K",
+        "premiumFrequencyDescription": "Per kwartaal",
+        "termsPerYear": 4,
+        "liabilityPremiumPerMonth": 18.42,
+        "cascoPremiumPerMonth": 6.84,
+        "additionalCoveragePremiumPerMonth": 5.1,
+        "netPremiumPerMonth": 30.36,
+        "netPremiumAmount": 90.17,
+        "policyCostsAmount": 2.5,
+        "insuranceTaxRate": 0.21,
+        "insuranceTaxAmount": 19.46,
+        "grossPremiumAmount": 112.13,
+        "annualGrossPremiumAmount": 448.52
+      },
+      "acceptance": {
+        "entityType": "acceptance",
+        "statusCode": "GEACCEPTEERD",
+        "reason": "Voldoet aan de standaard acceptatierichtlijnen.",
+        "totalExcessAmount": 800,
+        "clauses": {
+          "youngDriver": {
+            "clauseCode": "JONGE-BESTUURDER",
+            "clauseText": "Regelmatige bestuurder is jonger dan 24 jaar: extra eigen risico van toepassing op cascoschade.",
+            "extraExcessAmount": 300
+          },
+          "coverDowngrade": {
+            "clauseCode": "DEKKING-AANGEPAST",
+            "clauseText": "Aangevraagde dekking ALLRISK is niet mogelijk voor een voertuig van 13 jaar; toegekend is Beperkt casco over dagwaarde.",
+            "requestedCoverageCode": "ALLRISK",
+            "grantedCoverageCode": "BEPERKTCASCO"
+          }
+        }
+      }
+    }
+  }
+}

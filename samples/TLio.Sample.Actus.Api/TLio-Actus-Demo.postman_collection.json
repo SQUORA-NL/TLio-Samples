@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "TLio Actus Demo",
+    "description": "ACTUS PAM (Principal at Maturity) contract calculator, built entirely on TLio.Extensions.Looping (forEach/while) — see samples/TLio.Sample.Actus.Api/README.md.\n\nRun the sample first:\n  cd samples/TLio.Sample.Actus.Api\n  dotnet run\n\nThen run this collection against baseUrl (default http://localhost:5299).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5299", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Discovery",
+      "item": [
+        {
+          "name": "List endpoints and bundled samples",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/", "host": [ "{{baseUrl}}" ], "path": [ "" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('lists both endpoints', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.endpoints.map(e => e.path)).to.include.members(['/actus/pam', '/actus/pam/envelope']);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get a bundled sample input",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/samples/pam-bullet-loan.json",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "samples", "pam-bullet-loan.json" ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": [
+                "pm.test('200 OK', () => pm.response.to.have.status(200));"
+              ] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Simple PAM",
+      "item": [
+        {
+          "name": "Bullet loan (POST /actus/pam)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractId\": \"PAM001\",\n  \"contractRole\": \"RPA\",\n  \"currency\": \"EUR\",\n  \"notionalPrincipal\": 100000,\n  \"nominalInterestRate\": 0.03,\n  \"dayCountConvention\": \"A360\",\n  \"initialExchangeDate\": \"2025-01-01\",\n  \"maturityDate\": \"2030-01-01\",\n  \"interestPaymentCycle\": { \"count\": 1, \"unit\": \"years\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/actus/pam", "host": [ "{{baseUrl}}" ], "path": [ "actus", "pam" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('IED + 5 IP/MD events, totalPayoff matches the hand-verified figure', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.events).to.have.lengthOf(6);",
+                  "  pm.expect(body.events[0].type).to.eql('IED');",
+                  "  pm.expect(body.events[body.events.length - 1].type).to.eql('MD');",
+                  "  pm.expect(body.summary.totalPayoff).to.be.closeTo(15216.6667, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Envelope PAM",
+      "item": [
+        {
+          "name": "No overrides (matches Simple PAM exactly)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contract\": {\n    \"contractId\": \"PAM001\",\n    \"contractRole\": \"RPA\",\n    \"currency\": \"EUR\",\n    \"notionalPrincipal\": 100000,\n    \"nominalInterestRate\": 0.03,\n    \"dayCountConvention\": \"A360\",\n    \"initialExchangeDate\": \"2025-01-01\",\n    \"maturityDate\": \"2030-01-01\",\n    \"interestPaymentCycle\": { \"count\": 1, \"unit\": \"years\" }\n  },\n  \"scenario\": {}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/actus/pam/envelope", "host": [ "{{baseUrl}}" ], "path": [ "actus", "pam", "envelope" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('totalPayoff matches the plain endpoint on the same contract', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.summary.totalPayoff).to.be.closeTo(15216.6667, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Early termination (mid-schedule TD, stub interest included)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contract\": {\n    \"contractId\": \"PAM001\",\n    \"contractRole\": \"RPA\",\n    \"currency\": \"EUR\",\n    \"notionalPrincipal\": 100000,\n    \"nominalInterestRate\": 0.03,\n    \"dayCountConvention\": \"A360\",\n    \"initialExchangeDate\": \"2025-01-01\",\n    \"maturityDate\": \"2030-01-01\",\n    \"interestPaymentCycle\": { \"count\": 1, \"unit\": \"years\" }\n  },\n  \"scenario\": {\n    \"earlyTermination\": { \"date\": \"2027-06-01\", \"settlementAmount\": 100500 }\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/actus/pam/envelope", "host": [ "{{baseUrl}}" ], "path": [ "actus", "pam", "envelope" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('schedule truncates to a TD settlement on the termination date', () => {",
+                  "  const body = pm.response.json();",
+                  "  const last = body.events[body.events.length - 1];",
+                  "  pm.expect(last.type).to.eql('TD');",
+                  "  pm.expect(last.date).to.eql('2027-06-01');",
+                  "  pm.expect(body.summary.totalPayoff).to.be.closeTo(7841.6667, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rate change (higher coupon from the reset date)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contract\": {\n    \"contractId\": \"PAM001\",\n    \"contractRole\": \"RPA\",\n    \"currency\": \"EUR\",\n    \"notionalPrincipal\": 100000,\n    \"nominalInterestRate\": 0.03,\n    \"dayCountConvention\": \"A360\",\n    \"initialExchangeDate\": \"2025-01-01\",\n    \"maturityDate\": \"2030-01-01\",\n    \"interestPaymentCycle\": { \"count\": 1, \"unit\": \"years\" }\n  },\n  \"scenario\": {\n    \"rateChange\": { \"date\": \"2027-01-01\", \"newRate\": 0.045 }\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/actus/pam/envelope", "host": [ "{{baseUrl}}" ], "path": [ "actus", "pam", "envelope" ] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('interest steps up from the reset date onward', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.events.find(e => e.date === '2026-01-01').payoff).to.be.closeTo(3041.6667, 0.001);",
+                  "  pm.expect(body.events.find(e => e.date === '2027-01-01').payoff).to.be.closeTo(4562.5, 0.001);",
+                  "  pm.expect(body.summary.totalPayoff).to.be.closeTo(21304.1667, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

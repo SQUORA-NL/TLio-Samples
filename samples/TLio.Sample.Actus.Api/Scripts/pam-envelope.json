@@ -1,0 +1,86 @@
+[
+  { "command": "add", "path": "$.scheduleEndDate",
+    "value": "=if(=exists($.scenario.earlyTermination), =fetch($.scenario.earlyTermination.date), =fetch($.contract.maturityDate))" },
+
+  { "command": "add", "path": "$.datesCsv", "value": "" },
+  { "command": "add", "path": "$.cursor", "value": "$.contract.initialExchangeDate" },
+  { "command": "while",
+    "condition": "=lessOrEqual($.cursor, $.scheduleEndDate)",
+    "maxIterations": 1000,
+    "commands": [
+      { "command": "set", "path": "$.datesCsv",
+        "value": "=concat($.datesCsv, =if(=equals($.datesCsv,''),'',','), $.cursor)" },
+      { "command": "set", "path": "$.cursor",
+        "value": "=dateAdd($.cursor, $.contract.interestPaymentCycle.count, $.contract.interestPaymentCycle.unit)" }
+    ] },
+  { "command": "ifElse",
+    "condition": "=not(=endsWith($.datesCsv, $.scheduleEndDate))",
+    "ifScript": [
+      { "command": "set", "path": "$.datesCsv",
+        "value": "=concat($.datesCsv, ',', $.scheduleEndDate)" }
+    ] },
+  { "command": "add", "path": "$.schedule", "value": "=split($.datesCsv, ',')" },
+
+  { "command": "add", "path": "$.roleSign", "value": "=if(=equals($.contract.contractRole,'RPA'),1,-1)" },
+  { "command": "add", "path": "$.state", "value": {} },
+  { "command": "add", "path": "$.state.notionalPrincipal", "value": "=multiply($.roleSign, $.contract.notionalPrincipal)" },
+  { "command": "add", "path": "$.state.nominalInterestRate", "value": "$.contract.nominalInterestRate" },
+  { "command": "add", "path": "$.state.accruedInterest", "value": 0 },
+  { "command": "add", "path": "$.state.statusDate", "value": "$.contract.initialExchangeDate" },
+  { "command": "add", "path": "$.dcf", "value": 0 },
+  { "command": "add", "path": "$.currentDate", "value": "" },
+
+  { "command": "forEach", "path": "$.schedule", "commands": [
+      { "command": "set", "path": "$.currentDate", "value": "=fetch(=scriptpath())" },
+      { "command": "ifElse",
+        "condition": "=equals($.currentDate, $.contract.initialExchangeDate)",
+        "ifScript": [
+          { "command": "set", "path": "@",
+            "value": { "date": "=fetch($.currentDate)", "type": "IED",
+                       "payoff": "=multiply($.state.notionalPrincipal, -1)" } }
+        ],
+        "elseScript": [
+          { "command": "ifElse",
+            "condition": "=equals($.currentDate, $.scheduleEndDate)",
+            "ifScript": [
+              { "command": "set", "path": "$.dcf",
+                "value": "=dayCountFraction($.state.statusDate, $.currentDate, $.contract.dayCountConvention)" },
+              { "command": "set", "path": "@",
+                "value": {
+                  "date": "=fetch($.currentDate)",
+                  "type": "=if(=exists($.scenario.earlyTermination),'TD','MD')",
+                  "payoff": "=sum(=if(=exists($.scenario.earlyTermination), =fetch($.scenario.earlyTermination.settlementAmount), =fetch($.state.notionalPrincipal)), $.state.accruedInterest, =multiply($.dcf, $.state.nominalInterestRate, $.state.notionalPrincipal))" } }
+            ],
+            "elseScript": [
+              { "command": "ifElse",
+                "condition": "=and(=exists($.scenario.rateChange), =greaterOrEqual($.currentDate, $.scenario.rateChange.date))",
+                "ifScript": [
+                  { "command": "set", "path": "$.state.nominalInterestRate", "value": "$.scenario.rateChange.newRate" }
+                ]
+              },
+              { "command": "set", "path": "$.dcf",
+                "value": "=dayCountFraction($.state.statusDate, $.currentDate, $.contract.dayCountConvention)" },
+              { "command": "set", "path": "@",
+                "value": { "date": "=fetch($.currentDate)", "type": "IP",
+                           "payoff": "=sum($.state.accruedInterest, =multiply($.dcf, $.state.nominalInterestRate, $.state.notionalPrincipal))" } },
+              { "command": "set", "path": "$.state.accruedInterest", "value": 0 },
+              { "command": "set", "path": "$.state.statusDate", "value": "$.currentDate" }
+            ]
+          }
+        ]
+      }
+  ] },
+
+  { "command": "add", "path": "$.summary", "value": {} },
+  { "command": "add", "path": "$.summary.totalPayoff", "value": "=sum($.schedule[*].payoff)" },
+  { "command": "add", "path": "$.summary.eventCount", "value": "=count($.schedule)" },
+  { "command": "put", "path": "$.events", "value": "$.schedule" },
+  { "command": "remove", "path": "$.schedule" },
+  { "command": "remove", "path": "$.datesCsv" },
+  { "command": "remove", "path": "$.cursor" },
+  { "command": "remove", "path": "$.roleSign" },
+  { "command": "remove", "path": "$.state" },
+  { "command": "remove", "path": "$.dcf" },
+  { "command": "remove", "path": "$.currentDate" },
+  { "command": "remove", "path": "$.scheduleEndDate" }
+]

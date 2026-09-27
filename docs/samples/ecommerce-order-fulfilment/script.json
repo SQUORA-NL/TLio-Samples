@@ -1,0 +1,158 @@
+[
+  {
+    "command": "add",
+    "path": "$.ref",
+    "title": "Warehouse and rate reference data",
+    "description": "Pick locations, VAT rates and carrier bands. In a real service this is added from your own store; nothing below this command changes when it is.",
+    "value": {
+      "pickLocations": [
+        { "sku": "FL-T55-25", "aisle": "A", "location": "A-01-14", "pickZone": "BULK",   "handlingUnit": "PALLET" },
+        { "sku": "GI-DRY-05", "aisle": "C", "location": "C-07-02", "pickZone": "KOEL",   "handlingUnit": "DOOS"   },
+        { "sku": "VP-BOX-32", "aisle": "B", "location": "B-03-11", "pickZone": "BULK",   "handlingUnit": "PALLET" },
+        { "sku": "SC-CLN-10", "aisle": "D", "location": "D-02-05", "pickZone": "GEVAAR", "handlingUnit": "DOOS"   }
+      ],
+      "vatRates": [
+        { "category": "LAAG",       "ratePercent": 9,  "description": "Verlaagd tarief" },
+        { "category": "HOOG",       "ratePercent": 21, "description": "Algemeen tarief" },
+        { "category": "VRIJGESTELD", "ratePercent": 0, "description": "Vrijgesteld" }
+      ],
+      "carrierBands": [
+        { "band": "PAKKET",  "carrier": "PostNL",    "serviceCode": "NL-PARCEL",  "shippingCostExclVat": 7.95  },
+        { "band": "COLLI",   "carrier": "DHL",       "serviceCode": "NL-PIECE",   "shippingCostExclVat": 18.50 },
+        { "band": "PALLET",  "carrier": "Nedcargo",  "serviceCode": "NL-PALLET",  "shippingCostExclVat": 62.00 }
+      ]
+    }
+  },
+
+  {
+    "command": "resolve",
+    "path": "$.order.lines[*]",
+    "title": "Give every line its pick location and VAT rate",
+    "description": "The per-element form of resolve: one command, every line, each matched on its own sku and VAT category. Two settings, so two tables are joined in the same pass.",
+    "resolveSettings": [
+      { "referencesCollectionPath": "$.ref.pickLocations[*]",
+        "resolveKeys": [ { "keyPath": "@.sku", "referenceKeyPath": "@.sku" } ],
+        "values": [
+          { "targetPath": "@.pickLocation", "value": "@.location" },
+          { "targetPath": "@.pickZone",     "value": "@.pickZone" },
+          { "targetPath": "@.handlingUnit", "value": "@.handlingUnit" }
+        ] },
+      { "referencesCollectionPath": "$.ref.vatRates[*]",
+        "resolveKeys": [ { "keyPath": "@.vatCategory", "referenceKeyPath": "@.category" } ],
+        "values": [ { "targetPath": "@.vatRatePercent", "value": "@.ratePercent" } ] }
+    ]
+  },
+
+  {
+    "command": "put",
+    "path": "$.calc.goodsExclVat",
+    "title": "Goods total",
+    "description": "Line amounts come in already calculated, and that is deliberate: a function argument resolves against the document root, so @.quantity inside a function does not mean this line. Per-line arithmetic is not available, so the line totals are the webshop's, not the script's.",
+    "value": "=round(=sum($.order.lines[*].lineAmountExclVat),2)"
+  },
+  { "command": "put", "path": "$.calc.totalWeightGrams", "title": "Total weight",
+    "value": "=sum($.order.lines[*].weightGrams)" },
+  { "command": "put", "path": "$.calc.totalWeightKg", "title": "Total weight in kilos",
+    "value": "=round(=divide($.calc.totalWeightGrams,1000),1)" },
+  { "command": "put", "path": "$.calc.lineCount", "title": "Number of order lines",
+    "value": "=count($.order.lines[*])" },
+
+  {
+    "command": "decisionTable",
+    "path": "$",
+    "title": "Carrier band",
+    "description": "Weight decides the carrier. A band is a range, and a range is rule text — which is what keeps this a table instead of arithmetic.",
+    "decisionTable": {
+      "inputs":  [ { "name": "kg", "path": "$.calc.totalWeightKg" } ],
+      "outputs": [ { "name": "band", "path": "$.calc.carrierBand" } ],
+      "rules": [
+        { "priority": 1, "conditions": { "kg": "<=23" },           "results": { "band": "PAKKET" } },
+        { "priority": 2, "conditions": { "kg": ">23 && <=100" },   "results": { "band": "COLLI"  } },
+        { "priority": 3, "conditions": { "kg": ">100" },           "results": { "band": "PALLET" } }
+      ]
+    }
+  },
+
+  {
+    "command": "resolve",
+    "path": "$.calc",
+    "title": "Price the carrier band",
+    "description": "The band was decided by a rule; what it costs is a table row. Keeping those two apart is the point of the split.",
+    "resolveSettings": [
+      { "referencesCollectionPath": "$.ref.carrierBands[*]",
+        "resolveKeys": [ { "keyPath": "@.carrierBand", "referenceKeyPath": "@.band" } ],
+        "values": [
+          { "targetPath": "@.carrier",     "value": "@.carrier" },
+          { "targetPath": "@.serviceCode", "value": "@.serviceCode" },
+          { "targetPath": "@.shipping",    "value": "@.shippingCostExclVat" }
+        ] }
+    ]
+  },
+
+  { "command": "put", "path": "$.calc.netExclVat", "title": "Net excluding VAT",
+    "value": "=round(=sum($.calc.goodsExclVat,$.calc.shipping),2)" },
+  { "command": "put", "path": "$.calc.vatAmount", "title": "VAT",
+    "description": "Shipping follows the general rate; the goods lines carry their own. This sample charges one blended rate on the whole order for brevity — a real invoice splits VAT per rate group.",
+    "value": "=round(=divide(=multiply($.calc.netExclVat,21),100),2)" },
+  { "command": "put", "path": "$.calc.grandTotal", "title": "Order total including VAT",
+    "value": "=round(=sum($.calc.netExclVat,$.calc.vatAmount),2)" },
+
+  {
+    "command": "put",
+    "path": "$.fulfilment",
+    "title": "The pick list",
+    "description": "One object-valued put builds the whole warehouse document. sortby reorders the lines by pick location, so the picker walks the aisles in order instead of in the order the customer happened to click.",
+    "value": {
+      "documentType": "PICKLIST",
+      "pickListNumber": "=concat('PL-',$.order.orderNumber)",
+      "orderNumber": "=fetch($.order.orderNumber)",
+      "createdOn": "=fetch($.order.placedOn)",
+      "requestedDeliveryDate": "=fetch($.order.requestedDeliveryDate)",
+      "shipTo": {
+        "name": "=fetch($.order.customer.name)",
+        "attention": "=fetch($.order.shipTo.attention)",
+        "addressLine": "=concat($.order.shipTo.street,' ',$.order.shipTo.houseNumber)",
+        "postalCode": "=fetch($.order.shipTo.postalCode)",
+        "city": "=fetch($.order.shipTo.city)",
+        "countryCode": "=fetch($.order.shipTo.countryCode)"
+      },
+      "carriage": {
+        "carrier": "=fetch($.calc.carrier)",
+        "serviceCode": "=fetch($.calc.serviceCode)",
+        "band": "=fetch($.calc.carrierBand)",
+        "totalWeightKg": "=fetch($.calc.totalWeightKg)",
+        "shippingCostExclVat": "=fetch($.calc.shipping)"
+      },
+      "zones": "=distinct($.order.lines[*].pickZone)",
+      "lineCount": "=fetch($.calc.lineCount)",
+      "lines": "=sortby($.order.lines,'pickLocation')",
+      "totals": {
+        "goodsExclVat": "=fetch($.calc.goodsExclVat)",
+        "shippingExclVat": "=fetch($.calc.shipping)",
+        "netExclVat": "=fetch($.calc.netExclVat)",
+        "vatAmount": "=fetch($.calc.vatAmount)",
+        "grandTotalInclVat": "=fetch($.calc.grandTotal)",
+        "currency": "=fetch($.order.currency)"
+      }
+    }
+  },
+
+  {
+    "command": "ifElse",
+    "title": "Hazardous-goods handling note",
+    "description": "A line in the GEVAAR zone changes how the shipment is handed over, so it has to appear on the pick list. What is conditional is a whole node, so this is an ifElse rather than an =if.",
+    "condition": "=greaterThan(=count($.order.lines[?(@.pickZone=='GEVAAR')]),0)",
+    "ifScript": [
+      { "command": "put", "path": "$.fulfilment.handlingNotes.hazardous",
+        "title": "ADR note",
+        "value": {
+          "noteCode": "ADR-BEPERKT",
+          "noteText": "Bevat reinigingsmiddel in beperkte hoeveelheid (ADR LQ). Apart aanleveren en niet stapelen met levensmiddelen.",
+          "separatePallet": true
+        } }
+    ]
+  },
+
+  { "command": "remove", "path": "$.calc", "title": "Drop the working area" },
+  { "command": "remove", "path": "$.ref",  "title": "Drop the reference data" }
+]

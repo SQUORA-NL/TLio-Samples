@@ -1,0 +1,14 @@
+{
+  "contract": {
+    "contractId": "PAM001",
+    "contractRole": "RPA",
+    "currency": "EUR",
+    "notionalPrincipal": 100000,
+    "nominalInterestRate": 0.03,
+    "dayCountConvention": "A360",
+    "initialExchangeDate": "2025-01-01",
+    "maturityDate": "2030-01-01",
+    "interestPaymentCycle": { "count": 1, "unit": "years" }
+  },
+  "scenario": {}
+}

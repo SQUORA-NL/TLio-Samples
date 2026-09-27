@@ -1,0 +1,531 @@
+[
+  {
+    "command": "convert",
+    "to": "json",
+    "title": "AFD 1.0 XML becomes JSON",
+    "description": "The boundary comes first, because everything this script does is easier on the other side of it. AFD 1.0 is a flat file: every field is text, so inferTypes stays off and the script decides itself which fields are numbers. Paths above this line are XPath; below it they are JSONPath.",
+    "settings": {
+      "inferTypes": false
+    }
+  },
+  {
+    "command": "add",
+    "path": "$.map",
+    "title": "The AFD 1.0 to AFD 2.0 code lists",
+    "description": "AFD 1.0 codes are numeric and positional; AFD 2.0 codes are mnemonic. This is the whole difference between the two standards in one node, and adding a code is a data edit here rather than a script change.",
+    "value": {
+      "messageTypes": [
+        {
+          "afd1": "OFFAAN",
+          "afd2": "OFFERTEAANVRAAG"
+        },
+        {
+          "afd1": "POLAAN",
+          "afd2": "POLISAANMAAK"
+        },
+        {
+          "afd1": "MUTAAN",
+          "afd2": "MUTATIEAANVRAAG"
+        },
+        {
+          "afd1": "SCHMLD",
+          "afd2": "SCHADEMELDING"
+        }
+      ],
+      "partyRoles": [
+        {
+          "afd1": "01",
+          "afd2": "VERZEKERINGNEMER"
+        },
+        {
+          "afd1": "02",
+          "afd2": "REGELMATIGE-BESTUURDER"
+        },
+        {
+          "afd1": "03",
+          "afd2": "MEDEVERZEKERDE"
+        },
+        {
+          "afd1": "04",
+          "afd2": "BEGUNSTIGDE"
+        }
+      ],
+      "partyTypes": [
+        {
+          "afd1": "N",
+          "afd2": "NP"
+        },
+        {
+          "afd1": "R",
+          "afd2": "RP"
+        }
+      ],
+      "coverageCodes": [
+        {
+          "afd1": "01",
+          "afd2": "WA"
+        },
+        {
+          "afd1": "02",
+          "afd2": "ALLRISK"
+        },
+        {
+          "afd1": "03",
+          "afd2": "CASCO"
+        },
+        {
+          "afd1": "04",
+          "afd2": "RB"
+        },
+        {
+          "afd1": "05",
+          "afd2": "OI"
+        }
+      ],
+      "coverageStatus": [
+        {
+          "afd1": "01",
+          "afd2": "AANGEVRAAGD"
+        },
+        {
+          "afd1": "02",
+          "afd2": "GEACCEPTEERD"
+        },
+        {
+          "afd1": "03",
+          "afd2": "AFGEWEZEN"
+        }
+      ],
+      "collectionMethods": [
+        {
+          "afd1": "01",
+          "afd2": "AUTOMATISCHE-INCASSO"
+        },
+        {
+          "afd1": "02",
+          "afd2": "ACCEPTGIRO"
+        }
+      ],
+      "objectTypes": [
+        {
+          "afd1": "01",
+          "afd2": "MOTORRIJTUIG"
+        },
+        {
+          "afd1": "02",
+          "afd2": "WOONHUIS"
+        },
+        {
+          "afd1": "03",
+          "afd2": "INBOEDEL"
+        }
+      ],
+      "usageCodes": [
+        {
+          "afd1": "01",
+          "afd2": "PARTICULIER"
+        },
+        {
+          "afd1": "02",
+          "afd2": "ZAKELIJK"
+        },
+        {
+          "afd1": "03",
+          "afd2": "BESTELAUTO"
+        }
+      ],
+      "parkingCodes": [
+        {
+          "afd1": "01",
+          "afd2": "GARAGE"
+        },
+        {
+          "afd1": "02",
+          "afd2": "OPRIT"
+        },
+        {
+          "afd1": "03",
+          "afd2": "OPENBARE-WEG"
+        }
+      ],
+      "securityClasses": [
+        {
+          "afd1": "01",
+          "afd2": "SCM-1"
+        },
+        {
+          "afd1": "02",
+          "afd2": "SCM-2"
+        },
+        {
+          "afd1": "03",
+          "afd2": "SCM-3"
+        }
+      ]
+    }
+  },
+  {
+    "command": "put",
+    "path": "$.calc.codes",
+    "title": "Every coded field, still in AFD 1.0",
+    "description": "Collected into one node so that one resolve can translate all of them. A JSONPath filter can test a record against a literal, but it cannot compare it to another part of the document the way an XPath predicate can — which is exactly why the JSON side needs a lookup command where the XML samples need none.",
+    "value": {
+      "messageType": "=fetch($.AFDBERICHT.BERICHTSOORT)",
+      "collectionMethod": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL008)",
+      "requestedCoverage": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL005)",
+      "partyRole1": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL101)",
+      "partyType1": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL102)",
+      "partyRole2": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL101)",
+      "partyType2": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL102)",
+      "objectType": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL201)",
+      "usage": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL208)",
+      "parking": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL209)",
+      "security": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL210)"
+    }
+  },
+  {
+    "command": "resolve",
+    "path": "$.calc.codes",
+    "title": "Eleven code lists, one command",
+    "description": "Each setting joins one AFD 1.0 value to its AFD 2.0 spelling and writes the result alongside it. resolve is the JSON answer to the XPath predicate the two XML samples use.",
+    "resolveSettings": [
+      {
+        "referencesCollectionPath": "$.map.messageTypes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.messageType",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.messageTypeOut",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.collectionMethods[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.collectionMethod",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.collectionMethodOut",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.coverageCodes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.requestedCoverage",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.requestedCoverageOut",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.partyRoles[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.partyRole1",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.partyRole1Out",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.partyTypes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.partyType1",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.partyType1Out",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.partyRoles[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.partyRole2",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.partyRole2Out",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.partyTypes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.partyType2",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.partyType2Out",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.objectTypes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.objectType",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.objectTypeOut",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.usageCodes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.usage",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.usageOut",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.parkingCodes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.parking",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.parkingOut",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.securityClasses[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.security",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.securityOut",
+            "value": "@.afd2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "command": "put",
+    "path": "$.afdMessage",
+    "title": "The whole AFD 2.0 message, in one command",
+    "description": "An object-valued put evaluates every =fetch inside it as the object is written, at any depth — so the entire 1.0-to-2.0 mapping is a single command that reads like a mapping table. Dates go from CCYYMMDD to ISO with substring and concat; amounts go from cents to euros with divide, which is also what turns the AFD 1.0 text into a JSON number.",
+    "value": {
+      "messageHeader": {
+        "messageId": "=fetch($.AFDBERICHT.BERICHTNR)",
+        "messageTypeCode": "=fetch($.calc.codes.messageTypeOut)",
+        "afdVersion": "2.0",
+        "messageDate": "=concat(=substring($.AFDBERICHT.BERICHTDATUM,0,4),'-',=substring($.AFDBERICHT.BERICHTDATUM,4,2),'-',=substring($.AFDBERICHT.BERICHTDATUM,6,2))",
+        "sender": {
+          "entityType": "party",
+          "partyRoleCode": "INTERMEDIARY",
+          "agentNumber": "=fetch($.AFDBERICHT.TP_NUMMER)",
+          "name": "=fetch($.AFDBERICHT.TP_NAAM)"
+        },
+        "receiver": {
+          "entityType": "party",
+          "partyRoleCode": "INSURER",
+          "insurerCode": "=fetch($.AFDBERICHT.MIJ_CODE)",
+          "name": "=fetch($.AFDBERICHT.MIJ_NAAM)"
+        }
+      },
+      "policy": {
+        "entityType": "policy",
+        "quotationNumber": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL001)",
+        "policyNumber": null,
+        "productCode": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL002)",
+        "commencementDate": "=concat(=substring($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL003,0,4),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL003,4,2),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL003,6,2))",
+        "expiryDate": null,
+        "premiumFrequencyCode": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL004)",
+        "requestedCoverageCode": "=fetch($.calc.codes.requestedCoverageOut)",
+        "voluntaryExcessAmount": "=divide($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL006,100)",
+        "claimFreeYears": "=divide($.AFDBERICHT.RECORDS[?(@.SRT=='01')].AL007,1)",
+        "collectionMethodCode": "=fetch($.calc.codes.collectionMethodOut)",
+        "parties": [
+          {
+            "entityType": "party",
+            "partyRoleCode": "=fetch($.calc.codes.partyRole1Out)",
+            "partyTypeCode": "=fetch($.calc.codes.partyType1Out)",
+            "initials": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL103)",
+            "surnamePrefix": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL104)",
+            "surname": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL105)",
+            "dateOfBirth": "=concat(=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL106,0,4),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL106,4,2),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL106,6,2))",
+            "genderCode": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL107)",
+            "street": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL108)",
+            "houseNumber": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL109)",
+            "postalCode": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL110)",
+            "city": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL111)",
+            "countryCode": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL112)",
+            "emailAddress": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL113)",
+            "ibanAccountNumber": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='01')].AL114)"
+          },
+          {
+            "entityType": "party",
+            "partyRoleCode": "=fetch($.calc.codes.partyRole2Out)",
+            "partyTypeCode": "=fetch($.calc.codes.partyType2Out)",
+            "initials": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL103)",
+            "surnamePrefix": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL104)",
+            "surname": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL105)",
+            "dateOfBirth": "=concat(=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL106,0,4),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL106,4,2),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL106,6,2))",
+            "drivingLicenceIssueDate": "=concat(=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL115,0,4),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL115,4,2),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL115,6,2))",
+            "drivingLicenceCategoryCode": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='02' && @.AL101=='02')].AL116)"
+          }
+        ],
+        "objects": [
+          {
+            "entityType": "object",
+            "objectTypeCode": "=fetch($.calc.codes.objectTypeOut)",
+            "licensePlate": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL202)",
+            "vehicleModelCode": "=fetch($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL203)",
+            "dateOfFirstAdmission": "=concat(=substring($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL204,0,4),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL204,4,2),'-',=substring($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL204,6,2))",
+            "catalogueValueAmount": "=divide($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL205,100)",
+            "currentValueAmount": "=divide($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL206,100)",
+            "annualMileage": "=divide($.AFDBERICHT.RECORDS[?(@.SRT=='03')].AL207,1)",
+            "usageCode": "=fetch($.calc.codes.usageOut)",
+            "parkingCode": "=fetch($.calc.codes.parkingOut)",
+            "antiTheftClassCode": "=fetch($.calc.codes.securityOut)"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "command": "copy",
+    "fromPath": "$.AFDBERICHT.RECORDS",
+    "toPath": "$.afdMessage.policy.coverages",
+    "title": "Every record, then only the coverage records",
+    "description": "There is one coverage record per requested cover, so the array cannot be written out by hand. A filter cannot be followed by an index here, and copy will not take a filtered fromPath — so the whole record array is copied and the rest is filtered away in the next command."
+  },
+  {
+    "command": "remove",
+    "path": "$.afdMessage.policy.coverages[?(@.SRT!='04')]",
+    "title": "Drop the non-coverage records",
+    "description": "remove does take a filter, and it is applied to the copy, so the AFD 1.0 message is left untouched."
+  },
+  {
+    "command": "put",
+    "path": "$.afdMessage.policy.coverages[*].entityType",
+    "value": "coverage",
+    "title": "Tag every line as an entity",
+    "description": "Written before the codes so the AFD 2.0 keys end up in entity order once the AFD 1.0 ones are removed."
+  },
+  {
+    "command": "resolve",
+    "path": "$.afdMessage.policy.coverages[*]",
+    "title": "Translate every coverage line in place",
+    "description": "The per-element form of resolve: one command, every element of the array, each matched on its own AFD 1.0 code. This is the JSON answer to the XPath predicate the two XML samples use.",
+    "resolveSettings": [
+      {
+        "referencesCollectionPath": "$.map.coverageCodes[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.AL301",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.coverageCode",
+            "value": "@.afd2"
+          }
+        ]
+      },
+      {
+        "referencesCollectionPath": "$.map.coverageStatus[*]",
+        "resolveKeys": [
+          {
+            "keyPath": "@.AL302",
+            "referenceKeyPath": "@.afd1"
+          }
+        ],
+        "values": [
+          {
+            "targetPath": "@.statusCode",
+            "value": "@.afd2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "command": "remove",
+    "path": "$.afdMessage.policy.coverages[*].SRT",
+    "title": "Drop the AFD 1.0 record fields",
+    "description": "What is left on each line is entityType, coverageCode and statusCode - an AFD 2.0 coverage entity."
+  },
+  {
+    "command": "remove",
+    "path": "$.afdMessage.policy.coverages[*].AL301"
+  },
+  {
+    "command": "remove",
+    "path": "$.afdMessage.policy.coverages[*].AL302"
+  },
+  {
+    "command": "remove",
+    "path": "$.AFDBERICHT",
+    "title": "Drop the AFD 1.0 message",
+    "description": "Everything it carried now exists in AFD 2.0 form."
+  },
+  {
+    "command": "remove",
+    "path": "$.map",
+    "title": "Drop the code lists"
+  },
+  {
+    "command": "remove",
+    "path": "$.calc",
+    "title": "Drop the working area"
+  }
+]

@@ -1,0 +1,236 @@
+{
+  "quote": {
+    "policy": {
+      "packageDiscountPct": -5
+    },
+    "product": {
+      "tariffDate": "2026-09-01",
+      "startDate": "2026-09-01",
+      "paymentTermMonths": 12,
+      "extraBmSteps": 0,
+      "groupDiscountPct": 0,
+      "adviceDiscountPct": -3,
+      "commissionPct": 15
+    },
+    "policyholder": {
+      "postcode": "7511AB",
+      "birthDate": "2003-08-20",
+      "claimFreeYears": 5
+    },
+    "vehicle": {
+      "typeCode": "62",
+      "brand": "Yamaha",
+      "model": "Aerox",
+      "type": "Standaard",
+      "catalogValue": 1800,
+      "accessoriesValue": 50,
+      "approvedLock": "J"
+    },
+    "coverage": {
+      "wa": {
+        "code": "02001"
+      },
+      "casco": {
+        "code": "02002"
+      },
+      "accidents": {
+        "code": "01001",
+        "sumDeath": 2500,
+        "sumDisability": 12500
+      }
+    }
+  },
+  "premiums": {
+    "wa": {
+      "afdCode": "02001",
+      "bruto": 91.95,
+      "netto": 79.96,
+      "assurantiebelasting": 19.31
+    },
+    "casco": {
+      "afdCode": "02002",
+      "bruto": 228.18,
+      "netto": 198.42,
+      "assurantiebelasting": 47.92
+    },
+    "accidents": {
+      "afdCode": "01001",
+      "bruto": 16.95,
+      "netto": 14.74,
+      "assurantiebelasting": 0
+    }
+  },
+  "summary": {
+    "riskCategory": "C",
+    "vehicleType": "Brommer",
+    "catalogValueTotal": 1850,
+    "bonusMalusStep": 11,
+    "bonusMalusPremiumPct": 35,
+    "netBasisPremiumTotal": 318.09,
+    "netProductPremiumTotal": 293.12,
+    "totaalProductPremiumTotal": 337.08,
+    "commissionTotal": 43.96,
+    "insuranceTaxTotal": 67.23,
+    "totalPremiumDue": 404.31,
+    "adviceDiscountAmount": -9.07
+  },
+  "acceptance": {
+    "decision": "geaccepteerd",
+    "messages": [
+      {
+        "code": 1,
+        "ruling": "Hard",
+        "text": "De geboortedatum is niet volledig",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 2,
+        "ruling": "Hard",
+        "text": "De cataloguswaarde is niet gevuld",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 3,
+        "ruling": "Hard",
+        "text": "De cataloguswaarde is niet juist gevuld",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 4,
+        "ruling": "Hard",
+        "text": "WA dekking is verplicht",
+        "shownToUser": false,
+        "active": false
+      },
+      {
+        "code": 5,
+        "ruling": "Hard",
+        "text": "De geselecteerde combinatie bij ongevallen in/opzittenden is niet mogelijk",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 6,
+        "ruling": "Hard",
+        "text": "De bestuurder is jonger dan 16 jaar, acceptatie is dan niet mogelijk",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 7,
+        "ruling": "Hard",
+        "text": "De bestuurder is ouder dan 85 jaar, acceptatie is dan niet mogelijk",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 10,
+        "ruling": "Hard",
+        "text": "Dit merk is uitgesloten",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 11,
+        "ruling": "Hard",
+        "text": "Dit model is uitgesloten",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 12,
+        "ruling": "Hard",
+        "text": "Dit type is uitgesloten",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 13,
+        "ruling": "Hard",
+        "text": "De schadevrije jaren zijn niet gevuld",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 14,
+        "ruling": "Hard",
+        "text": "Het voertuigsoort is onbekend",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 15,
+        "ruling": "Hard",
+        "text": "WA dekkingscode incorrect: bestaat niet uit 5 tekens",
+        "shownToUser": false,
+        "active": false
+      },
+      {
+        "code": 16,
+        "ruling": "Hard",
+        "text": "Casco dekkingscode incorrect: bestaat niet uit 5 tekens",
+        "shownToUser": false,
+        "active": false
+      },
+      {
+        "code": 17,
+        "ruling": "Hard",
+        "text": "Ongevallen dekkingscode incorrect: bestaat niet uit 5 tekens",
+        "shownToUser": false,
+        "active": false
+      },
+      {
+        "code": 18,
+        "ruling": "Hard",
+        "text": "De cataloguswaarde van de E-Bike is hoger dan € 8.000, dit is niet mogelijk",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 19,
+        "ruling": "Hard",
+        "text": "De cataloguswaarde van de brom-/snorfiets is hoger dan € 4.000, dit is niet mogelijk",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 20,
+        "ruling": "Hard",
+        "text": "De cataloguswaarde van de brommobiel is hoger dan € 16.000, dit is niet mogelijk",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 21,
+        "ruling": "Soft",
+        "text": "Bel 807",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 22,
+        "ruling": "Hard",
+        "text": "De ingangsdatum mag niet voor de schadedatum liggen",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 23,
+        "ruling": "Hard",
+        "text": "De ingangsdatum mag niet meer dan 4 dagen in het verleden liggen",
+        "shownToUser": true,
+        "active": false
+      },
+      {
+        "code": 24,
+        "ruling": "Hard",
+        "text": "Er is een CASCO dekking geselecteerd, een ART goedgekeurd slot is dan verplicht",
+        "shownToUser": true,
+        "active": false
+      }
+    ]
+  }
+}

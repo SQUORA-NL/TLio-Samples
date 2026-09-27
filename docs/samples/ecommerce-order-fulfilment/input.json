@@ -1,0 +1,29 @@
+{
+  "order": {
+    "orderNumber": "WEB-2026-77413",
+    "placedOn": "2026-08-21",
+    "channel": "WEBSHOP",
+    "currency": "EUR",
+    "customer": {
+      "customerNumber": "CU-30188",
+      "name": "Bakkerij Molenaar V.O.F.",
+      "email": "inkoop@molenaar.example.nl",
+      "vatNumber": "NL812345678B01"
+    },
+    "shipTo": {
+      "attention": "Ontvangst magazijn",
+      "street": "Havenweg",
+      "houseNumber": "9c",
+      "postalCode": "1976BW",
+      "city": "IJmuiden",
+      "countryCode": "NL"
+    },
+    "requestedDeliveryDate": "2026-08-26",
+    "lines": [
+      { "lineNumber": 1, "sku": "FL-T55-25", "description": "Tarwebloem type 55, 25 kg",   "quantity": 8,  "unitPriceExclVat": 18.40, "lineAmountExclVat": 147.20, "weightGrams": 200000, "vatCategory": "LAAG" },
+      { "lineNumber": 2, "sku": "GI-DRY-05", "description": "Droge gist, 500 g",           "quantity": 12, "unitPriceExclVat": 6.75,  "lineAmountExclVat": 81.00,  "weightGrams": 6000,   "vatCategory": "LAAG" },
+      { "lineNumber": 3, "sku": "VP-BOX-32", "description": "Vouwdoos 320x220x80, 100 st", "quantity": 4,  "unitPriceExclVat": 23.10, "lineAmountExclVat": 92.40,  "weightGrams": 14000,  "vatCategory": "HOOG" },
+      { "lineNumber": 4, "sku": "SC-CLN-10", "description": "Bakplaatreiniger, 10 L",      "quantity": 2,  "unitPriceExclVat": 41.50, "lineAmountExclVat": 83.00,  "weightGrams": 21000,  "vatCategory": "HOOG" }
+    ]
+  }
+}

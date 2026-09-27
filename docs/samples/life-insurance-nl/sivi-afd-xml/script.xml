@@ -1,0 +1,293 @@
+<script>
+
+  <add path="/afdMessage/rates"
+       title="The rate book"
+       description="A life rate book is a mortality table plus loadings. The table is keyed on two columns, band and gender, which is why the lookups below carry a two-part predicate.">
+    <value>
+      <mortalityRates>
+        <item><ageBand>18-24</ageBand><gender>M</gender><ratePerMille>0.42</ratePerMille></item>
+        <item><ageBand>18-24</ageBand><gender>V</gender><ratePerMille>0.31</ratePerMille></item>
+        <item><ageBand>25-29</ageBand><gender>M</gender><ratePerMille>0.48</ratePerMille></item>
+        <item><ageBand>25-29</ageBand><gender>V</gender><ratePerMille>0.37</ratePerMille></item>
+        <item><ageBand>30-34</ageBand><gender>M</gender><ratePerMille>0.58</ratePerMille></item>
+        <item><ageBand>30-34</ageBand><gender>V</gender><ratePerMille>0.46</ratePerMille></item>
+        <item><ageBand>35-39</ageBand><gender>M</gender><ratePerMille>0.87</ratePerMille></item>
+        <item><ageBand>35-39</ageBand><gender>V</gender><ratePerMille>0.71</ratePerMille></item>
+        <item><ageBand>40-44</ageBand><gender>M</gender><ratePerMille>1.32</ratePerMille></item>
+        <item><ageBand>40-44</ageBand><gender>V</gender><ratePerMille>1.08</ratePerMille></item>
+        <item><ageBand>45-49</ageBand><gender>M</gender><ratePerMille>2.10</ratePerMille></item>
+        <item><ageBand>45-49</ageBand><gender>V</gender><ratePerMille>1.72</ratePerMille></item>
+        <item><ageBand>50-54</ageBand><gender>M</gender><ratePerMille>3.45</ratePerMille></item>
+        <item><ageBand>50-54</ageBand><gender>V</gender><ratePerMille>2.71</ratePerMille></item>
+        <item><ageBand>55-59</ageBand><gender>M</gender><ratePerMille>5.80</ratePerMille></item>
+        <item><ageBand>55-59</ageBand><gender>V</gender><ratePerMille>4.35</ratePerMille></item>
+        <item><ageBand>60-64</ageBand><gender>M</gender><ratePerMille>9.60</ratePerMille></item>
+        <item><ageBand>60-64</ageBand><gender>V</gender><ratePerMille>7.10</ratePerMille></item>
+        <item><ageBand>65-70</ageBand><gender>M</gender><ratePerMille>15.80</ratePerMille></item>
+        <item><ageBand>65-70</ageBand><gender>V</gender><ratePerMille>11.60</ratePerMille></item>
+      </mortalityRates>
+      <smokerFactors>
+        <item><code>false</code><description>Niet-roker</description><smokerFactor>1.00</smokerFactor></item>
+        <item><code>true</code><description>Roker</description><smokerFactor>1.85</smokerFactor></item>
+      </smokerFactors>
+      <professionClasses>
+        <item><code>KANTOOR</code><description>Kantoorberoep</description><professionFactor>1.00</professionFactor></item>
+        <item><code>ZORG</code><description>Zorg en welzijn</description><professionFactor>1.05</professionFactor></item>
+        <item><code>INDUSTRIE</code><description>Industrie</description><professionFactor>1.20</professionFactor></item>
+        <item><code>TRANSPORT</code><description>Transport</description><professionFactor>1.25</professionFactor></item>
+        <item><code>BOUW</code><description>Bouw</description><professionFactor>1.35</professionFactor></item>
+      </professionClasses>
+      <benefitTypes>
+        <item><code>GELIJKBLIJVEND</code><description>Gelijkblijvende uitkering</description><benefitFactor>1.00</benefitFactor></item>
+        <item><code>ANNUITAIR-DALEND</code><description>Annuitair dalende uitkering</description><benefitFactor>0.62</benefitFactor></item>
+        <item><code>LINEAIR-DALEND</code><description>Lineair dalende uitkering</description><benefitFactor>0.58</benefitFactor></item>
+      </benefitTypes>
+      <riderRates>
+        <item><code>PREMIEVRIJSTELLING-AO</code><description>Premievrijstelling bij arbeidsongeschiktheid</description><surchargeRate>0.08</surchargeRate></item>
+        <item><code>ERNSTIGE-AANDOENINGEN</code><description>Dekking ernstige aandoeningen</description><surchargeRate>0.14</surchargeRate></item>
+      </riderRates>
+      <paymentTerms>
+        <item><code>M</code><description>Per maand</description><monthsPerTerm>1</monthsPerTerm><termsPerYear>12</termsPerYear><termFactor>1.00</termFactor><policyCostsPerTerm>0.55</policyCostsPerTerm></item>
+        <item><code>K</code><description>Per kwartaal</description><monthsPerTerm>3</monthsPerTerm><termsPerYear>4</termsPerYear><termFactor>0.99</termFactor><policyCostsPerTerm>1.50</policyCostsPerTerm></item>
+        <item><code>J</code><description>Per jaar</description><monthsPerTerm>12</monthsPerTerm><termsPerYear>1</termsPerYear><termFactor>0.96</termFactor><policyCostsPerTerm>5.00</policyCostsPerTerm></item>
+      </paymentTerms>
+      <rules>
+        <insuranceTaxRate>0.00</insuranceTaxRate>
+        <taxExemptionReason>Levensverzekering - vrijgesteld van assurantiebelasting (Wet op belastingen van rechtsverkeer art. 21).</taxExemptionReason>
+        <maximumEndAge>70</maximumEndAge>
+        <medicalExaminationThreshold>750000</medicalExaminationThreshold>
+      </rules>
+    </value>
+  </add>
+
+  <put path="/afdMessage/calc/ageAtStart"
+       title="Age at commencement"
+       description="Life rating dates from the commencement date, not the quote date - the cover starts then and the mortality band follows the age reached at that moment."
+       value="=dateDiff(/afdMessage/policy/parties/party[1]/dateOfBirth, /afdMessage/policy/commencementDate, 'years')"/>
+
+  <put path="/afdMessage/calc/ageAtEnd"
+       title="Age at expiry"
+       description="Start age plus the term. The acceptance table refuses a policy that runs past the maximum end age."
+       value="=sum(/afdMessage/calc/ageAtStart, /afdMessage/policy/durationYears)"/>
+
+  <decisionTable path="/afdMessage" title="Mortality age band"
+                 description="The mortality table is keyed on a band, so the age has to become one first. A band is a range, and a range is rule text.">
+    <decisionTable>
+      <inputs><item><name>age</name><path>/afdMessage/calc/ageAtStart</path></item></inputs>
+      <outputs><item><name>band</name><path>/afdMessage/calc/ageBand</path></item></outputs>
+      <rules>
+        <item><priority>1</priority><conditions><age>&lt;25</age></conditions><results><band>18-24</band></results></item>
+        <item><priority>2</priority><conditions><age>&gt;=25 &amp;&amp; &lt;30</age></conditions><results><band>25-29</band></results></item>
+        <item><priority>3</priority><conditions><age>&gt;=30 &amp;&amp; &lt;35</age></conditions><results><band>30-34</band></results></item>
+        <item><priority>4</priority><conditions><age>&gt;=35 &amp;&amp; &lt;40</age></conditions><results><band>35-39</band></results></item>
+        <item><priority>5</priority><conditions><age>&gt;=40 &amp;&amp; &lt;45</age></conditions><results><band>40-44</band></results></item>
+        <item><priority>6</priority><conditions><age>&gt;=45 &amp;&amp; &lt;50</age></conditions><results><band>45-49</band></results></item>
+        <item><priority>7</priority><conditions><age>&gt;=50 &amp;&amp; &lt;55</age></conditions><results><band>50-54</band></results></item>
+        <item><priority>8</priority><conditions><age>&gt;=55 &amp;&amp; &lt;60</age></conditions><results><band>55-59</band></results></item>
+        <item><priority>9</priority><conditions><age>&gt;=60 &amp;&amp; &lt;65</age></conditions><results><band>60-64</band></results></item>
+        <item><priority>10</priority><conditions><age>&gt;=65</age></conditions><results><band>65-70</band></results></item>
+      </rules>
+    </decisionTable>
+  </decisionTable>
+
+  <decisionTable path="/afdMessage" title="Duration band"
+                 description="A longer term costs more per mille, because the level premium has to carry the later, dearer years as well.">
+    <decisionTable>
+      <inputs><item><name>years</name><path>/afdMessage/policy/durationYears</path></item></inputs>
+      <outputs>
+        <item><name>band</name><path>/afdMessage/calc/durationBand</path></item>
+        <item><name>factor</name><path>/afdMessage/calc/durationFactor</path></item>
+      </outputs>
+      <rules>
+        <item><priority>1</priority><conditions><years>&lt;10</years></conditions><results><band>korter dan 10 jaar</band><factor>0.95</factor></results></item>
+        <item><priority>2</priority><conditions><years>&gt;=10 &amp;&amp; &lt;20</years></conditions><results><band>10 t/m 19 jaar</band><factor>1.05</factor></results></item>
+        <item><priority>3</priority><conditions><years>&gt;=20 &amp;&amp; &lt;30</years></conditions><results><band>20 t/m 29 jaar</band><factor>1.12</factor></results></item>
+        <item><priority>4</priority><conditions><years>&gt;=30</years></conditions><results><band>30 jaar en langer</band><factor>1.15</factor></results></item>
+      </rules>
+    </decisionTable>
+  </decisionTable>
+
+  <decisionTable path="/afdMessage" title="Medical acceptance"
+                 description="Life acceptance is about the health declaration, not about the object. defaultResults is the accept path, so the rules only state the exceptions.">
+    <decisionTable>
+      <inputs>
+        <item><name>endAge</name><path>/afdMessage/calc/ageAtEnd</path></item>
+        <item><name>sum</name><path>/afdMessage/policy/coverages/coverage[1]/insuredSumAmount</path></item>
+        <item><name>smoker</name><path>/afdMessage/policy/parties/party[1]/smokerIndicator</path></item>
+      </inputs>
+      <outputs>
+        <item><name>decision</name><path>/afdMessage/calc/decision</path></item>
+        <item><name>reason</name><path>/afdMessage/calc/decisionReason</path></item>
+        <item><name>evidence</name><path>/afdMessage/calc/medicalEvidenceCode</path></item>
+      </outputs>
+      <rules>
+        <item><priority>1</priority><conditions><endAge>&gt;70</endAge></conditions>
+              <results><decision>AFGEWEZEN</decision><reason>Einddatum ligt na de maximale eindleeftijd van 70 jaar.</reason><evidence>GEEN</evidence></results></item>
+        <item><priority>2</priority><conditions><sum>&gt;750000</sum></conditions>
+              <results><decision>BEOORDELEN</decision><reason>Verzekerd kapitaal boven EUR 750.000 - medische keuring vereist.</reason><evidence>KEURING</evidence></results></item>
+        <item><priority>3</priority><conditions><smoker>=true</smoker><sum>&gt;300000</sum></conditions>
+              <results><decision>BEOORDELEN</decision><reason>Roker met een kapitaal boven EUR 300.000 - uitgebreide gezondheidsverklaring.</reason><evidence>UITGEBREIDE-VERKLARING</evidence></results></item>
+      </rules>
+      <defaultResults><decision>GEACCEPTEERD</decision><reason>Geaccepteerd op basis van de korte gezondheidsverklaring.</reason><evidence>KORTE-VERKLARING</evidence></defaultResults>
+    </decisionTable>
+  </decisionTable>
+
+  <put path="/afdMessage/calc/baseAnnual"
+       title="Base annual risk premium"
+       description="Two keys in one predicate: item[ageBand = … and gender = …] joins the mortality table on band AND gender inside the path. In JSON this is a resolve with two resolveKeys; in XPath it is one step. The capital is divided by 1000 because the rate is per mille."
+       value="=round(=multiply(=divide(/afdMessage/policy/coverages/coverage[1]/insuredSumAmount, 1000), /afdMessage/rates/mortalityRates/item[ageBand = /afdMessage/calc/ageBand and gender = /afdMessage/policy/parties/party[1]/genderCode]/ratePerMille, /afdMessage/rates/smokerFactors/item[code = /afdMessage/policy/parties/party[1]/smokerIndicator]/smokerFactor, /afdMessage/rates/professionClasses/item[code = /afdMessage/policy/parties/party[1]/professionCode]/professionFactor, /afdMessage/rates/benefitTypes/item[code = /afdMessage/policy/coverages/coverage[1]/benefitTypeCode]/benefitFactor, /afdMessage/calc/durationFactor), 2)"/>
+
+  <put path="/afdMessage/calc/riderSurcharge"
+       title="Rider surcharge"
+       description="A rider is a percentage of the risk premium, not a flat tariff. The =if guards the empty match the car sample's README warns about: with no rider requested the count is 0 and the multiply is never evaluated, because =if evaluates only the branch it picks."
+       value="=round(=if(=greaterThan(=count(/afdMessage/policy/coverages/coverage[coverageCode='PREMIEVRIJSTELLING-AO']), 0), =multiply(/afdMessage/calc/baseAnnual, /afdMessage/rates/riderRates/item[code='PREMIEVRIJSTELLING-AO']/surchargeRate), 0), 2)"/>
+
+  <put path="/afdMessage/calc/annualTotal" title="Annual premium"
+       value="=round(=sum(/afdMessage/calc/baseAnnual, /afdMessage/calc/riderSurcharge), 2)"/>
+
+  <put path="/afdMessage/calc/netPerMonth" title="Net per month"
+       description="Life is rated annually and then split, where the property samples rate monthly and then multiply up. The rate book is what decides which way round it goes."
+       value="=round(=divide(/afdMessage/calc/annualTotal, 12), 2)"/>
+
+  <put path="/afdMessage/calc/netPerTerm" title="Net per term"
+       value="=round(=multiply(/afdMessage/calc/netPerMonth, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/monthsPerTerm, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/termFactor), 2)"/>
+
+  <put path="/afdMessage/calc/chargeableBase" title="Chargeable base"
+       description="Named chargeableBase, not taxableBase: on a life policy nothing downstream is taxable."
+       value="=round(=sum(/afdMessage/calc/netPerTerm, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/policyCostsPerTerm), 2)"/>
+
+  <put path="/afdMessage/calc/insuranceTax" title="Assurantiebelasting"
+       description="Zero, and computed rather than hard-coded, so the exemption is visible as a rate in the rate book instead of as an absent step. This is the one real difference from the property samples."
+       value="=round(=multiply(/afdMessage/calc/chargeableBase, /afdMessage/rates/rules/insuranceTaxRate), 2)"/>
+
+  <put path="/afdMessage/calc/grossPerTerm" title="Gross per term"
+       value="=round(=sum(/afdMessage/calc/chargeableBase, /afdMessage/calc/insuranceTax), 2)"/>
+
+  <put path="/afdMessage/calc/grossPerYear" title="Gross per year"
+       value="=round(=multiply(/afdMessage/calc/grossPerTerm, /afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/termsPerYear), 2)"/>
+
+  <put path="/afdMessage/policy/coverages/coverage[1]" title="Death benefit coverage entity"
+       description="Written by position: coverage[1] is the death benefit, coverage[2] the rider. XPath is 1-based, where JSONPath is 0-based.">
+    <value>
+      <entityType>coverage</entityType>
+      <coverageCode>OVERLIJDEN</coverageCode>
+      <description>=fetch(/afdMessage/rates/benefitTypes/item[code = /afdMessage/policy/coverages/coverage[1]/benefitTypeCode]/description)</description>
+      <coverageTypeCode>HOOFDDEKKING</coverageTypeCode>
+      <benefitTypeCode>ANNUITAIR-DALEND</benefitTypeCode>
+      <insuredSumAmount>350000</insuredSumAmount>
+      <annuityInterestRate>3.5</annuityInterestRate>
+      <premiumAmount>=fetch(/afdMessage/calc/baseAnnual)</premiumAmount>
+      <premiumBasisCode>PER-JAAR</premiumBasisCode>
+      <statusCode>GEACCEPTEERD</statusCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/coverages/coverage[2]" title="Waiver-of-premium rider entity">
+    <value>
+      <entityType>coverage</entityType>
+      <coverageCode>PREMIEVRIJSTELLING-AO</coverageCode>
+      <description>=fetch(/afdMessage/rates/riderRates/item[code='PREMIEVRIJSTELLING-AO']/description)</description>
+      <coverageTypeCode>AANVULLEND</coverageTypeCode>
+      <surchargeRate>=fetch(/afdMessage/rates/riderRates/item[code='PREMIEVRIJSTELLING-AO']/surchargeRate)</surchargeRate>
+      <premiumAmount>=fetch(/afdMessage/calc/riderSurcharge)</premiumAmount>
+      <premiumBasisCode>PER-JAAR</premiumBasisCode>
+      <statusCode>GEACCEPTEERD</statusCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/messageHeader/messageTypeCode" title="The message changes type">POLISAANMAAK</put>
+
+  <put path="/afdMessage/policy/policyNumber" title="Policy number"
+       value="=concat('POL-', =substring(/afdMessage/policy/quotationNumber, 4, 12))"/>
+
+  <put path="/afdMessage/policy/policyStatusCode" title="Policy status">ACTIEF</put>
+  <put path="/afdMessage/policy/insurerCode" title="Insurer code">SQ</put>
+  <put path="/afdMessage/policy/productName" title="Product name">Squora Overlijdensrisicoverzekering</put>
+
+  <put path="/afdMessage/policy/expiryDate" title="Expiry date"
+       description="Commencement plus the full term, not one year - a life policy is not annually renewable."
+       value="=dateAdd(/afdMessage/policy/commencementDate, /afdMessage/policy/durationYears, 'years')"/>
+
+  <put path="/afdMessage/policy/riskProfile" title="Risk profile"
+       description="An insurer extension. It records the mortality row the premium came from, so a later re-rate can be compared against this one.">
+    <value>
+      <entityType>riskProfile</entityType>
+      <ageAtStart>=fetch(/afdMessage/calc/ageAtStart)</ageAtStart>
+      <ageAtEnd>=fetch(/afdMessage/calc/ageAtEnd)</ageAtEnd>
+      <ageBand>=fetch(/afdMessage/calc/ageBand)</ageBand>
+      <genderCode>=fetch(/afdMessage/policy/parties/party[1]/genderCode)</genderCode>
+      <mortalityRatePerMille>=fetch(/afdMessage/rates/mortalityRates/item[ageBand = /afdMessage/calc/ageBand and gender = /afdMessage/policy/parties/party[1]/genderCode]/ratePerMille)</mortalityRatePerMille>
+      <smokerDescription>=fetch(/afdMessage/rates/smokerFactors/item[code = /afdMessage/policy/parties/party[1]/smokerIndicator]/description)</smokerDescription>
+      <smokerFactor>=fetch(/afdMessage/rates/smokerFactors/item[code = /afdMessage/policy/parties/party[1]/smokerIndicator]/smokerFactor)</smokerFactor>
+      <professionDescription>=fetch(/afdMessage/rates/professionClasses/item[code = /afdMessage/policy/parties/party[1]/professionCode]/description)</professionDescription>
+      <professionFactor>=fetch(/afdMessage/rates/professionClasses/item[code = /afdMessage/policy/parties/party[1]/professionCode]/professionFactor)</professionFactor>
+      <benefitFactor>=fetch(/afdMessage/rates/benefitTypes/item[code = /afdMessage/policy/coverages/coverage[1]/benefitTypeCode]/benefitFactor)</benefitFactor>
+      <durationBand>=fetch(/afdMessage/calc/durationBand)</durationBand>
+      <durationFactor>=fetch(/afdMessage/calc/durationFactor)</durationFactor>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/premium" title="Premium entity">
+    <value>
+      <entityType>premium</entityType>
+      <premiumFrequencyCode>=fetch(/afdMessage/policy/premiumFrequencyCode)</premiumFrequencyCode>
+      <premiumFrequencyDescription>=fetch(/afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/description)</premiumFrequencyDescription>
+      <riskPremiumPerYear>=fetch(/afdMessage/calc/baseAnnual)</riskPremiumPerYear>
+      <riderPremiumPerYear>=fetch(/afdMessage/calc/riderSurcharge)</riderPremiumPerYear>
+      <netPremiumPerYear>=fetch(/afdMessage/calc/annualTotal)</netPremiumPerYear>
+      <netPremiumPerMonth>=fetch(/afdMessage/calc/netPerMonth)</netPremiumPerMonth>
+      <netPremiumPerTerm>=fetch(/afdMessage/calc/netPerTerm)</netPremiumPerTerm>
+      <policyCostsPerTerm>=fetch(/afdMessage/rates/paymentTerms/item[code = /afdMessage/policy/premiumFrequencyCode]/policyCostsPerTerm)</policyCostsPerTerm>
+      <insuranceTaxRate>=fetch(/afdMessage/rates/rules/insuranceTaxRate)</insuranceTaxRate>
+      <insuranceTaxAmount>=fetch(/afdMessage/calc/insuranceTax)</insuranceTaxAmount>
+      <taxExemptIndicator>JA</taxExemptIndicator>
+      <taxExemptionReason>=fetch(/afdMessage/rates/rules/taxExemptionReason)</taxExemptionReason>
+      <grossPremiumPerTerm>=fetch(/afdMessage/calc/grossPerTerm)</grossPremiumPerTerm>
+      <grossPremiumPerYear>=fetch(/afdMessage/calc/grossPerYear)</grossPremiumPerYear>
+      <collectionMethodCode>=fetch(/afdMessage/policy/collectionMethodCode)</collectionMethodCode>
+    </value>
+  </put>
+
+  <put path="/afdMessage/policy/acceptance" title="Acceptance entity">
+    <value>
+      <entityType>acceptance</entityType>
+      <decisionCode>=fetch(/afdMessage/calc/decision)</decisionCode>
+      <decisionReason>=fetch(/afdMessage/calc/decisionReason)</decisionReason>
+      <medicalEvidenceCode>=fetch(/afdMessage/calc/medicalEvidenceCode)</medicalEvidenceCode>
+      <healthDeclarationDate>=fetch(/afdMessage/policy/parties/party[1]/healthDeclarationDate)</healthDeclarationDate>
+      <assessedOn>=fetch(/afdMessage/messageHeader/messageDate)</assessedOn>
+    </value>
+  </put>
+
+  <ifElse title="Verpandingsclausule"
+          description="A mortgage-linked policy is pledged to the lender, which changes who may alter it. What is conditional is a whole node, so this stays an ifElse."
+          condition="=equals(/afdMessage/policy/pledgeIndicator, 'true')">
+    <ifScript>
+      <put path="/afdMessage/policy/acceptance/clauses/pledge" title="VERPANDING-01">
+        <value>
+          <clauseCode>VERPANDING-01</clauseCode>
+          <clauseText>De rechten uit deze polis zijn verpand aan de hypothecair financier. Wijziging, afkoop of begunstiging uitsluitend met schriftelijke toestemming van de pandhouder.</clauseText>
+          <pledgeeName>=fetch(/afdMessage/policy/pledgeeName)</pledgeeName>
+        </value>
+      </put>
+    </ifScript>
+  </ifElse>
+
+  <ifElse title="Eindleeftijdclausule"
+          description="Running past 65 is allowed but has to be stated, because the premium was rated on a band that stops at 70."
+          condition="=greaterThan(/afdMessage/calc/ageAtEnd, 65)">
+    <ifScript>
+      <put path="/afdMessage/policy/acceptance/clauses/endAge" title="EINDLEEFTIJD-01">
+        <value>
+          <clauseCode>EINDLEEFTIJD-01</clauseCode>
+          <clauseText>De verzekering loopt door tot na het 65e levensjaar; de premie is vastgesteld op basis van de eindleeftijd en wordt gedurende de looptijd niet herzien.</clauseText>
+          <endAge>=fetch(/afdMessage/calc/ageAtEnd)</endAge>
+        </value>
+      </put>
+    </ifScript>
+  </ifElse>
+
+  <remove path="/afdMessage/calc" title="Drop the working area"/>
+  <remove path="/afdMessage/rates" title="Drop the rate book"/>
+
+</script>

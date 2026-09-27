@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hand-made AFD 1.0 contract message. Every entity code and attribute label comes from the SIVI
+     catalogue (afd-mappings.json), except the deliberate anomalies marked below, which exist to show
+     the issue report and the quarantine. Structure follows the SIVI XML Handboek: a root wrapper,
+     two-letter entity tags, XX_LABEL attributes, nesting for relations, J/N, EEJJMMDD, UUMM. -->
+<Contractdocument>
+  <AL>
+    <AL_VRWRKCD>0</AL_VRWRKCD>
+    <AL_ATYDMSG>0930</AL_ATYDMSG>
+  </AL>
+  <PK>
+    <PK_VRWRKCD>0</PK_VRWRKCD>
+    <PK_NUMMER>PKT-2026-001</PK_NUMMER>
+    <PK_INGDAT>20260101</PK_INGDAT>
+    <VP>
+      <VP_VRWRKCD>0</VP_VRWRKCD>
+      <VP_ANAAM>Jansen</VP_ANAAM>
+      <VP_VOORL>A.B.</VP_VOORL>
+      <VP_GEBDAT>19800515</VP_GEBDAT>
+      <VP_GESLACH>M</VP_GESLACH>
+      <XA>
+        <XA_VRWRKCD>0</XA_VRWRKCD>
+        <XA_STRAAT>Dorpsstraat</XA_STRAAT>
+        <XA_HUISNR>12</XA_HUISNR>
+        <XA_PCODE>1234AB</XA_PCODE>
+        <XA_PLAATS>Utrecht</XA_PLAATS>
+        <XA_LAND>NL</XA_LAND>
+        <XA_BEKADR>J</XA_BEKADR>
+      </XA>
+    </VP>
+    <PP>
+      <PP_VRWRKCD>0</PP_VRWRKCD>
+      <PP_NUMMER>POL-001</PP_NUMMER>
+      <PP_INGDAT>20260101</PP_INGDAT>
+      <PP_INGTIJD>1200</PP_INGTIJD>
+      <PP_BRANCHE>020</PP_BRANCHE>
+      <PP_RCCONTR>N</PP_RCCONTR>
+      <PP_BETTERM>12</PP_BETTERM>
+      <CA>
+        <CA_VRWRKCD>0</CA_VRWRKCD>
+        <CA_VERZSOM>25000.50</CA_VERZSOM>
+        <CA_INGDAT>20260101</CA_INGDAT>
+        <CA_GEBIED>EU</CA_GEBIED>
+        <CA_DEKOMS>Casco personenauto</CA_DEKOMS>
+        <OB>
+          <OB_VRWRKCD>0</OB_VRWRKCD>
+          <OB_MERK>Volkswagen</OB_MERK>
+          <OB_MODEL>ID.3</OB_MODEL>
+          <OB_KENTEKE>AB123C</OB_KENTEKE>
+          <OB_BOUWJR>2021</OB_BOUWJR>
+          <OB_NWE>38500</OB_NWE>
+          <OB_KENTOVP>J</OB_KENTOVP>
+          <OB_BEZGEB1>NL</OB_BEZGEB1>
+          <OB_BEZGEB2>DE</OB_BEZGEB2>
+          <OB_ACTKLR1>grijs</OB_ACTKLR1>
+        </OB>
+      </CA>
+    </PP>
+    <PP>
+      <PP_VRWRKCD>0</PP_VRWRKCD>
+      <PP_NUMMER>POL-002</PP_NUMMER>
+      <PP_INGDAT>2026</PP_INGDAT>          <!-- anomaly: not EEJJMMDD -->
+      <PP_RCCONTR>X</PP_RCCONTR>           <!-- anomaly: not J/N -->
+      <PP_FOOBAR>?</PP_FOOBAR>             <!-- anomaly: label not in the catalogue -->
+      <OP>
+        <OP_VRWRKCD>0</OP_VRWRKCD>
+        <OP_VERZSOM>350000</OP_VERZSOM>
+        <OP_INGDAT>20260101</OP_INGDAT>
+        <BA>
+          <BA_VRWRKCD>0</BA_VRWRKCD>
+          <BA_STRAAT>Dorpsstraat</BA_STRAAT>
+          <BA_HUISNR>12</BA_HUISNR>
+          <BA_PCODE>1234AB</BA_PCODE>
+          <BA_PLAATS>Utrecht</BA_PLAATS>
+          <BA_BOUWJR>1932</BA_BOUWJR>
+          <BA_MRHSNRS>J</BA_MRHSNRS>
+        </BA>
+      </OP>
+      <ZZ>                                 <!-- anomaly: entity code not in the catalogue -->
+        <ZZ_ONBEKEND>quarantined</ZZ_ONBEKEND>
+      </ZZ>
+    </PP>
+  </PK>
+  <YY>                                     <!-- anomaly: unknown entity at wrapper level -->
+    <YY_WAARDE>quarantined with the source skeleton</YY_WAARDE>
+  </YY>
+  <BY>
+    <BY_VRWRKCD>0</BY_VRWRKCD>
+    <BY_VOLGNUM>1</BY_VOLGNUM>
+    <BY_BYLSRT>11</BY_BYLSRT>
+    <BY_BYLOMS>Polisblad</BY_BYLOMS>
+    <BY_EXT>PDF</BY_EXT>
+    <BY_INGDAT>20260102</BY_INGDAT>
+    <BY_INGTYD>0815</BY_INGTYD>
+    <BY_ELECTR>J</BY_ELECTR>
+  </BY>
+</Contractdocument>

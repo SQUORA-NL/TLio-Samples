@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Contractdocument>
+  <AL>
+    <AL_VRWRKCD>0</AL_VRWRKCD>
+    <AL_ATYDMSG>0930</AL_ATYDMSG>
+  </AL>
+  <PK>
+    <PK_VRWRKCD>0</PK_VRWRKCD>
+    <PK_NUMMER>PKT-2026-100</PK_NUMMER>
+    <PK_INGDAT>20260101</PK_INGDAT>
+    <PP>
+      <PP_VRWRKCD>0</PP_VRWRKCD>
+      <PP_NUMMER>POL-100</PP_NUMMER>
+      <PP_INGDAT>20260101</PP_INGDAT>
+      <PP_INGTIJD>1200</PP_INGTIJD>
+      <PP_BRANCHE>020</PP_BRANCHE>
+      <PP_RCCONTR>N</PP_RCCONTR>
+      <PP_BETTERM>12</PP_BETTERM>
+      <VP>
+        <VP_VRWRKCD>0</VP_VRWRKCD>
+        <VP_ANAAM>Bakker</VP_ANAAM>
+        <VP_VOORL>C.D.</VP_VOORL>
+        <VP_GEBDAT>19750310</VP_GEBDAT>
+        <VP_GESLACH>V</VP_GESLACH>
+      </VP>
+      <CA>
+        <CA_VRWRKCD>0</CA_VRWRKCD>
+        <CA_VERZSOM>18000.00</CA_VERZSOM>
+        <CA_INGDAT>20260101</CA_INGDAT>
+        <CA_GEBIED>EU</CA_GEBIED>
+        <CA_DEKOMS>Casco personenauto</CA_DEKOMS>
+        <OB>
+          <OB_VRWRKCD>0</OB_VRWRKCD>
+          <OB_MERK>Toyota</OB_MERK>
+          <OB_MODEL>Yaris</OB_MODEL>
+          <OB_KENTEKE>XY456Z</OB_KENTEKE>
+          <OB_BOUWJR>2022</OB_BOUWJR>
+          <OB_NWE>21000</OB_NWE>
+          <OB_KENTOVP>J</OB_KENTOVP>
+        </OB>
+      </CA>
+    </PP>
+  </PK>
+  <BY>
+    <BY_VRWRKCD>0</BY_VRWRKCD>
+    <BY_VOLGNUM>1</BY_VOLGNUM>
+    <BY_BYLSRT>11</BY_BYLSRT>
+    <BY_BYLOMS>Polisblad</BY_BYLOMS>
+    <BY_EXT>PDF</BY_EXT>
+    <BY_INGDAT>20260102</BY_INGDAT>
+    <BY_INGTYD>0815</BY_INGTYD>
+    <BY_ELECTR>J</BY_ELECTR>
+  </BY>
+</Contractdocument>

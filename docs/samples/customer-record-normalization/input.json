@@ -1,0 +1,19 @@
+{
+  "customer": {
+    "customerNumber": "CU-1044",
+    "name": "Jansen Bouwmaterialen B.V.",
+    "address": {
+      "street": "Kanaalweg",
+      "houseNumber": "12",
+      "postalCode": "3526KL",
+      "city": "Utrecht"
+    },
+    "billing": {
+      "iban": "NL91ABNA0417164300",
+      "contact": {
+        "name": "Petra de Wit",
+        "email": "petra.dewit@jansenbouw.example.nl"
+      }
+    }
+  }
+}

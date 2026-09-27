@@ -1,0 +1,26 @@
+{
+  "title": "4. Compile once, run many",
+  "narrative": "Every earlier example parses the script text on every call — engine.Execute() does that for you. engine.Compile() parses it exactly once and hands back a CompiledScript you can execute over and over. This runs the same script 8,000 times both ways and times each.",
+  "document": {
+    "orderId": "ORD-1042",
+    "customer": "Alice Chen",
+    "status": "pending",
+    "total": 129.5,
+    "tags": ["a", "b"]
+  },
+  "commands": [
+    { "command": "set", "path": "$.status", "value": "approved" },
+    { "command": "add", "path": "$.processedAt", "value": "=datetime()" },
+    { "command": "add", "path": "$.confirmationId", "value": "=newGuid()" },
+    { "command": "add", "path": "$.customerEcho", "value": "=fetch($.customer)" },
+    { "command": "add", "path": "$.isApproved", "value": "=equals($.status,'approved')" },
+    { "command": "add", "path": "$.hasTags", "value": "=exists($.tags)" },
+    { "command": "add", "path": "$.firstTag", "value": "=fetch($.tags[0])" },
+    { "command": "add", "path": "$.totalCheck", "value": "=greaterThan($.total,'100')" },
+    { "command": "add", "path": "$.tagIn", "value": "=in($.tags[0],$.tags)" },
+    { "command": "add", "path": "$.coalesced", "value": "=coalesce($.missing,$.status)" },
+    { "command": "add", "path": "$.betweenCheck", "value": "=between($.total,'1','1000')" },
+    { "command": "add", "path": "$.lastTag", "value": "=last($.tags[*])" }
+  ],
+  "iterations": 8000
+}

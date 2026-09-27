@@ -1,0 +1,20 @@
+<Project>
+
+  <!--
+    Azure.Functions.Sdk (used by samples/TLio.Sample.AzureDemo) generates a helper project,
+    azure_functions.g.csproj, via a post-restore hook that only runs when its own .csproj is
+    restored directly. `dotnet restore`/`build` on TLio.sln restores the solution as a whole
+    instead, which never reaches that hook — the function project then fails to resolve its own
+    SDK. This is Microsoft's documented fix (AZFW0108, "Option 2: solution files"): walk
+    ProjectReferences after every solution-level restore until the function project's own
+    GenerateFunctionsExtensionProject target is found and run.
+    https://learn.microsoft.com/azure/azure-functions/errors-diagnostics/msbuild-sdk-rules/azfw0108
+  -->
+  <Target Name="_RecursiveGenerateFunctionsExtensionProject" AfterTargets="Restore">
+    <MSBuild Projects="@(ProjectReference)" Targets="_RecursiveGenerateFunctionsExtensionProject"
+      SkipNonexistentProjects="true" SkipNonexistentTargets="true" />
+    <MSBuild Projects="@(ProjectReference)" Targets="GenerateFunctionsExtensionProject"
+      SkipNonexistentProjects="true" SkipNonexistentTargets="true" />
+  </Target>
+
+</Project>

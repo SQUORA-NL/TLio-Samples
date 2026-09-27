@@ -1,0 +1,158 @@
+booking:
+  bookingReference: BK-2026-40218
+  bookedOn: '2026-08-21'
+  incoterms: DAP
+  modeOfTransport: ROAD
+  requestedTransitDays: 3
+  consignor:
+    name: Vermeer Machinefabriek B.V.
+    eoriNumber: NL812345678
+    street: Scheepsbouwweg
+    houseNumber: 44
+    postalCode: 3089JW
+    city: Rotterdam
+    countryCode: NL
+  consignee:
+    name: Nordvik Industri AS
+    eoriNumber: NO998877665
+    street: Havnegata
+    houseNumber: 12
+    postalCode: '0150'
+    city: Oslo
+    countryCode: NO
+  packages:
+  - packageNumber: 1
+    packageType: KIST
+    grossWeightKg: 840
+    volumeM3: 1.92
+    marks: VM-40218-1
+  - packageNumber: 2
+    packageType: KIST
+    grossWeightKg: 620
+    volumeM3: 1.44
+    marks: VM-40218-2
+  - packageNumber: 3
+    packageType: PALLET
+    grossWeightKg: 310
+    volumeM3: 0.86
+    marks: VM-40218-3
+  goods:
+  - lineNumber: 1
+    hsCode: '8483.40'
+    description: Tandwielkasten voor industriele aandrijving
+    countryOfOrigin: NL
+    netWeightKg: 780
+    valueEur: 41250.00
+    tariffDescription: Machines en mechanische toestellen
+    dutyRatePercent: 0
+    licenceRequired: NEE
+  - lineNumber: 2
+    hsCode: '8482.10'
+    description: Kogellagers
+    countryOfOrigin: DE
+    netWeightKg: 240
+    valueEur: 8900.00
+    tariffDescription: Kogellagers
+    dutyRatePercent: 0
+    licenceRequired: NEE
+  - lineNumber: 3
+    hsCode: '2710.19'
+    description: Smeerolie, minerale basis
+    countryOfOrigin: NL
+    netWeightKg: 180
+    valueEur: 1450.00
+    tariffDescription: Aardolie en bereidingen daarvan
+    dutyRatePercent: 3.5
+    licenceRequired: JA
+manifest:
+  documentType: VRACHTBRIEF
+  manifestNumber: MF-BK-2026-40218
+  issuedOn: '2026-08-21'
+  modeOfTransport: ROAD
+  incoterms: DAP
+  route:
+    from: Rotterdam, NL
+    to: Oslo, NO
+    destinationName: Noorwegen
+  consignor:
+    name: Vermeer Machinefabriek B.V.
+    eoriNumber: NL812345678
+    addressLine: Scheepsbouwweg 44
+    postalCode: 3089JW
+    city: Rotterdam
+    countryCode: NL
+  consignee:
+    name: Nordvik Industri AS
+    eoriNumber: NO998877665
+    addressLine: Havnegata 12
+    postalCode: '0150'
+    city: Oslo
+    countryCode: NO
+  service:
+    level: PRIORITY
+    requestedTransitDays: 3
+    surchargePercent: 15
+  totals:
+    packageCount: 3
+    grossWeightKg: 1770
+    netWeightKg: 1200
+    volumeM3: 4.22
+    chargeableWeightKg: 1770
+    invoiceValueEur: 51600
+    currency: EUR
+  customs:
+    regime: UITVOER-EER
+    declarationType: EX-A
+    originProof: EUR.1
+    originCountries:
+    - NL
+    - DE
+    licence:
+      holdCode: VERGUNNING-VEREIST
+      holdText: Een of meer goederenregels vallen onder een vergunningplichtig tariefhoofdstuk. Zending niet vrijgeven voordat de uitvoervergunning is geregistreerd.
+      status: OPEN
+  packages:
+  - packageNumber: 1
+    packageType: KIST
+    grossWeightKg: 840
+    volumeM3: 1.92
+    marks: VM-40218-1
+  - packageNumber: 2
+    packageType: KIST
+    grossWeightKg: 620
+    volumeM3: 1.44
+    marks: VM-40218-2
+  - packageNumber: 3
+    packageType: PALLET
+    grossWeightKg: 310
+    volumeM3: 0.86
+    marks: VM-40218-3
+  goods:
+  - lineNumber: 1
+    hsCode: '8483.40'
+    description: Tandwielkasten voor industriele aandrijving
+    countryOfOrigin: NL
+    netWeightKg: 780
+    valueEur: 41250.00
+    tariffDescription: Machines en mechanische toestellen
+    dutyRatePercent: 0
+    licenceRequired: NEE
+  - lineNumber: 2
+    hsCode: '8482.10'
+    description: Kogellagers
+    countryOfOrigin: DE
+    netWeightKg: 240
+    valueEur: 8900.00
+    tariffDescription: Kogellagers
+    dutyRatePercent: 0
+    licenceRequired: NEE
+  - lineNumber: 3
+    hsCode: '2710.19'
+    description: Smeerolie, minerale basis
+    countryOfOrigin: NL
+    netWeightKg: 180
+    valueEur: 1450.00
+    tariffDescription: Aardolie en bereidingen daarvan
+    dutyRatePercent: 3.5
+    licenceRequired: JA
+...

@@ -1,0 +1,44 @@
+<ORU_R01>
+  <MSH>
+    <MSH.3>LABNET</MSH.3>
+    <MSH.4>Streeklaboratorium Noord</MSH.4>
+    <MSH.5>ZIS</MSH.5>
+    <MSH.6>Ziekenhuis West</MSH.6>
+    <MSH.7>20260821103500</MSH.7>
+    <MSH.9>ORU^R01</MSH.9>
+    <MSH.10>MSG00021</MSH.10>
+    <MSH.11>P</MSH.11>
+    <MSH.12>2.5.1</MSH.12>
+  </MSH>
+  <PID>
+    <PID.3>PAT-88231</PID.3>
+    <PID.5.1>Bakker</PID.5.1>
+    <PID.5.2>Lotte</PID.5.2>
+    <PID.7>19911104</PID.7>
+    <PID.8>F</PID.8>
+    <PID.19>123456782</PID.19>
+  </PID>
+  <OBR>
+    <OBR.2>ORD-55120</OBR.2>
+    <OBR.4>NIERFUNCTIE</OBR.4>
+    <OBR.7>20260821081500</OBR.7>
+    <OBR.16>Dr. A. Visser</OBR.16>
+    <OBR.25>F</OBR.25>
+  </OBR>
+  <OBX>
+    <OBX.2>NM</OBX.2><OBX.3>KREAT</OBX.3><OBX.5>78</OBX.5><OBX.6>umol/L</OBX.6>
+    <OBX.7>45-84</OBX.7><OBX.8>N</OBX.8><OBX.11>F</OBX.11><OBX.14>20260821081500</OBX.14>
+  </OBX>
+  <OBX>
+    <OBX.2>NM</OBX.2><OBX.3>EGFR</OBX.3><OBX.5>89</OBX.5><OBX.6>mL/min/1.73m2</OBX.6>
+    <OBX.7>&gt;60</OBX.7><OBX.8>N</OBX.8><OBX.11>F</OBX.11><OBX.14>20260821081500</OBX.14>
+  </OBX>
+  <OBX>
+    <OBX.2>NM</OBX.2><OBX.3>UREUM</OBX.3><OBX.5>9.8</OBX.5><OBX.6>mmol/L</OBX.6>
+    <OBX.7>2.5-7.5</OBX.7><OBX.8>H</OBX.8><OBX.11>F</OBX.11><OBX.14>20260821081500</OBX.14>
+  </OBX>
+  <OBX>
+    <OBX.2>NM</OBX.2><OBX.3>KALIUM</OBX.3><OBX.5>5.6</OBX.5><OBX.6>mmol/L</OBX.6>
+    <OBX.7>3.5-5.0</OBX.7><OBX.8>HH</OBX.8><OBX.11>F</OBX.11><OBX.14>20260821081500</OBX.14>
+  </OBX>
+</ORU_R01>

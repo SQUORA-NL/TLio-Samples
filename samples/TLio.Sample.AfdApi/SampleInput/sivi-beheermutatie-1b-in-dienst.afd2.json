@@ -1,0 +1,317 @@
+{
+ "_afdIssues": [
+  {
+   "issue": "unmappedLabels",
+   "attempted": "map to an AFD 2.0 attribute or entity",
+   "reason": "key not in the embedded mapping table; moved to the element's _afdQuarantine (first 24 per message), any further ones kept in place",
+   "labels": [
+    "AL_DATACAT",
+    "AL_FUNCTIE",
+    "WN-EMAILW",
+    "WN_HUWELIJK"
+   ]
+  },
+  {
+   "issue": "typeConversion",
+   "path": "$.party[2].retirementDate",
+   "value": "2030",
+   "attempted": "J/N -> boolean, EEJJMMDD -> date, UUMM -> time, numeric string -> number",
+   "reason": "the value does not have the AFD 1.0 notation the type rule expects; kept as string"
+  },
+  {
+   "issue": "typeConversion",
+   "path": "$.partyDetails[0].startDatePermanentEmployment",
+   "value": "1986",
+   "attempted": "J/N -> boolean, EEJJMMDD -> date, UUMM -> time, numeric string -> number",
+   "reason": "the value does not have the AFD 1.0 notation the type rule expects; kept as string"
+  },
+  {
+   "issue": "relationWithoutReference",
+   "attempted": "child.<parentEntity>Ref = parent.refKey",
+   "reason": "the child's entityType defines no reference attribute for this parent entity; the nesting is recorded here and dropped from the output",
+   "path": "$.condition[0]._iss",
+   "parent": {
+    "entity": "party",
+    "ref": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN"
+   }
+  }
+ ],
+ "commonTechnical": [
+  {
+   "entityType": "default",
+   "processingCode": "0",
+   "_afdQuarantine": {
+    "AL_DATACAT": "008",
+    "AL_FUNCTIE": "09"
+   }
+  },
+  {
+   "entityType": "default",
+   "processingCode": "0",
+   "_afdQuarantine": {
+    "AL_DATACAT": "009",
+    "AL_FUNCTIE": "01"
+   }
+  },
+  {
+   "entityType": "default",
+   "processingCode": "0",
+   "_afdQuarantine": {
+    "AL_DATACAT": "008",
+    "AL_FUNCTIE": "01"
+   },
+   "viewType": "00100"
+  }
+ ],
+ "condition": [
+  {
+   "entityType": "employmentConditions",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN.AW",
+   "processingCode": "0",
+   "anwInsurance": true,
+   "aovInsurance": true,
+   "deathRiskInsurance": true,
+   "orphansPension": true,
+   "retirementBenefit": true,
+   "survivorsPension": true,
+   "waoGapInsurance": true,
+   "waoSurplusInsurance": true
+  }
+ ],
+ "financialInformation": [
+  {
+   "entityType": "fund",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Contract.PP.FO[0]",
+   "processingCode": "0",
+   "sequenceNumber": 1,
+   "policyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Contract.PP"
+   ],
+   "fundsPercentageRatio": 50,
+   "fundType": "001"
+  },
+  {
+   "entityType": "fund",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Contract.PP.FO[1]",
+   "processingCode": "0",
+   "sequenceNumber": 2,
+   "policyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Contract.PP"
+   ],
+   "fundsPercentageRatio": 50,
+   "fundType": "003"
+  }
+ ],
+ "masterAgreement": [
+  {
+   "entityType": "framework",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Contract.RC",
+   "processingCode": "0",
+   "contractNumber": "Raamcontract"
+  }
+ ],
+ "party": [
+  {
+   "entityType": "employer",
+   "refKey": "Groepdocument.Groep.Groepmantel.WG",
+   "processingCode": "4",
+   "city": "Plaats",
+   "country": "NL",
+   "houseNumber": 10,
+   "houseNumberAddition": "a",
+   "postalCode": "3344XM",
+   "street": "Bedrijfsstraat",
+   "relationNumber": "123456789",
+   "secondPartOfName": "Vervolg bedrijfsnaam",
+   "surname": "Bedrijfsnaam",
+   "vatNumber": "1234567890",
+   "employerNumber": "12345678"
+  },
+  {
+   "entityType": "contact",
+   "refKey": "Groepdocument.Groep.Groepmantel.WG.KP",
+   "processingCode": "4",
+   "sequenceNumber": 1,
+   "partyRef": [
+    "Groepdocument.Groep.Groepmantel.WG"
+   ],
+   "surname": "Contactpersoon",
+   "prefixes": "van der",
+   "initials": "J.",
+   "mobile": "0612345678",
+   "firstName": "John",
+   "salutation": "De heer",
+   "workPhoneNumber": "0301234567",
+   "emailWork": "contact@hotmail.nl"
+  },
+  {
+   "entityType": "employee",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN",
+   "processingCode": "0",
+   "city": "Werknemerplaats",
+   "country": "NL",
+   "effectiveDate": "2008-02-01",
+   "houseNumber": 13,
+   "houseNumberAddition": "b",
+   "postalCode": "1234WW",
+   "street": "Werknemerstraat",
+   "_afdQuarantine": {
+    "WN-EMAILW": "jaap@werk.nl",
+    "WN_HUWELIJK": "N"
+   },
+   "identificationDocumentIssueDate": "1984-02-02",
+   "identificationDocumentWhereIssued": "Afgiteplaats",
+   "identificationDocumentType": "Q",
+   "collectionAccountNumber": null,
+   "checkAccount": null,
+   "relationNumber": "123456789",
+   "dateOfDeath": null,
+   "applicationReason": "21",
+   "birthDate": "1964-02-13",
+   "telephoneNumber": "0701234567",
+   "email": "jaap@thuis.nl",
+   "surname": "Werknemer",
+   "prefixes": "van",
+   "initials": "J.",
+   "gender": "M",
+   "mobile": "0612346789",
+   "firstName": "Jaap",
+   "employeeNumber": "WG12345678",
+   "personalTitles": "mr.",
+   "salutation": "De heer",
+   "socialSecurityNumber": "123456789",
+   "workPhoneNumber": "0702345678",
+   "isoNationality": "NL",
+   "maritalStatus": "1",
+   "numberOfChildren": 2,
+   "familyComposition": "I",
+   "maritalStatusDate": "1984-05-05",
+   "uwvRegistrationNumber": "UWV123456789",
+   "retirementDate": "2030",
+   "pensionModificationConsequencesKnown": true
+  },
+  {
+   "entityType": "partner",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN.SP",
+   "processingCode": "0",
+   "partyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN"
+   ],
+   "birthDate": "1966-06-07",
+   "surname": "Werknemerpartner",
+   "initials": "P.",
+   "gender": "V"
+  },
+  {
+   "entityType": "child",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN.KN[0]",
+   "processingCode": "0",
+   "sequenceNumber": 1,
+   "partyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN"
+   ],
+   "birthDate": "1988-01-03",
+   "surname": "Eerstekind",
+   "prefixes": null,
+   "initials": "E"
+  },
+  {
+   "entityType": "child",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN.KN[1]",
+   "processingCode": "0",
+   "sequenceNumber": 2,
+   "partyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN"
+   ],
+   "birthDate": "1989-01-03",
+   "surname": "Tweedekind",
+   "prefixes": null,
+   "initials": "T"
+  },
+  {
+   "entityType": "contact",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN.KP",
+   "processingCode": "0",
+   "partyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN"
+   ],
+   "surname": "Medewerkercontact",
+   "prefixes": null,
+   "initials": "M",
+   "mobile": "06123453678",
+   "firstName": "Martijn",
+   "salutation": "De heer",
+   "workPhoneNumber": "070123456778",
+   "emailWork": "martijn@werk.nl"
+  },
+  {
+   "entityType": "policyHolder",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Contract.PP.VP",
+   "processingCode": "0",
+   "city": "Werknemerplaats",
+   "country": "NL",
+   "houseNumber": 13,
+   "houseNumberAddition": "b",
+   "locationDescription": null,
+   "postalCode": "1234WW",
+   "street": "Werknemerstraat ",
+   "policyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Contract.PP"
+   ],
+   "secondPartOfName": null,
+   "birthDate": "1964-02-13",
+   "surname": "Werknemer",
+   "prefixes": "van",
+   "initials": "J",
+   "gender": "M",
+   "personalTitles": "mr."
+  }
+ ],
+ "partyDetails": [
+  {
+   "entityType": "income",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN.IK",
+   "processingCode": "0",
+   "partyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN"
+   ],
+   "descriptionOfOccupation": "Administrateur",
+   "currentlyEmployed": true,
+   "employmentType": "V",
+   "grossAnnualIncome": 34000,
+   "occupation": "1234",
+   "parttimePercentage": 100,
+   "pensionCalculationBaseFullTimeContract": "003",
+   "startDatePermanentEmployment": "1986"
+  },
+  {
+   "entityType": "health",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN.GV",
+   "processingCode": "0",
+   "partyRef": [
+    "Groepdocument.Groep.Deelnemerpakket.Deelnemermantel.WN"
+   ],
+   "weightInKg": 86,
+   "lengthInCm": 187,
+   "leftOrRightHanded": "R"
+  }
+ ],
+ "policy": [
+  {
+   "entityType": "policyDetails",
+   "refKey": "Groepdocument.Groep.Deelnemerpakket.Contract.PP",
+   "processingCode": "0",
+   "effectiveDate": "1983-01-01",
+   "contractNumber": null,
+   "productCode": "Pensioen",
+   "premiumBaseAmount": 34000,
+   "externalIndicative": "1234567890",
+   "paymentTermInMonths": 12,
+   "businessLine": "100",
+   "retirementAgeInYears": 65,
+   "claimDate": "2030-01-01",
+   "pensionAccruePercentage": 1.75,
+   "blanketAccountApplicable": true
+  }
+ ]
+}

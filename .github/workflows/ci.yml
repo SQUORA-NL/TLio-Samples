@@ -1,0 +1,130 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      tlio_version:
+        description: 'TLio package version to build against (empty = newest 1.x on nuget.org).'
+        type: string
+        required: false
+        default: ''
+  # The samples float to the newest TLio package, so a TLio release can break them without a
+  # single commit landing here. The nightly run is what notices.
+  schedule:
+    - cron: '17 4 * * *'
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TLIO_VERSION: ${{ inputs.tlio_version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore ${TLIO_VERSION:+-p:TLioVersion=$TLIO_VERSION}
+
+      - name: Which TLio
+        run: |
+          version=$(grep -o '"TLio.Core/[^"]*"' samples/TLio.Sample.Cli/obj/project.assets.json | head -1 | tr -d '"' | cut -d/ -f2)
+          echo "Building against TLio $version"
+          echo "### Built against TLio \`$version\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build
+        run: dotnet build --no-restore -c Release ${TLIO_VERSION:+-p:TLioVersion=$TLIO_VERSION}
+
+      - name: Test
+        run: dotnet test --no-build -c Release --logger "trx" --results-directory ./test-results
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./test-results
+
+  # The Docker sample is not something `dotnet build` exercises: its Dockerfile can fall behind
+  # the project and nothing else notices. Build the image, then check it actually answers — an
+  # image that builds but applies no script is the other half of the failure.
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the sample image
+        run: |
+          docker build -f samples/TLio.Sample.DockerPlugin/Dockerfile \
+            --build-arg TLIO_VERSION=${{ inputs.tlio_version }} \
+            -t tlio-sample-docker-plugin:ci .
+
+      - name: Start it
+        run: |
+          docker run -d --name tlio-ci -p 5000:8080 tlio-sample-docker-plugin:ci
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:5000/health >/dev/null && exit 0
+            sleep 1
+          done
+          echo "::error::Container did not become healthy within 60s."
+          docker logs tlio-ci
+          exit 1
+
+      # One transform per format. All three must actually change the document: the endpoint
+      # used to ignore its {format} parameter and hand every request to the JSON engine, which
+      # answered `success: true` while leaving XML and YAML documents untouched.
+      - name: Smoke-test /transform
+        run: |
+          set -euo pipefail
+
+          check() {
+            local format="$1" payload="$2" expect="$3"
+            local got
+            got=$(curl -sf -X POST "http://localhost:5000/transform/$format" \
+                    -H 'Content-Type: application/json' -d "$payload")
+            if ! grep -qF "$expect" <<<"$got"; then
+              echo "::error::/transform/$format did not apply the script."
+              echo "  expected to contain: $expect"
+              echo "  got:                 $got"
+              return 1
+            fi
+            echo "/transform/$format OK"
+          }
+
+          check json \
+            '{"input":{"city":"Utrecht"},"script":[{"command":"add","path":"$.country","value":"NL"}]}' \
+            '"country":"NL"'
+
+          check xml \
+            '{"input":"<order><city>Utrecht</city></order>","script":[{"command":"add","path":"/order/country","value":"NL"}]}' \
+            '<country>NL</country>'
+
+          check yaml \
+            '{"input":"city: Utrecht","script":[{"command":"add","path":"$.country","value":"NL"}]}' \
+            'country: NL'
+
+          # An unknown format must be rejected, not silently treated as JSON.
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:5000/transform/toml \
+                   -H 'Content-Type: application/json' -d '{"input":{},"script":[]}')
+          if [[ "$code" != "400" ]]; then
+            echo "::error::/transform/toml returned $code, expected 400."
+            exit 1
+          fi
+          echo "/transform/toml rejected as expected"
+
+      - name: Container logs
+        if: failure()
+        run: docker logs tlio-ci
+
+      - name: Stop it
+        if: always()
+        run: docker rm -f tlio-ci >/dev/null 2>&1 || true

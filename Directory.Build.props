@@ -1,0 +1,32 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <WarningsNotAsErrors>CS8600;CS8602;CS8604;CS8618</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <!--
+    Which TLio the samples build against.
+
+    The samples consume TLio exactly the way anyone else does: as NuGet packages from nuget.org,
+    never as source. The default is a floating range, so every restore picks up the newest
+    TLio 1.x published — the automatic previews from TLio's main branch included — and the
+    samples always show the library as it is today. The scheduled CI run in this repository is
+    what notices when a new TLio breaks one of them.
+
+    Pin a specific release for a reproducible build:
+
+        dotnet build -p:TLioVersion=1.1.0
+
+    Only the TLio packages float; every third-party package stays pinned in its own csproj.
+  -->
+  <PropertyGroup>
+    <TLioVersion Condition="'$(TLioVersion)' == ''">1.*-*</TLioVersion>
+    <!-- NU1603: "depends on X (>= 1.*-*) but X 1.1.0-preview.3 was resolved" — that is the point
+         of a floating range, not a warning. -->
+    <NoWarn>$(NoWarn);NU1603</NoWarn>
+  </PropertyGroup>
+</Project>
