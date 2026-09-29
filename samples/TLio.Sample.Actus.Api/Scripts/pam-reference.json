@@ -1,0 +1,294 @@
+[
+  { "command": "add", "path": "$.premiumDiscountAtIED", "value": 0,
+    "title": "Defaults",
+    "description": "Terms the ACTUS PAM contract may leave out. Everything else is read only when its own feature is switched on (a cycle, a purchase date, ...)." },
+  { "command": "add", "path": "$.accruedInterest", "value": 0 },
+  { "command": "add", "path": "$.feeRate", "value": 0 },
+  { "command": "add", "path": "$.feeAccrued", "value": 0 },
+  { "command": "add", "path": "$.feeBasis", "value": "N" },
+  { "command": "add", "path": "$.rateMultiplier", "value": 1 },
+  { "command": "add", "path": "$.rateSpread", "value": 0 },
+  { "command": "add", "path": "$.endOfMonth", "value": false },
+  { "command": "add", "path": "$.businessDayConvention", "value": "NOS" },
+  { "command": "add", "path": "$.calendar", "value": "NC" },
+
+  { "command": "put", "path": "$.w.role", "value": "=if(=equals($.contractRole,'RPA'),1,-1)",
+    "title": "Derived switches" },
+  { "command": "put", "path": "$.w.bdActive", "value": "=and(=equals($.calendar,'MF'),=notEquals($.businessDayConvention,'NOS'))" },
+  { "command": "put", "path": "$.w.bdKind", "value": "=replace(=replace($.businessDayConvention,'SC',''),'CS','')" },
+  { "command": "put", "path": "$.w.bdShiftCalc", "value": "=startsWith($.businessDayConvention,'SC')" },
+  { "command": "put", "path": "$.w.hasPurchase", "value": "=exists($.purchaseDate)" },
+  { "command": "put", "path": "$.w.purchase", "value": "=if(=exists($.purchaseDate),$.purchaseDate,'1900-01-01')" },
+  { "command": "put", "path": "$.w.hasTermination", "value": "=exists($.terminationDate)" },
+  { "command": "put", "path": "$.w.termination", "value": "=if(=exists($.terminationDate),$.terminationDate,'2999-12-31')" },
+  { "command": "put", "path": "$.w.hasCap", "value": "=exists($.capitalizationEndDate)" },
+  { "command": "put", "path": "$.w.cap", "value": "=if(=exists($.capitalizationEndDate),$.capitalizationEndDate,'1900-01-01')" },
+
+  { "command": "put", "path": "$.w.sched",
+    "title": "The three cycles",
+    "description": "Interest payment, rate reset and fee. A missing cycle is 'anchor and maturity only' (a single 1000-year period), which is how ACTUS treats an interest schedule without a cycle; the interest schedule is always on and its anchor defaults to the initial exchange date. Rate reset never adds the maturity date.",
+    "value": [
+      { "tag": "IP",
+        "on": true,
+        "anchor": "=if(=exists($.interestPaymentAnchor),$.interestPaymentAnchor,$.initialExchangeDate)",
+        "count": "=if(=exists($.interestPaymentCycle),$.interestPaymentCycle.count,1000)",
+        "unit": "=if(=exists($.interestPaymentCycle),$.interestPaymentCycle.unit,'years')",
+        "longStub": "=if(=exists($.interestPaymentCycle),$.interestPaymentCycle.longStub,false)",
+        "includeEnd": true },
+      { "tag": "RR",
+        "on": "=exists($.rateResetCycle)",
+        "anchor": "=if(=exists($.rateResetAnchor),$.rateResetAnchor,$.initialExchangeDate)",
+        "count": "=if(=exists($.rateResetCycle),$.rateResetCycle.count,1000)",
+        "unit": "=if(=exists($.rateResetCycle),$.rateResetCycle.unit,'years')",
+        "longStub": "=if(=exists($.rateResetCycle),$.rateResetCycle.longStub,false)",
+        "includeEnd": false },
+      { "tag": "FP",
+        "on": "=exists($.feeCycle)",
+        "anchor": "=if(=exists($.feeAnchor),$.feeAnchor,$.initialExchangeDate)",
+        "count": "=if(=exists($.feeCycle),$.feeCycle.count,1000)",
+        "unit": "=if(=exists($.feeCycle),$.feeCycle.unit,'years')",
+        "longStub": "=if(=exists($.feeCycle),$.feeCycle.longStub,false)",
+        "includeEnd": true }
+    ] },
+
+  { "command": "put", "path": "$.w.raw", "value": "",
+    "title": "Schedules: one 'TYPE|date' token per event" },
+  { "command": "put", "path": "$.w.emit", "value": "" },
+  { "command": "put", "path": "$.w.et", "value": "" },
+  { "command": "forEach", "path": "$.w.sched", "commands": [
+      { "command": "put", "path": "$.w.tag", "value": "@.tag" },
+      { "command": "put", "path": "$.w.on", "value": "@.on" },
+      { "command": "put", "path": "$.w.anchor", "value": "@.anchor" },
+      { "command": "put", "path": "$.w.count", "value": "@.count" },
+      { "command": "put", "path": "$.w.unit", "value": "@.unit" },
+      { "command": "put", "path": "$.w.longStub", "value": "@.longStub" },
+      { "command": "put", "path": "$.w.inc", "value": "=if(@.includeEnd,1,0)" },
+      { "command": "ifElse", "condition": "=fetch($.w.on)",
+        "ifScript": [
+          { "command": "put", "path": "$.w.eom",
+            "value": "=and($.endOfMonth,=and(=equals($.w.anchor,=endOfMonth($.w.anchor)),=notEquals($.w.unit,'days')))" },
+          { "command": "put", "path": "$.w.k", "value": 0 },
+          { "command": "put", "path": "$.w.cur", "value": "$.w.anchor" },
+          { "command": "while", "condition": "=lessThan($.w.cur,$.maturityDate)", "maxIterations": 5000,
+            "commands": [
+              { "command": "put", "path": "$.w.nxt",
+                "value": "=dateAdd($.w.anchor,=multiply($.w.count,=sum($.w.k,1)),$.w.unit)" },
+              { "command": "ifElse", "condition": "=fetch($.w.eom)",
+                "ifScript": [ { "command": "set", "path": "$.w.nxt", "value": "=endOfMonth($.w.nxt)" } ] },
+              { "command": "put", "path": "$.w.skip",
+                "value": "=and($.w.longStub,=and(=greaterThan($.w.nxt,$.maturityDate),=greaterThan(=sum($.w.k,1,$.w.inc),2)))",
+                "description": "Long stub: when the schedule does not land on maturity, the last regular date is dropped so the final period is long. Only when more than two dates remain." },
+              { "command": "ifElse", "condition": "=not($.w.skip)",
+                "ifScript": [
+                  { "command": "set", "path": "$.w.emit", "value": "=fetch($.w.cur)" },
+                  { "command": "set", "path": "$.w.et",
+                    "value": "=if(=and(=equals($.w.tag,'IP'),=and($.w.hasCap,=lessOrEqual($.w.emit,$.w.cap))),'IPCI',$.w.tag)" },
+                  { "command": "set", "path": "$.w.raw",
+                    "value": "=concat($.w.raw,=if(=equals($.w.raw,''),'',','),$.w.et,'|',$.w.emit)" }
+                ] },
+              { "command": "set", "path": "$.w.cur", "value": "=fetch($.w.nxt)" },
+              { "command": "set", "path": "$.w.k", "value": "=sum($.w.k,1)" }
+            ] },
+          { "command": "ifElse", "condition": "=equals($.w.inc,1)",
+            "ifScript": [
+              { "command": "set", "path": "$.w.emit", "value": "=fetch($.maturityDate)" },
+              { "command": "set", "path": "$.w.et",
+                "value": "=if(=and(=equals($.w.tag,'IP'),=and($.w.hasCap,=lessOrEqual($.w.emit,$.w.cap))),'IPCI',$.w.tag)" },
+              { "command": "set", "path": "$.w.raw",
+                "value": "=concat($.w.raw,=if(=equals($.w.raw,''),'',','),$.w.et,'|',$.w.emit)" }
+            ] }
+        ] }
+  ] },
+
+  { "command": "set", "path": "$.w.raw", "value": "=concat($.w.raw,',IED|',$.initialExchangeDate,',MD|',$.maturityDate)",
+    "title": "Single events: IED, MD, purchase, termination, capitalisation end" },
+  { "command": "ifElse", "condition": "=fetch($.w.hasPurchase)",
+    "ifScript": [ { "command": "set", "path": "$.w.raw", "value": "=concat($.w.raw,',PRD|',$.purchaseDate)" } ] },
+  { "command": "ifElse", "condition": "=fetch($.w.hasTermination)",
+    "ifScript": [ { "command": "set", "path": "$.w.raw", "value": "=concat($.w.raw,',IP|',$.terminationDate,',TD|',$.terminationDate)" } ] },
+  { "command": "ifElse", "condition": "=and($.w.hasCap,=not(=contains(=concat(',',$.w.raw,','),=concat(',IPCI|',$.w.cap,','))))",
+    "ifScript": [ { "command": "set", "path": "$.w.raw", "value": "=concat($.w.raw,',IPCI|',$.w.cap)" } ] },
+
+  { "command": "put", "path": "$.w.rawArr", "value": "=split($.w.raw,',')",
+    "title": "Sort keys: date | priority | type | scheduled date | calculation date",
+    "description": "Event time is the scheduled date moved by the business-day convention. Same-day order is ACTUS priority: IED, IP, IPCI, PRD, TD, RR, FP, MD. Events before the status date, or after a termination, are dropped here." },
+  { "command": "put", "path": "$.w.keys", "value": "" },
+  { "command": "put", "path": "$.w.tok", "value": "" },
+  { "command": "forEach", "path": "$.w.rawArr", "commands": [
+      { "command": "set", "path": "$.w.tok", "value": "=fetch(=scriptpath())" },
+      { "command": "put", "path": "$.w.tf", "value": "=split($.w.tok,'|')" },
+      { "command": "put", "path": "$.w.ty", "value": "$.w.tf[0]" },
+      { "command": "put", "path": "$.w.sd", "value": "$.w.tf[1]" },
+      { "command": "put", "path": "$.w.time", "value": "=substring($.w.sd,0,10)" },
+      { "command": "put", "path": "$.w.calc",
+        "value": "=if(=greaterOrEqual(=datePart($.w.sd,'hour'),12),=dateAdd(=substring($.w.sd,0,10),1,'days'),=substring($.w.sd,0,10))",
+        "description": "Calculation date. A time of day of 12:00 or later counts as the next day (the reference case that matures at 23:59:59 accrues a full day)." },
+      { "command": "ifElse", "condition": "=fetch($.w.bdActive)",
+        "ifScript": [
+          { "command": "put", "path": "$.w.dow", "value": "=datePart($.w.time,'dayOfWeek')" },
+          { "command": "put", "path": "$.w.fwd",
+            "value": "=dateAdd($.w.time,=if(=greaterThan($.w.dow,5),=subtract(8,$.w.dow),0),'days')" },
+          { "command": "put", "path": "$.w.prc",
+            "value": "=dateAdd($.w.time,=if(=greaterThan($.w.dow,5),=subtract(5,$.w.dow),0),'days')" },
+          { "command": "put", "path": "$.w.shifted",
+            "value": "=if(=equals($.w.bdKind,'F'),$.w.fwd,=if(=equals($.w.bdKind,'P'),$.w.prc,=if(=equals($.w.bdKind,'MF'),=if(=notEquals(=datePart($.w.fwd,'month'),=datePart($.w.time,'month')),$.w.prc,$.w.fwd),=if(=notEquals(=datePart($.w.prc,'month'),=datePart($.w.time,'month')),$.w.fwd,$.w.prc))))",
+            "description": "Monday-to-Friday calendar. F following, P preceding, MF/MP modified: fall back to the other direction when the shift would cross a month end." },
+          { "command": "set", "path": "$.w.time", "value": "=fetch($.w.shifted)" },
+          { "command": "ifElse", "condition": "=fetch($.w.bdShiftCalc)",
+            "ifScript": [ { "command": "set", "path": "$.w.calc", "value": "=fetch($.w.time)" } ] }
+        ] },
+      { "command": "put", "path": "$.w.prio",
+        "value": "=if(=equals($.w.ty,'IED'),0,=if(=equals($.w.ty,'IP'),1,=if(=equals($.w.ty,'IPCI'),2,=if(=equals($.w.ty,'PRD'),3,=if(=equals($.w.ty,'TD'),4,=if(=equals($.w.ty,'RR'),5,=if(=equals($.w.ty,'FP'),7,9)))))))" },
+      { "command": "put", "path": "$.w.drop",
+        "value": "=or(=lessThan($.w.time,$.statusDate),=and($.w.hasTermination,=greaterThan($.w.time,$.w.termination)))" },
+      { "command": "ifElse", "condition": "=not($.w.drop)",
+        "ifScript": [
+          { "command": "set", "path": "$.w.keys",
+            "value": "=concat($.w.keys,=if(=equals($.w.keys,''),'',','),$.w.time,'|',$.w.prio,'|',$.w.ty,'|',$.w.sd,'|',$.w.calc)" }
+        ] }
+  ] },
+  { "command": "put", "path": "$.events", "value": "=sort(=split($.w.keys,','))" },
+
+  { "command": "put", "path": "$.w.st.notional",
+    "value": "=if(=greaterThan($.initialExchangeDate,$.statusDate),0,=multiply($.w.role,$.notionalPrincipal))",
+    "title": "Initial state",
+    "description": "A contract that started before the status date is already running: notional and rate are set, its IED is not replayed. Interest accrued before the status date is taken from the accruedInterest term (deriving it from earlier interest dates is not implemented)." },
+  { "command": "put", "path": "$.w.st.rate",
+    "value": "=if(=greaterThan($.initialExchangeDate,$.statusDate),0,$.nominalInterestRate)" },
+  { "command": "put", "path": "$.w.st.accrued", "value": "=if(=equals($.nominalInterestRate,0),0,$.accruedInterest)" },
+  { "command": "put", "path": "$.w.st.fee", "value": "=if(=equals($.feeRate,0),0,$.feeAccrued)" },
+  { "command": "put", "path": "$.w.st.sSched", "value": "$.statusDate" },
+  { "command": "put", "path": "$.w.st.sCalc", "value": "$.statusDate" },
+
+  { "command": "put", "path": "$.w.key", "value": "",
+    "title": "Evaluate the events in order" },
+  { "command": "put", "path": "$.w.pay", "value": 0 },
+  { "command": "put", "path": "$.w.yf", "value": 0 },
+  { "command": "put", "path": "$.w.mr", "value": 0 },
+  { "command": "put", "path": "$.w.mrT", "value": "" },
+  { "command": "put", "path": "$.w.ts", "value": "" },
+  { "command": "put", "path": "$.w.val", "value": 0 },
+  { "command": "forEach", "path": "$.events", "commands": [
+      { "command": "set", "path": "$.w.key", "value": "=fetch(=scriptpath())" },
+      { "command": "put", "path": "$.w.f", "value": "=split($.w.key,'|')" },
+      { "command": "put", "path": "$.w.date", "value": "$.w.f[0]" },
+      { "command": "put", "path": "$.w.ty", "value": "$.w.f[2]" },
+      { "command": "put", "path": "$.w.sd", "value": "$.w.f[3]" },
+      { "command": "put", "path": "$.w.calc", "value": "$.w.f[4]" },
+      { "command": "put", "path": "$.w.acc",
+        "value": "=or(=equals($.w.ty,'IP'),=or(=equals($.w.ty,'IPCI'),=or(=equals($.w.ty,'RR'),=equals($.w.ty,'FP'))))",
+        "description": "IP, IPCI, RR and FP first accrue interest (and fee) from the previous event." },
+
+      { "command": "set", "path": "$.w.yf", "value": 0 },
+      { "command": "ifElse", "condition": "=fetch($.w.acc)",
+        "ifScript": [
+          { "command": "put", "path": "$.w.ys", "value": "$.w.st.sCalc" },
+          { "command": "put", "path": "$.w.ye", "value": "$.w.calc" },
+          { "command": "ifElse", "condition": "=equals($.dayCountConvention,'AA')",
+            "ifScript": [
+              { "command": "put", "path": "$.w.y1", "value": "=datePart($.w.ys,'year')",
+                "description": "Actual/Actual ISDA: each calendar year's days over that year's length. TLio's dayCountFraction has A360, A365 and 30E360 only." },
+              { "command": "put", "path": "$.w.y2", "value": "=datePart($.w.ye,'year')" },
+              { "command": "put", "path": "$.w.dim1",
+                "value": "=dateDiff(=concat($.w.y1,'-01-01'),=concat(=sum($.w.y1,1),'-01-01'),'days')" },
+              { "command": "put", "path": "$.w.dim2",
+                "value": "=dateDiff(=concat($.w.y2,'-01-01'),=concat(=sum($.w.y2,1),'-01-01'),'days')" },
+              { "command": "ifElse", "condition": "=equals($.w.y1,$.w.y2)",
+                "ifScript": [
+                  { "command": "set", "path": "$.w.yf", "value": "=divide(=dateDiff($.w.ys,$.w.ye,'days'),$.w.dim1)" }
+                ],
+                "elseScript": [
+                  { "command": "set", "path": "$.w.yf",
+                    "value": "=sum(=divide(=dateDiff($.w.ys,=concat(=sum($.w.y1,1),'-01-01'),'days'),$.w.dim1),=divide(=dateDiff(=concat($.w.y2,'-01-01'),$.w.ye,'days'),$.w.dim2),=subtract(=subtract($.w.y2,$.w.y1),1))" }
+                ] }
+            ],
+            "elseScript": [
+              { "command": "set", "path": "$.w.yf", "value": "=dayCountFraction($.w.ys,$.w.ye,$.dayCountConvention)" }
+            ] }
+        ] },
+
+      { "command": "set", "path": "$.w.pay", "value": 0 },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'IED')",
+        "ifScript": [ { "command": "set", "path": "$.w.pay",
+          "value": "=multiply($.w.role,-1,=sum($.notionalPrincipal,$.premiumDiscountAtIED))" } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'IP')",
+        "ifScript": [ { "command": "set", "path": "$.w.pay",
+          "value": "=sum($.w.st.accrued,=multiply($.w.yf,$.w.st.rate,$.w.st.notional))" } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'MD')",
+        "ifScript": [ { "command": "set", "path": "$.w.pay", "value": "=fetch($.w.st.notional)" } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'PRD')",
+        "ifScript": [ { "command": "set", "path": "$.w.pay",
+          "value": "=multiply($.w.role,-1,$.priceAtPurchaseDate)" } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'TD')",
+        "ifScript": [ { "command": "set", "path": "$.w.pay",
+          "value": "=multiply($.w.role,$.priceAtTerminationDate)" } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'FP')",
+        "ifScript": [ { "command": "set", "path": "$.w.pay",
+          "value": "=if(=equals($.feeBasis,'A'),=multiply($.w.role,$.feeRate),=sum($.w.st.fee,=multiply($.w.st.notional,$.feeRate,$.w.yf)))" } ] },
+
+      { "command": "ifElse", "condition": "=and($.w.acc,=and(=lessThan($.w.st.sSched,$.w.sd),=notEquals($.w.st.notional,0)))",
+        "ifScript": [
+          { "command": "ifElse", "condition": "=notEquals($.w.st.rate,0)",
+            "ifScript": [ { "command": "set", "path": "$.w.st.accrued",
+              "value": "=sum($.w.st.accrued,=multiply($.w.st.rate,$.w.st.notional,$.w.yf))" } ] },
+          { "command": "ifElse", "condition": "=and(=notEquals($.feeRate,0),=equals($.feeBasis,'N'))",
+            "ifScript": [ { "command": "set", "path": "$.w.st.fee",
+              "value": "=sum($.w.st.fee,=multiply($.feeRate,$.w.st.notional,$.w.yf))" } ] }
+        ] },
+      { "command": "set", "path": "$.w.st.sSched", "value": "=fetch($.w.sd)" },
+      { "command": "set", "path": "$.w.st.sCalc", "value": "=fetch($.w.calc)" },
+
+      { "command": "ifElse", "condition": "=equals($.w.ty,'IED')",
+        "ifScript": [
+          { "command": "set", "path": "$.w.st.notional", "value": "=multiply($.w.role,$.notionalPrincipal)" },
+          { "command": "set", "path": "$.w.st.rate", "value": "=fetch($.nominalInterestRate)" } ] },
+      { "command": "ifElse", "condition": "=or(=equals($.w.ty,'MD'),=equals($.w.ty,'TD'))",
+        "ifScript": [
+          { "command": "set", "path": "$.w.st.notional", "value": 0 },
+          { "command": "set", "path": "$.w.st.accrued", "value": 0 } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'IP')",
+        "ifScript": [ { "command": "set", "path": "$.w.st.accrued", "value": 0 } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'IPCI')",
+        "ifScript": [
+          { "command": "set", "path": "$.w.st.notional", "value": "=sum($.w.st.notional,$.w.st.accrued)" },
+          { "command": "set", "path": "$.w.st.accrued", "value": 0 } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'FP')",
+        "ifScript": [ { "command": "set", "path": "$.w.st.fee", "value": 0 } ] },
+      { "command": "ifElse", "condition": "=equals($.w.ty,'RR')",
+        "ifScript": [
+          { "command": "set", "path": "$.w.mr", "value": 0,
+            "description": "Market rate: the latest observation at or before the event date. New rate = market rate x multiplier + spread." },
+          { "command": "set", "path": "$.w.mrT", "value": "1900-01-01" },
+          { "command": "forEach", "path": "$.marketData", "commands": [
+              { "command": "set", "path": "$.w.ts", "value": "@.timestamp" },
+              { "command": "set", "path": "$.w.val", "value": "@.value" },
+              { "command": "ifElse", "condition": "=and(=lessOrEqual($.w.ts,$.w.date),=greaterThan($.w.ts,$.w.mrT))",
+                "ifScript": [
+                  { "command": "set", "path": "$.w.mr", "value": "=fetch($.w.val)" },
+                  { "command": "set", "path": "$.w.mrT", "value": "=fetch($.w.ts)" } ] }
+          ] },
+          { "command": "set", "path": "$.w.st.rate",
+            "value": "=sum(=multiply($.w.mr,$.rateMultiplier),$.rateSpread)" } ] },
+
+      { "command": "set", "path": "@",
+        "value": {
+          "date": "=fetch($.w.date)",
+          "type": "=fetch($.w.ty)",
+          "payoff": "=fetch($.w.pay)",
+          "notionalPrincipal": "=fetch($.w.st.notional)",
+          "nominalInterestRate": "=fetch($.w.st.rate)",
+          "accruedInterest": "=fetch($.w.st.accrued)",
+          "drop": "=and($.w.hasPurchase,=or(=and(=notEquals($.w.ty,'AD'),=lessThan($.w.date,$.w.purchase)),=and(=equals($.w.ty,'IP'),=equals($.w.date,$.w.purchase))))"
+        } }
+  ] },
+
+  { "command": "ifElse", "condition": "=fetch($.w.hasPurchase)",
+    "ifScript": [ { "command": "remove", "path": "$.events[?(@.drop==true)]",
+      "description": "A purchased contract reports only what happens from the purchase date on. The earlier events are still evaluated: they carry the state." } ] },
+  { "command": "remove", "path": "$.events[*].drop" },
+
+  { "command": "add", "path": "$.summary", "value": {} },
+  { "command": "add", "path": "$.summary.totalPayoff", "value": "=sum($.events[*].payoff)" },
+  { "command": "add", "path": "$.summary.eventCount", "value": "=count($.events)" },
+  { "command": "remove", "path": "$.w" }
+]
