@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>TLio.Samples.Benchmarks.PamSingleContractBenchmarks-20260930-093315</title>
+<title>TLio.Samples.Benchmarks.PamSingleContractBenchmarks-20260930-082614</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -16,17 +16,18 @@
 BenchmarkDotNet v0.15.8, macOS 27.0 (26A428) [Darwin 27.0.0]
 Apple M4 Pro, 1 CPU, 14 logical and 14 physical cores
 .NET SDK 10.0.302
-  [Host] : .NET 10.0.10 (10.0.10, 10.0.1026.32716), Arm64 RyuJIT armv8.0-a
-  Dry    : .NET 10.0.10 (10.0.10, 10.0.1026.32716), Arm64 RyuJIT armv8.0-a
+  [Host]     : .NET 10.0.10 (10.0.10, 10.0.1026.32716), Arm64 RyuJIT armv8.0-a
+  DefaultJob : .NET 10.0.10 (10.0.10, 10.0.1026.32716), Arm64 RyuJIT armv8.0-a
 </code></pre>
-<pre><code>Job=Dry  IterationCount=1  LaunchCount=1  
-RunStrategy=ColdStart  UnrollFactor=1  WarmupCount=1  
-</code></pre>
+<pre><code></code></pre>
 
 <table>
-<thead><tr><th>Method                                          </th><th>Mean</th><th>Error</th><th>Allocated</th>
+<thead><tr><th>Method                                          </th><th>Mean </th><th>Error</th><th>StdDev</th><th>Gen0</th><th>Gen1</th><th>Gen2</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>&#39;pam-reference: 1 contract, 10y quarterly (42 events)&#39;</td><td>13.83 ms</td><td>NA</td><td>9.52 MB</td>
+</thead><tbody><tr><td>&#39;pam-simple: 1 contract, 10y quarterly (41 events)&#39;</td><td>558.9 &mu;s</td><td>10.88 &mu;s</td><td>16.61 &mu;s</td><td>208.9844</td><td>54.6875</td><td>-</td><td>1.67 MB</td>
+</tr><tr><td>&#39;pam-simple: 1 contract, 50y monthly (601 events)&#39;</td><td>10,547.4 &mu;s</td><td>180.30 &mu;s</td><td>150.56 &mu;s</td><td>1562.5000</td><td>671.8750</td><td>109.3750</td><td>27.46 MB</td>
+</tr><tr><td>&#39;pam-reference: 1 contract, 10y quarterly (42 events)&#39;</td><td>2,593.3 &mu;s</td><td>50.71 &mu;s</td><td>58.40 &mu;s</td><td>890.6250</td><td>390.6250</td><td>-</td><td>7.55 MB</td>
+</tr><tr><td>&#39;pam-reference: 1 contract, 50y monthly (602 events)&#39;</td><td>47,838.1 &mu;s</td><td>951.34 &mu;s</td><td>1,739.59 &mu;s</td><td>7000.0000</td><td>2000.0000</td><td>666.6667</td><td>122.59 MB</td>
 </tr></tbody></table>
 </body>
 </html>
