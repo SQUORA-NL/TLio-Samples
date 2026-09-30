@@ -1,83 +1,100 @@
 # ACTUS PAM: Tlio script against ACTUS-I CPU, same machine
 
-Measured 29 September 2026. Every row ran alone (nothing else running), Release build.
+Measured 30 September 2026 in one serial session (nothing else running), Release build. Every
+figure below comes from that session, except where a range is given.
 
 - **Machine:** Apple M4 Pro, 14 cores, 24 GB, macOS, .NET 10.0.302 (runtime 10.0.10)
-- **Tlio:** `TLio.*` 1.1.0-preview.5 (floating `1.*-*`), script `samples/TLio.Sample.Actus.Api/Scripts/pam-simple.json`
+- **Tlio:** `TLio.*` 1.1.0-preview.5 (floating `1.*-*`)
 - **ACTUS-I CPU:** `ActusInsurance.Core.CPU` 1.0.0-preview.2, `PrincipalAtMaturity.Schedule` + `Apply`
-- **Parallel:** `Parallel.For`, 14 threads, Server GC, one shared compiled script (Tlio) / no shared state (ACTUS-I)
-- **Not measured here:** the GPU, and the Ryzen 7 3800X. Nothing below is comparable to the GPU column.
+- **Parallel:** `Parallel.For`, 14 threads, Server GC
+- **Single contract, Tlio:** BenchmarkDotNet 0.15.8, default job, one thread, Workstation GC
+- **Single contract, ACTUS-I:** Stopwatch loop, 2,000 warmed runs (mean and median). A different
+  tool from Tlio's, so single-contract ratios are approximate.
+- **Not measured here:** the GPU and the Ryzen 7 3800X. Nothing below is comparable to the GPU column.
 
-Two contract shapes, so the work per contract is the same on both sides:
+## The workloads
 
-| Shape | Contract | Tlio events | ACTUS-I events |
+The work per contract is the same on both sides.
+
+| Shape | Contract | Tlio `pam-simple` | Tlio `pam-reference` | ACTUS-I |
+|---|---|---|---|---|
+| Short | 10 years, quarterly, A360, notional 10,000+, alternating RPA/RPL | 41 events | 42 | 42 |
+| Long | 50 years, monthly, A365, 100,000 at 5 % (ACTUS-I's "Ultimate" workload) | 601 | 602 | 602 |
+
+`pam-simple` folds the maturity IP into the MD, so it has one event fewer. It is IED, IP and MD
+only: **it passes 0 of the 42 ACTUS reference cases strictly.** `pam-reference` reproduces all
+42 to ten decimals, including rate reset, and is the like-for-like counterpart of ACTUS-I.
+
+## Results: one contract, warmed
+
+| | Tlio `pam-simple` | Tlio `pam-reference` | ACTUS-I CPU |
 |---|---|---|---|
-| 41 events | 10 years, quarterly, A360, notional 10,000+, alternating RPA/RPL | 41 | 42 |
-| 602 events | 50 years, monthly, A365, 100,000 at 5 % (ACTUS-I's "Ultimate" workload) | 601 | 602 |
+| Short (41/42 events) | 559 µs | 2.59 ms | 18.4 µs (median 17.3) |
+| Long (601/602 events) | 10.5 ms | 47.8 ms | 174 µs (median 130) |
 
-Event counts differ by one: ACTUS-I emits a separate IP at maturity, `pam-simple` folds it into the MD.
+Tlio is slower than ACTUS-I CPU by about **30x** (`pam-simple`, short), **61x** (`pam-simple`,
+long), **141x** (`pam-reference`, short) and **275x** (`pam-reference`, long).
 
-## Results
+## Results: portfolio, 100,000 contracts on 14 cores
 
-| Measure | Tlio `pam-simple` | ACTUS-I CPU | Tlio is slower by |
+| | Tlio `pam-simple` | Tlio `pam-reference` | ACTUS-I CPU |
 |---|---|---|---|
-| **One contract, 41 events, warmed** | 537 µs (BenchmarkDotNet mean) | 17 µs mean, 16.5 µs median | about 31x |
-| **One contract, 602 events, warmed** | 10.0 ms (BenchmarkDotNet mean) | 172 µs mean, 134 µs median | about 58x |
-| 100,000 x 41 events, one thread | 52.6 s (526 µs each) | 769 ms (7.7 µs each) | about 68x |
-| **100,000 x 41 events, 14 cores** | **8.21 s** (82 µs each) | **331 ms** (3.3 µs each) | **about 25x** |
-| 10,000 x 602 events, one thread | 81.6 s (8.16 ms each) | 865 ms (86 µs each) | about 94x |
-| **100,000 x 602 events, 14 cores** | **121.6 s** (1.22 ms each) | **2.53 s** (25 µs each) | **about 48x** |
-| Speed-up from 14 cores | 6.4x (41 ev.), about 6.7x (602 ev.) | 2.3x (41 ev.), 3.4x (602 ev.) | |
-| Cost per event, parallel | about 2.0 µs | 0.08 µs (41 ev.), 0.04 µs (602 ev.) | |
+| Short | 8.75 s (88 µs each) | 52.4 s (524 µs each) | 322 ms (3.2 µs each) |
+| Long | 123.4 s (1.23 ms each) | 599.4 s (5.99 ms each) | 2.58 s (25.8 µs each) |
 
-Tlio cost per event is flat (about 2 µs) from 41 to 601 events, so it scales linearly with the
-schedule length. Single-contract figures use different tools on each side (BenchmarkDotNet
-ShortRun for Tlio, a 2,000-run Stopwatch loop for ACTUS-I), so treat the ratio as approximate.
+Tlio is slower by about **27x** (`pam-simple`, short), **48x** (`pam-simple`, long), **163x**
+(`pam-reference`, short) and **232x** (`pam-reference`, long).
 
-## Like for like: `pam-reference` against ACTUS-I CPU
+**Run-to-run spread:** the short `pam-simple` figure was 9.66 s, 8.21 s and 8.75 s in three
+separate sessions on this machine. Quote it as 8 to 10 s. The other Tlio rows were run once at
+this size; on the 10,000-contract runs they moved by under 10 % between sessions.
 
-`pam-simple` is IED, IP, MD only. ACTUS-I CPU runs the full PAM semantics, so the table above
-**understates** the real difference. `pam-reference.json` is the script that reproduces all 42
-ACTUS reference cases (rate reset, fees, day counts, business days, purchase/termination), so it
-is the fair counterpart. It emits the maturity IP separately, like ACTUS-I: 42 and 602 events.
+## Results: one thread
 
-| Measure | Tlio `pam-reference` | ACTUS-I CPU | Tlio is slower by |
-|---|---|---|---|
-| One contract, 42 events, warmed | 2.50 ms | 17 µs | ~146x |
-| One contract, 602 events, warmed | 45.5 ms | 172 µs | ~264x |
-| 10,000 x 42 events, 14 cores | 4.98 s (498 µs each) | 331 ms per 100,000, so ~33 ms | ~150x per contract |
-| 100 x 602 events, 14 cores | 956 ms (9.56 ms each; 1,000 contracts: 5.93 s, 5.93 ms each) | 25 µs each | ~235x per contract |
+| | Tlio `pam-simple` | ACTUS-I CPU |
+|---|---|---|
+| 100,000 x short | 53.6 s (536 µs each) | 814 ms (8.1 µs each) |
+| 10,000 x long | 80.9 s (8.09 ms each) | 910 ms (91 µs each) |
 
-Cost per event for `pam-reference` is about 12 µs in parallel (498 µs / 42), 6x `pam-simple`.
-The parallel figures are per contract at smaller portfolios than the `pam-simple` rows (a
-100,000 x 602 run would take about ten minutes); the per-contract cost is flat across sizes for
-both scripts, so it can be scaled, but it was not run at 100,000.
+About **66x** and **89x**. Speed-up from 14 cores: Tlio 6.1x (short) and 6.6x (long); ACTUS-I 2.5x
+(short) and 3.5x (long).
 
-## What was checked
+## Cost per event, in parallel
 
-| Reference tests (42 ACTUS PAM cases, 10 decimals) | Passing |
+| | µs per event |
 |---|---|
-| `pam-simple.json` as it is | 0 of 42 (2 match on cash flows alone) |
+| Tlio `pam-simple` | 2.1 (short), 2.1 (long) |
+| Tlio `pam-reference` | 12.5 (short), 10.0 (long) |
+| ACTUS-I CPU | 0.077 (short), 0.043 (long) |
+
+Tlio's cost per event is flat as the schedule grows, so both scripts scale linearly with the
+number of events.
+
+## Reference tests (42 ACTUS PAM cases, ten decimals)
+
+| Script | Passing |
+|---|---|
+| `pam-simple.json` | 0 of 42 (2 match on cash flows alone) |
 | `pam-reference.json`, including the 4 rate-reset cases | 42 of 42 |
 
-Caveats on the 42: `nominalInterestRate` is not compared on `pam29`-`pam35` (the reference file
-has 0.0 there; ACTUS-I skips that column too). Not implemented because no case needs it: caps and
+Caveats: `nominalInterestRate` is not compared on `pam29` to `pam35` (the reference file has 0.0
+there; ACTUS-I skips that column too). Not implemented, because no case needs it: caps and
 floors, SC, RRF, calendars other than Monday to Friday, accrual from an anchor before the IED.
 
 ## Reproduce
 
 ```sh
-# Tlio single contract (BenchmarkDotNet)
-dotnet run -c Release --project tests/TLio.Samples.Benchmarks -- --filter "*" --job short
+# Tlio single contract (BenchmarkDotNet, default job)
+dotnet run -c Release --project tests/TLio.Samples.Benchmarks -- --filter "*"
 
-# Tlio throughput, both shapes
-DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~Portfolio50y"
+# Tlio portfolios (the 100,000 x long pam-reference case takes about ten minutes)
 DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~Portfolio_Throughput&Name!~1000000"
+DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~Portfolio50y"
+DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~PortfolioReference"
 
 # Reference tests
 dotnet test tests/TLio.Samples.Tests --filter "FullyQualifiedName~ActusPamReference"
 ```
 
 The ACTUS-I CPU harness is not in this repository (it consumes a NuGet package from another
-project). The single-contract Tlio run was BenchmarkDotNet `--job short` (3 iterations, 18 %
-margin); rerun without `--job short` before quoting it to a decimal.
+project); it is a console project that runs `Schedule` + `Apply` over the two shapes.

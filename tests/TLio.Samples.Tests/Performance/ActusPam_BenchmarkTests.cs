@@ -243,8 +243,11 @@ public class ActusPam_BenchmarkTests
     /// </summary>
     [TestCase(false, 1_000)]
     [TestCase(false, 10_000)]
+    [TestCase(false, 100_000)]
     [TestCase(true, 100)]
     [TestCase(true, 1_000)]
+    [TestCase(true, 10_000)]
+    [TestCase(true, 100_000)]
     public void PortfolioReference_Throughput_Parallel(bool fiftyYearMonthly, int contractCount)
     {
         var reference = Path.Combine(Path.GetDirectoryName(ScriptPath)!, "pam-reference.json");
