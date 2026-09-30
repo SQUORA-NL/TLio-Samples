@@ -1,6 +1,6 @@
 # ACTUS PAM and life insurance: Tlio scripts against ACTUS-I, same machine
 
-Measured 30 September and 1 October 2026, serial sessions (nothing else running), Release build.
+Measured in September 2026, in serial sessions (nothing else running), Release build.
 
 - **Machine:** Apple M4 Pro, 14 cores, 24 GB, macOS, .NET 10.0.302 (runtime 10.0.10)
 - **Tlio:** `TLio.*` 1.1.0-preview.5 (floating `1.*-*`)
@@ -106,7 +106,7 @@ short row was 9.66 s, 8.21 s and 8.75 s in three sessions, and ACTUS-I's short r
 | 100,000 x short | 53.6 s (536 µs each) | 770 ms (7.7 µs each) |
 | 10,000 x long | 80.9 s (8.09 ms each) | 857 ms (86 µs each) |
 
-About **70x** and **94x**. Speed-up from 14 cores: Tlio 6.1x to 6.6x; ACTUS-I 2.2x to 3.0x.
+About **70x** and **94x**. Speed-up from 14 cores: Tlio 6.1x to 6.6x; ACTUS-I 2.2x (short) to 3.3x (long).
 
 ## Results: life projection
 
@@ -188,8 +188,8 @@ both, neither, floor above the initial rate, cap below it, and absent equals unr
 variant is not reported: it was written by Claude, not a human, so it says nothing about a
 developer or an actuary. The claim "a new variant is a small script change with a test" is
 supported; a time for it is not. The same holds at the scale of the whole engine: the parity work
-that added rate reset variants, fees, scaling, purchase and termination to the script was done by
-Claude in a few hours, again not a human figure.
+that added fees, scaling, purchase, termination and the other features to the script was also
+done by Claude, so it gives no human figure either.
 
 ### "Why did this contract pay this?"
 
