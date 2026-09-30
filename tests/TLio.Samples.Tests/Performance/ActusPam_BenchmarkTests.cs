@@ -292,6 +292,70 @@ public class ActusPam_BenchmarkTests
         Assert.That(eventTotal, Is.EqualTo((long)expectedPerContract * contractCount));
     }
 
+    /// <summary>
+    /// <c>life-project.json</c> over ACTUS-I's 42-policy benchmark cycle: 30 annual steps (the
+    /// horizon of its published 100,000-policy row) or 600 monthly steps (its "Ultimate"
+    /// workload). Sequential when <paramref name="parallel"/> is false.
+    /// </summary>
+    [TestCase(30, false, 10_000)]
+    [TestCase(30, true, 100_000)]
+    [TestCase(600, false, 1_000)]
+    [TestCase(600, true, 10_000)]
+    public void PortfolioLife_Throughput(int steps, bool parallel, int contractCount)
+    {
+        var lifeScript = Path.Combine(Path.GetDirectoryName(ScriptPath)!, "life-project.json");
+        var script = CreateEngine().Compile(File.ReadAllText(lifeScript), JsonExecutionContext.CreateDefault().NodeAdapter);
+        var dt = steps == 600 ? 1.0 / 12.0 : 1.0;
+
+        var ages = new[] { 25.0, 35, 40, 45, 50, 55, 60, 65 };
+        var policies = new List<JObject>(42);
+        var index = 0;
+        foreach (var age in ages)
+            for (var gender = 0; gender < 3; gender++)
+                foreach (var smoker in new[] { 0, 1 })
+                {
+                    if (++index > 42) break;
+                    var sumAssured = (index % 4) switch { 0 => 50_000.0, 1 => 100_000.0, 2 => 200_000.0, _ => 500_000.0 };
+                    policies.Add(new JObject
+                    {
+                        ["currentState"] = 1, ["smokerStatus"] = smoker, ["insuredGender"] = gender,
+                        ["premiumMode"] = index % 3, ["ageAtEval"] = age, ["sumAssured"] = sumAssured,
+                        ["premiumAmount"] = sumAssured * 0.001,
+                        ["yearsInForce"] = (index % 4) switch { 0 => 0.5, 1 => 2.0, 2 => 5.0, _ => 10.0 },
+                        ["extraPremBps"] = (index % 4) switch { 0 => 0, 1 => 100, 2 => 200, _ => 500 },
+                    });
+                }
+
+        long Execute(int i)
+        {
+            var input = new JObject { ["contract"] = policies[i % 42].DeepClone(), ["timeSteps"] = steps, ["dtYears"] = dt };
+            var context = JsonExecutionContext.CreateDefault();
+            var result = script.Execute(input, context);
+            if (!result.Success)
+                throw new InvalidOperationException($"Policy {i} failed to execute.");
+            return result.Data.SelectToken("$.steps")!.Count();
+        }
+
+        for (var i = 0; i < System.Math.Min(42, contractCount); i++) Execute(i); // warmup
+        ThreadPool.SetMinThreads(Environment.ProcessorCount, Environment.ProcessorCount);
+
+        var cells = 0L;
+        var sw = Stopwatch.StartNew();
+        if (parallel)
+            Parallel.For(0, contractCount,
+                new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
+                i => Interlocked.Add(ref cells, Execute(i)));
+        else
+            for (var i = 0; i < contractCount; i++) cells += Execute(i);
+        sw.Stop();
+
+        TestContext.WriteLine(
+            $"shape=life-{steps}steps mode={(parallel ? "par" : "seq")} cores={(parallel ? Environment.ProcessorCount : 1)} " +
+            $"portfolio={contractCount:N0} | total={sw.ElapsedMilliseconds:N0} ms | " +
+            $"per-policy={sw.ElapsedMilliseconds * 1000.0 / contractCount:F2} us | cells={cells:N0}");
+        Assert.That(cells, Is.EqualTo((long)steps * contractCount));
+    }
+
     /// <summary>Same 50-year workload across all cores, one shared compiled script.</summary>
     [TestCase(100)]
     [TestCase(10_000)]
