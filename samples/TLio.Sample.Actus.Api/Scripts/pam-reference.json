@@ -21,6 +21,9 @@
   { "command": "put", "path": "$.w.purchase", "value": "=if(=exists($.purchaseDate),$.purchaseDate,'1900-01-01')" },
   { "command": "put", "path": "$.w.hasTermination", "value": "=exists($.terminationDate)" },
   { "command": "put", "path": "$.w.termination", "value": "=if(=exists($.terminationDate),$.terminationDate,'2999-12-31')" },
+  { "command": "put", "path": "$.w.rFloor", "value": "=if(=exists($.rateFloor),$.rateFloor,-1000000)",
+    "description": "Optional life floor (ACTUS RRLF) and cap (RRLC) on the nominal interest rate. A missing bound is a million either way, so clamp() leaves the rate untouched." },
+  { "command": "put", "path": "$.w.rCap", "value": "=if(=exists($.rateCap),$.rateCap,1000000)" },
   { "command": "put", "path": "$.w.hasCap", "value": "=exists($.capitalizationEndDate)" },
   { "command": "put", "path": "$.w.cap", "value": "=if(=exists($.capitalizationEndDate),$.capitalizationEndDate,'1900-01-01')" },
 
@@ -154,7 +157,7 @@
     "title": "Initial state",
     "description": "A contract that started before the status date is already running: notional and rate are set, its IED is not replayed. Interest accrued before the status date is taken from the accruedInterest term (deriving it from earlier interest dates is not implemented)." },
   { "command": "put", "path": "$.w.st.rate",
-    "value": "=if(=greaterThan($.initialExchangeDate,$.statusDate),0,$.nominalInterestRate)" },
+    "value": "=if(=greaterThan($.initialExchangeDate,$.statusDate),0,=clamp($.nominalInterestRate,$.w.rFloor,$.w.rCap))" },
   { "command": "put", "path": "$.w.st.accrued", "value": "=if(=equals($.nominalInterestRate,0),0,$.accruedInterest)" },
   { "command": "put", "path": "$.w.st.fee", "value": "=if(=equals($.feeRate,0),0,$.feeAccrued)" },
   { "command": "put", "path": "$.w.st.sSched", "value": "$.statusDate" },
@@ -241,7 +244,7 @@
       { "command": "ifElse", "condition": "=equals($.w.ty,'IED')",
         "ifScript": [
           { "command": "set", "path": "$.w.st.notional", "value": "=multiply($.w.role,$.notionalPrincipal)" },
-          { "command": "set", "path": "$.w.st.rate", "value": "=fetch($.nominalInterestRate)" } ] },
+          { "command": "set", "path": "$.w.st.rate", "value": "=clamp($.nominalInterestRate,$.w.rFloor,$.w.rCap)" } ] },
       { "command": "ifElse", "condition": "=or(=equals($.w.ty,'MD'),=equals($.w.ty,'TD'))",
         "ifScript": [
           { "command": "set", "path": "$.w.st.notional", "value": 0 },
@@ -268,7 +271,7 @@
                   { "command": "set", "path": "$.w.mrT", "value": "=fetch($.w.ts)" } ] }
           ] },
           { "command": "set", "path": "$.w.st.rate",
-            "value": "=sum(=multiply($.w.mr,$.rateMultiplier),$.rateSpread)" } ] },
+            "value": "=clamp(=sum(=multiply($.w.mr,$.rateMultiplier),$.rateSpread),$.w.rFloor,$.w.rCap)" } ] },
 
       { "command": "set", "path": "@",
         "value": {
