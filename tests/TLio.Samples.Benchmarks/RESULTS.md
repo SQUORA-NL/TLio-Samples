@@ -241,7 +241,7 @@ removed by  #51.ifScript[1]  (if =fetch($.w.hasPurchase) > where $.events[?(@.dr
   PAM script is 507 lines.
 - **No way to share a read-only node between executions**, so a lookup table is rebuilt or cloned
   for every contract. The life script computes the two neighbouring grid points analytically
-  instead; measured on one contract, tables as a script literal or as input were 12% to 15% slower
+  instead; measured on one contract, tables as a script literal or as input were 6% to 15% slower
   than the analytic form and up to 1.9e-6 different from it (float32 rounding).
 - **`decisionTable` evaluates result expressions lazily**, only for the matching rule: a good fit
   for guards and product rules.
