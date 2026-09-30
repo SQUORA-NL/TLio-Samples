@@ -107,6 +107,30 @@ on purpose:
 - **Early termination bundles the stub interest into the `TD` payoff** as one line, rather than
   ACTUS's separate accrued-interest-at-termination `IP` event plus a clean `TD` settlement.
 
+## Life insurance (the ACTUS-I life engine as TLio scripts)
+
+Six more scripts under `Scripts/` reproduce ACTUS-I's life-insurance engine, and are held to the
+numbers ACTUS-I itself produces (`tests/TLio.Samples.Tests/Resources/oracle/`, tests
+`ActusLife*Tests`). Two are served here:
+
+- **`POST /actus/life/project`** (`life-project.json`) — forward projection of one contract:
+  `{ contract, timeSteps, dtYears }` in, `steps[]` out, each `{ expectedCashflow, probActive,
+  probDeathClaimed, probLapsed }`. Try `SampleInput/life-project-example.json`.
+- **`POST /actus/life/validate-transition`** (`life-transition.json`) — may this contract move
+  from state A to state B? `{ contract, from, to, evalDateDays, facts }` in, `result { allowed,
+  ruleId, reason }` out. The Markov graph and the guard rules are `decisionTable` rows.
+  Try `SampleInput/life-transition-example.json`.
+
+Not served, but in the same folder and tested: `life-factors.json` (the eight risk factors),
+`life-scenario.json` (apply a mortality / lapse scenario to a contract), `life-aggregate.json`
+(portfolio cashflow, totals and min / max / mean over a scenario cube) and
+`life-product-rules.json` (per-product underwriting rules, one row per rule).
+
+Precision: the projection matches ACTUS-I's kernel to 1.5e-8 in a probability and 3e-3 in a
+monthly cashflow, not to ten decimals — the kernel does its lookups in float32 and a script computes
+in double. The factors, guards and product rules are exact (one number-formatting difference is
+named in `ActusLifeProductRulesTests`).
+
 ## What it does not do
 
 No auth, no request size limits beyond ASP.NET Core's defaults, no try/catch around a

@@ -15,6 +15,8 @@ var adapter = JsonExecutionContext.CreateDefault().NodeAdapter;
 // Each script is parsed once, here, rather than on every request.
 var simple = engine.Compile(File.ReadAllText(Path.Combine(scriptsDir, "pam-simple.json")), adapter);
 var envelope = engine.Compile(File.ReadAllText(Path.Combine(scriptsDir, "pam-envelope.json")), adapter);
+var lifeProject = engine.Compile(File.ReadAllText(Path.Combine(scriptsDir, "life-project.json")), adapter);
+var lifeTransition = engine.Compile(File.ReadAllText(Path.Combine(scriptsDir, "life-transition.json")), adapter);
 
 app.MapGet("/", () => Results.Ok(new
 {
@@ -23,6 +25,8 @@ app.MapGet("/", () => Results.Ok(new
     {
         new { path = "/actus/pam", body = "bare PAM contract terms", result = "{ events, summary }" },
         new { path = "/actus/pam/envelope", body = "{ contract, scenario }", result = "{ events, summary }" },
+        new { path = "/actus/life/project", body = "{ contract, timeSteps, dtYears }", result = "{ steps: [ { expectedCashflow, probActive, probDeathClaimed, probLapsed } ] }" },
+        new { path = "/actus/life/validate-transition", body = "{ contract, from, to, evalDateDays, facts }", result = "{ result: { allowed, ruleId, reason } }" },
     },
     samples = Directory.Exists(samplesDir)
         ? Directory.GetFiles(samplesDir).Select(Path.GetFileName)
@@ -42,6 +46,12 @@ app.MapPost("/actus/pam", async (HttpRequest request) =>
 
 app.MapPost("/actus/pam/envelope", async (HttpRequest request) =>
     RunScript(envelope, await ReadBody(request)));
+
+app.MapPost("/actus/life/project", async (HttpRequest request) =>
+    RunScript(lifeProject, await ReadBody(request)));
+
+app.MapPost("/actus/life/validate-transition", async (HttpRequest request) =>
+    RunScript(lifeTransition, await ReadBody(request)));
 
 app.Run();
 return;

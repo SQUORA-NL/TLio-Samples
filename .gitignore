@@ -37,3 +37,6 @@ Thumbs.db
 
 # Docker plugin sample — runtime volume contents
 samples/TLio.Sample.DockerPlugin/plugins/
+
+# BenchmarkDotNet output
+BenchmarkDotNet.Artifacts/

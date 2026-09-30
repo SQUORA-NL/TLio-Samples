@@ -1,0 +1,14 @@
+{
+  "contract": {
+    "currentStateName": "Active",
+    "lastPremDueDays": 20089,
+    "graceExpiryDays": -1,
+    "lapseDateDays": -1,
+    "lapseCount": 0,
+    "yearsInForce": 3
+  },
+  "from": "Active",
+  "to": "GracePeriod",
+  "evalDateDays": 20240,
+  "facts": { "deathReported": false, "claimFiled": false, "underwritingApproved": false, "surrenderRequested": false }
+}
