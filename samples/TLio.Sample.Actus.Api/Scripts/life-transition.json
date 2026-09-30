@@ -1,0 +1,366 @@
+[
+  {
+    "command": "put",
+    "path": "$.w.key",
+    "value": "=concat($.from,'_',$.to)",
+    "title": "Life insurance: validate a state transition",
+    "description": "ACTUS-I LifeInsuranceGpuExecutor.ValidateTransition. Input: { contract: {...snapshot incl. currentStateName, lastPremDueDays, graceExpiryDays, lapseDateDays, lapseCount, yearsInForce...}, from, to, evalDateDays, facts: { deathReported, claimFiled, underwritingApproved, surrenderRequested } }. Output: $.result { allowed, ruleId, reason }. Order of checks: self-transition, transition out of a terminal state, pair not on the Markov graph, then the guard rule the graph names for the pair. The graph and the guard rules below are data (ACTUS-I's markov_graph.json and rule_set.json); the reason text is the rule's reason_template."
+  },
+  {
+    "command": "put",
+    "path": "$.w.fromTerminal",
+    "value": "=or(=equals($.from,'ClaimPaid'),=or(=equals($.from,'DeathClaimPaid'),=equals($.from,'Terminated')))"
+  },
+  {
+    "command": "decisionTable",
+    "path": "$",
+    "title": "The Markov graph: which guard rule decides a transition",
+    "config": {
+      "inputs": [
+        {
+          "name": "key",
+          "path": "$.w.key"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "ruleId",
+          "path": "$.w.ruleId"
+        }
+      ],
+      "strategy": {
+        "mode": "firstMatch",
+        "conflictResolution": "priority"
+      },
+      "rules": [
+        {
+          "priority": 1,
+          "conditions": {
+            "key": "=Prospect_Active"
+          },
+          "results": {
+            "ruleId": "rule_underwriting_approved"
+          }
+        },
+        {
+          "priority": 2,
+          "conditions": {
+            "key": "=Active_GracePeriod"
+          },
+          "results": {
+            "ruleId": "rule_premium_overdue"
+          }
+        },
+        {
+          "priority": 3,
+          "conditions": {
+            "key": "=GracePeriod_Lapsed"
+          },
+          "results": {
+            "ruleId": "rule_grace_period_expired"
+          }
+        },
+        {
+          "priority": 4,
+          "conditions": {
+            "key": "=Active_DeathClaimPaid"
+          },
+          "results": {
+            "ruleId": "rule_death_benefit_eligible"
+          }
+        },
+        {
+          "priority": 5,
+          "conditions": {
+            "key": "=Active_ClaimOpen"
+          },
+          "results": {
+            "ruleId": "rule_claim_admissible"
+          }
+        },
+        {
+          "priority": 6,
+          "conditions": {
+            "key": "=ClaimOpen_ClaimPaid"
+          },
+          "results": {
+            "ruleId": "rule_claim_approved"
+          }
+        },
+        {
+          "priority": 7,
+          "conditions": {
+            "key": "=Lapsed_Reinstatement"
+          },
+          "results": {
+            "ruleId": "rule_reinstatement_eligible"
+          }
+        },
+        {
+          "priority": 8,
+          "conditions": {
+            "key": "=Reinstatement_Active"
+          },
+          "results": {
+            "ruleId": "rule_reinstatement_approved"
+          }
+        },
+        {
+          "priority": 9,
+          "conditions": {
+            "key": "=Active_PaidUp"
+          },
+          "results": {
+            "ruleId": "rule_paid_up_eligible"
+          }
+        },
+        {
+          "priority": 10,
+          "conditions": {
+            "key": "=Active_Terminated"
+          },
+          "results": {
+            "ruleId": "rule_surrender"
+          }
+        },
+        {
+          "priority": 11,
+          "conditions": {
+            "key": "=PaidUp_Terminated"
+          },
+          "results": {
+            "ruleId": "rule_surrender"
+          }
+        },
+        {
+          "priority": 12,
+          "conditions": {
+            "key": "=ClaimOpen_Terminated"
+          },
+          "results": {
+            "ruleId": "rule_surrender"
+          }
+        }
+      ],
+      "defaultResults": {
+        "ruleId": "rule_invalid_transition"
+      }
+    }
+  },
+  {
+    "command": "ifElse",
+    "condition": "=equals($.from,$.to)",
+    "ifScript": [
+      {
+        "command": "put",
+        "path": "$.result",
+        "value": {
+          "allowed": false,
+          "ruleId": "rule_no_self_transition",
+          "reason": "=format('Self-transition on state {0} is not permitted.',$.from)"
+        }
+      }
+    ],
+    "elseScript": [
+      {
+        "command": "ifElse",
+        "condition": "=fetch($.w.fromTerminal)",
+        "ifScript": [
+          {
+            "command": "put",
+            "path": "$.result",
+            "value": {
+              "allowed": false,
+              "ruleId": "rule_no_transition_from_terminal",
+              "reason": "=format('State {0} is terminal; no outgoing transitions.',$.from)"
+            }
+          }
+        ],
+        "elseScript": [
+          {
+            "command": "ifElse",
+            "condition": "=equals($.w.ruleId,'rule_invalid_transition')",
+            "ifScript": [
+              {
+                "command": "put",
+                "path": "$.result",
+                "value": {
+                  "allowed": false,
+                  "ruleId": "rule_invalid_transition",
+                  "reason": "=format('No defined transition from {0} to {1}.',$.from,$.to)"
+                }
+              }
+            ],
+            "elseScript": [
+              {
+                "command": "put",
+                "path": "$.result.ruleId",
+                "value": "=fetch($.w.ruleId)"
+              },
+              {
+                "command": "put",
+                "path": "$.w.qState",
+                "value": "=concat('\"',$.contract.currentStateName,'\"')",
+                "title": "Values as the rule templates print them: strings quoted, booleans lower case",
+                "description": "TLio's own number-to-text is culture dependent (0.5 prints as 0,5 on a Dutch machine), so numbers go through format(), which is not."
+              },
+              {
+                "command": "put",
+                "path": "$.w.bDeath",
+                "value": "=toLower(=toString($.facts.deathReported))"
+              },
+              {
+                "command": "put",
+                "path": "$.w.bClaim",
+                "value": "=toLower(=toString($.facts.claimFiled))"
+              },
+              {
+                "command": "put",
+                "path": "$.w.bUw",
+                "value": "=toLower(=toString($.facts.underwritingApproved))"
+              },
+              {
+                "command": "put",
+                "path": "$.w.bSurr",
+                "value": "=toLower(=toString($.facts.surrenderRequested))"
+              },
+              {
+                "command": "decisionTable",
+                "path": "$",
+                "config": {
+                  "inputs": [
+                    {
+                      "name": "rule",
+                      "path": "$.w.ruleId"
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "name": "allowed",
+                      "path": "$.result.allowed"
+                    },
+                    {
+                      "name": "reason",
+                      "path": "$.result.reason"
+                    }
+                  ],
+                  "strategy": {
+                    "mode": "firstMatch",
+                    "conflictResolution": "priority"
+                  },
+                  "rules": [
+                    {
+                      "priority": 1,
+                      "conditions": {
+                        "rule": "=rule_underwriting_approved"
+                      },
+                      "results": {
+                        "allowed": "=fetch($.facts.underwritingApproved)",
+                        "reason": "=format('Underwriting approved: {0}; must be true to proceed.',$.w.bUw)"
+                      }
+                    },
+                    {
+                      "priority": 2,
+                      "conditions": {
+                        "rule": "=rule_premium_overdue"
+                      },
+                      "results": {
+                        "allowed": "=and(=greaterThan($.evalDateDays,$.contract.lastPremDueDays),=equals($.contract.currentStateName,'Active'))",
+                        "reason": "=format('Premium due day {0}; eval day {1}.',$.contract.lastPremDueDays,$.evalDateDays)"
+                      }
+                    },
+                    {
+                      "priority": 3,
+                      "conditions": {
+                        "rule": "=rule_grace_period_expired"
+                      },
+                      "results": {
+                        "allowed": "=and(=greaterThan($.contract.graceExpiryDays,0),=greaterThan($.evalDateDays,$.contract.graceExpiryDays))",
+                        "reason": "=format('Grace period expiry day {0}; eval day {1}.',$.contract.graceExpiryDays,$.evalDateDays)"
+                      }
+                    },
+                    {
+                      "priority": 4,
+                      "conditions": {
+                        "rule": "=rule_death_benefit_eligible"
+                      },
+                      "results": {
+                        "allowed": "=and(=equals($.contract.currentStateName,'Active'),$.facts.deathReported)",
+                        "reason": "=format('State {0}; death reported: {1}.',$.w.qState,$.w.bDeath)"
+                      }
+                    },
+                    {
+                      "priority": 5,
+                      "conditions": {
+                        "rule": "=rule_claim_admissible"
+                      },
+                      "results": {
+                        "allowed": "=and(=equals($.contract.currentStateName,'Active'),$.facts.claimFiled)",
+                        "reason": "=format('State {0}; claim filed: {1}.',$.w.qState,$.w.bClaim)"
+                      }
+                    },
+                    {
+                      "priority": 6,
+                      "conditions": {
+                        "rule": "=rule_claim_approved"
+                      },
+                      "results": {
+                        "allowed": "=and(=equals($.contract.currentStateName,'ClaimOpen'),$.facts.claimFiled)",
+                        "reason": "=format('State {0}; claim approved: {1}.',$.w.qState,$.w.bClaim)",
+                        "description": "ACTUS-I passes claimApproved := claimFiled."
+                      }
+                    },
+                    {
+                      "priority": 7,
+                      "conditions": {
+                        "rule": "=rule_reinstatement_eligible"
+                      },
+                      "results": {
+                        "allowed": "=and(=greaterOrEqual($.contract.lapseDateDays,0),=and(=lessOrEqual(=divide(=subtract($.evalDateDays,$.contract.lapseDateDays),30.4375),24),=lessOrEqual($.contract.lapseCount,2)))",
+                        "reason": "=format('Lapse day {0}; lapse count {1}.',$.contract.lapseDateDays,$.contract.lapseCount)"
+                      }
+                    },
+                    {
+                      "priority": 8,
+                      "conditions": {
+                        "rule": "=rule_reinstatement_approved"
+                      },
+                      "results": {
+                        "allowed": "=and(=equals($.contract.currentStateName,'Reinstatement'),$.facts.underwritingApproved)",
+                        "reason": "=format('State {0}; UW approved: {1}.',$.w.qState,$.w.bUw)"
+                      }
+                    },
+                    {
+                      "priority": 9,
+                      "conditions": {
+                        "rule": "=rule_paid_up_eligible"
+                      },
+                      "results": {
+                        "allowed": "=and(=equals($.contract.currentStateName,'Active'),=greaterOrEqual($.contract.yearsInForce,3))",
+                        "reason": "=format('State {0}; years in force {1}.',$.w.qState,$.contract.yearsInForce)"
+                      }
+                    },
+                    {
+                      "priority": 10,
+                      "conditions": {
+                        "rule": "=rule_surrender"
+                      },
+                      "results": {
+                        "allowed": "=and(=or(=equals($.contract.currentStateName,'Active'),=or(=equals($.contract.currentStateName,'PaidUp'),=equals($.contract.currentStateName,'ClaimOpen'))),$.facts.surrenderRequested)",
+                        "reason": "=format('State {0}; surrender requested: {1}.',$.w.qState,$.w.bSurr)"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "command": "remove",
+    "path": "$.w"
+  }
+]

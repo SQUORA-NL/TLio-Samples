@@ -1,0 +1,15 @@
+{
+  "contract": {
+    "currentState": 1,
+    "smokerStatus": 1,
+    "insuredGender": 0,
+    "premiumMode": 0,
+    "ageAtEval": 45,
+    "sumAssured": 200000,
+    "premiumAmount": 120,
+    "yearsInForce": 2,
+    "extraPremBps": 100
+  },
+  "timeSteps": 12,
+  "dtYears": 0.08333333333333333
+}
