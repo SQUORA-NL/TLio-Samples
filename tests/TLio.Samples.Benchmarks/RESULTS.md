@@ -136,6 +136,33 @@ thing:**
   here, and that is unresolved.** Do not put the Tlio life or PAM numbers next to the published
   CPU or GPU numbers until it is.
 
+## Results: ACTUS-I's own sweep workload (the 42 reference contracts, cycled)
+
+ACTUS-I's `PamPortfolioSweepBenchmarks` fills any batch size by cycling its 42 reference contracts
+(520 events per cycle, about 12 per contract, one combined risk-factor model, schedule to the latest
+maturity), which is likely the workload behind its published PAM rows. Same cycle through
+`pam-reference.json`. **Both sides emit exactly 1,238,110 events for 100,000 contracts.**
+
+| | Tlio `pam-reference` | ACTUS-I CPU | Tlio is slower by |
+|---|---|---|---|
+| One contract, warmed (mean, median) | 1,071 µs, 1,059 µs | 5.9 µs, 5.9 µs | ~180x |
+| 10,000 contracts, one thread | 10.6 s (1,056 µs each) | 68 ms (6.8 µs each) | ~155x |
+| 10,000 contracts, 14 cores | 2.40 s (240 µs each) | 15.5 ms (1.6 µs each) | ~155x |
+| 100,000 contracts, one thread | not run (about 105 s) | 495 ms (4.9 µs each) | |
+| 100,000 contracts, 14 cores | 23.9 s (239 µs each) | 103 ms (1.0 µs each) | ~230x |
+
+Tlio costs about 85 µs per event on one thread and 19 µs per event on 14 cores here (the per-contract
+setup of a script that reads 40 optional terms weighs more on a 12-event contract than on 600 events).
+
+**This does not explain the published CPU figures either.** ACTUS-I's documentation gives 148.4 µs
+for one PAM contract, 1,355.4 ms for 10,000 and 13,863.8 ms for 100,000 on this kind of workload.
+The same code and package (`ActusInsurance.Core.CPU` 1.0.0-preview.2) measures 5.9 µs, 68 ms and
+495 ms here: the published figures are about 20 to 28 times higher. An M4 Pro is faster than a
+Ryzen 7 3800X on one thread, but not by that factor. What this rules out: the 50-year contract and
+the 42-contract cycle as the explanation, and a different package version. What it does not rule
+out (none of these checked): a Debug or unoptimised build, tiered-compilation or first-iteration
+cost left in the numbers, or a different benchmark mode. The Ryzen run is what would settle it.
+
 ## Cost per event, in parallel
 
 | | µs per event or step |
@@ -260,6 +287,7 @@ DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "Full
 DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~Portfolio50y"
 DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~PortfolioReference"
 DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~PortfolioLife"
+DOTNET_gcServer=1 dotnet test tests/TLio.Samples.Tests -c Release --filter "FullyQualifiedName~ActusPam_BenchmarkTests&Name~PortfolioCycledReference"
 
 # Parity against ACTUS-I's golden data
 dotnet test tests/TLio.Samples.Tests --filter "FullyQualifiedName~ActusPamOracle|FullyQualifiedName~ActusLife|FullyQualifiedName~ActusPamReference"
