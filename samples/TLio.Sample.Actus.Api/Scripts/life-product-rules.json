@@ -1,0 +1,219 @@
+[
+  {
+    "command": "put",
+    "path": "$.w.sState",
+    "title": "Life insurance: per-product underwriting rules",
+    "description": "ACTUS-I ProductRuleSet.EvaluateGuard for the two product rule packs in its tests: NovaCover LifestyleProtect (rule_lp_*, meta OccupationClass / BuildingClass / IsPremiumSmoker) and ClearLife SimpleTerm (rule_st_*, meta WellnessParticipant / MonthlyIncome / HasPartnerDiscount). Input: { contract: {...snapshot...}, meta: {...}, ruleId }. Output: $.result { allowed, reason, inputsUsed }. Each rule is one row of the table below: the guard is an expression over the contract snapshot and the product meta, the reason is the rule's reason_template, inputsUsed is the provenance of what the rule read. A new product is a new set of rows, not new code. The reason text prints values the way ACTUS-I's DSL does (strings quoted, booleans lower case); numbers go through format() because TLio's own number-to-text follows the machine's culture.",
+    "value": "=concat('\"',$.contract.currentStateName,'\"')"
+  },
+  {
+    "command": "put",
+    "path": "$.w.sOcc",
+    "value": "=if(=exists($.meta.OccupationClass),=concat('\"',$.meta.OccupationClass,'\"'),'')"
+  },
+  {
+    "command": "put",
+    "path": "$.w.sBld",
+    "value": "=if(=exists($.meta.BuildingClass),=concat('\"',$.meta.BuildingClass,'\"'),'')"
+  },
+  {
+    "command": "put",
+    "path": "$.w.bSmoker",
+    "value": "=if(=exists($.meta.IsPremiumSmoker),=toLower(=toString($.meta.IsPremiumSmoker)),'')"
+  },
+  {
+    "command": "put",
+    "path": "$.w.bWell",
+    "value": "=if(=exists($.meta.WellnessParticipant),=toLower(=toString($.meta.WellnessParticipant)),'')"
+  },
+  {
+    "command": "put",
+    "path": "$.w.bPartner",
+    "value": "=if(=exists($.meta.HasPartnerDiscount),=toLower(=toString($.meta.HasPartnerDiscount)),'')"
+  },
+  {
+    "command": "put",
+    "path": "$.w.ruleId",
+    "value": "=fetch($.ruleId)"
+  },
+  {
+    "command": "decisionTable",
+    "path": "$",
+    "config": {
+      "inputs": [
+        {
+          "name": "rule",
+          "path": "$.w.ruleId"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "allowed",
+          "path": "$.result.allowed"
+        },
+        {
+          "name": "reason",
+          "path": "$.result.reason"
+        },
+        {
+          "name": "inputsUsed",
+          "path": "$.result.inputsUsed"
+        }
+      ],
+      "strategy": {
+        "mode": "firstMatch",
+        "conflictResolution": "priority"
+      },
+      "rules": [
+        {
+          "priority": 1,
+          "conditions": {
+            "rule": "=rule_lp_occupation_excluded"
+          },
+          "results": {
+            "allowed": "=notEquals($.meta.OccupationClass,'Excluded')",
+            "reason": "=format('Occupation class {0} is excluded from LifestyleProtect cover.',$.w.sOcc)",
+            "inputsUsed": {
+              "meta.occupation_class": "=fetch($.w.sOcc)"
+            }
+          }
+        },
+        {
+          "priority": 2,
+          "conditions": {
+            "rule": "=rule_lp_high_risk_requires_loading"
+          },
+          "results": {
+            "allowed": "=or(=notEquals($.meta.OccupationClass,'HighRisk'),=greaterOrEqual($.contract.extraPremBps,200))",
+            "reason": "=format('HighRisk occupation requires extra_prem_bps >= 200; current: {0}.',$.contract.extraPremBps)",
+            "inputsUsed": {
+              "meta.occupation_class": "=fetch($.w.sOcc)",
+              "snapshot.extra_prem_bps": "=format('{0}',$.contract.extraPremBps)"
+            }
+          }
+        },
+        {
+          "priority": 3,
+          "conditions": {
+            "rule": "=rule_lp_urban_sum_assured_cap"
+          },
+          "results": {
+            "allowed": "=or(=notEquals($.meta.BuildingClass,'HighDensityUrban'),=lessOrEqual($.contract.sumAssured,1000000))",
+            "reason": "=format('Building class {0}: sum assured {1} exceeds 1,000,000 cap.',$.w.sBld,$.contract.sumAssured)",
+            "inputsUsed": {
+              "meta.building_class": "=fetch($.w.sBld)",
+              "snapshot.sum_assured": "=format('{0}',$.contract.sumAssured)"
+            }
+          }
+        },
+        {
+          "priority": 4,
+          "conditions": {
+            "rule": "=rule_lp_premium_smoker_loading"
+          },
+          "results": {
+            "allowed": "=or(=equals($.meta.IsPremiumSmoker,false),=greaterOrEqual($.contract.extraPremBps,300))",
+            "reason": "=format('Premium smoker requires extra_prem_bps >= 300; current: {0}.',$.contract.extraPremBps)",
+            "inputsUsed": {
+              "meta.is_premium_smoker": "=fetch($.w.bSmoker)",
+              "snapshot.extra_prem_bps": "=format('{0}',$.contract.extraPremBps)"
+            }
+          }
+        },
+        {
+          "priority": 5,
+          "conditions": {
+            "rule": "=rule_lp_rural_issuance_allowed"
+          },
+          "results": {
+            "allowed": "=or(=notEquals($.meta.BuildingClass,'Rural'),=and(=equals($.contract.currentStateName,'Active'),=greaterOrEqual($.contract.yearsInForce,1)))",
+            "reason": "=format('Rural policy in state {0} with {1} years in force; 1+ year Active required.',$.w.sState,$.contract.yearsInForce)",
+            "inputsUsed": {
+              "meta.building_class": "=fetch($.w.sBld)",
+              "snapshot.current_state": "=fetch($.w.sState)",
+              "snapshot.years_in_force": "=format('{0}',$.contract.yearsInForce)"
+            }
+          }
+        },
+        {
+          "priority": 6,
+          "conditions": {
+            "rule": "=rule_st_income_sum_assured_cap"
+          },
+          "results": {
+            "allowed": "=lessOrEqual($.contract.sumAssured,=multiply($.meta.MonthlyIncome,10))",
+            "reason": "=format('Sum assured {0} exceeds 10x monthly income {1}.',$.contract.sumAssured,$.meta.MonthlyIncome)",
+            "inputsUsed": {
+              "meta.monthly_income": "=format('{0}',$.meta.MonthlyIncome)",
+              "snapshot.sum_assured": "=format('{0}',$.contract.sumAssured)"
+            }
+          }
+        },
+        {
+          "priority": 7,
+          "conditions": {
+            "rule": "=rule_st_partner_discount_requires_active"
+          },
+          "results": {
+            "allowed": "=or(=equals($.meta.HasPartnerDiscount,false),=equals($.contract.currentStateName,'Active'))",
+            "reason": "=format('Partner discount requires Active state; current state: {0}.',$.w.sState)",
+            "inputsUsed": {
+              "meta.has_partner_discount": "=fetch($.w.bPartner)",
+              "snapshot.current_state": "=fetch($.w.sState)"
+            }
+          }
+        },
+        {
+          "priority": 8,
+          "conditions": {
+            "rule": "=rule_st_wellness_waives_loading"
+          },
+          "results": {
+            "allowed": "=or(=equals($.meta.WellnessParticipant,true),=equals($.contract.extraPremBps,0))",
+            "reason": "=format('Non-wellness participant has extra loading {0} bps; must be 0 or enrol in wellness.',$.contract.extraPremBps)",
+            "inputsUsed": {
+              "meta.wellness_participant": "=fetch($.w.bWell)",
+              "snapshot.extra_prem_bps": "=format('{0}',$.contract.extraPremBps)"
+            }
+          }
+        },
+        {
+          "priority": 9,
+          "conditions": {
+            "rule": "=rule_st_min_income_for_issuance"
+          },
+          "results": {
+            "allowed": "=greaterOrEqual($.meta.MonthlyIncome,1000)",
+            "reason": "=format('Monthly income {0} is below the minimum 1,000 required for SimpleTerm.',$.meta.MonthlyIncome)",
+            "inputsUsed": {
+              "meta.monthly_income": "=format('{0}',$.meta.MonthlyIncome)"
+            }
+          }
+        },
+        {
+          "priority": 10,
+          "conditions": {
+            "rule": "=rule_st_partner_discount_min_in_force"
+          },
+          "results": {
+            "allowed": "=or(=equals($.meta.HasPartnerDiscount,false),=greaterOrEqual($.contract.yearsInForce,1))",
+            "reason": "=format('Partner discount requires 1+ year in force; current: {0} years.',$.contract.yearsInForce)",
+            "inputsUsed": {
+              "meta.has_partner_discount": "=fetch($.w.bPartner)",
+              "snapshot.years_in_force": "=format('{0}',$.contract.yearsInForce)"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "command": "put",
+    "path": "$.result.ruleId",
+    "value": "=fetch($.ruleId)"
+  },
+  {
+    "command": "remove",
+    "path": "$.w"
+  }
+]

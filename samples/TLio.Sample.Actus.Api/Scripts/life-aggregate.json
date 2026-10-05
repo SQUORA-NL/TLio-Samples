@@ -1,0 +1,81 @@
+[
+  { "command": "put", "path": "$.w.S",
+    "title": "Life insurance: portfolio aggregation over a scenario cube",
+    "description": "ACTUS-I LifeProjectionCube aggregations. Input: { scenarios: [ [ { contract, expectedCashflow: [...T], probActive: [...T] } x C contracts ] x S scenarios ] }. Output: the same items with totalCashflow and survivalProbability added, and $.aggregate { portfolioCashflowAt (flat, row-major S x T: index s * T + t), portfolioTotalCashflow (per scenario), cashflowStatsPerContract (min / max / mean of a contract's total across the scenarios), portfolioCashflowStats (the same over the portfolio totals) }. Numbers never pass through text: TLio's number-to-text follows the machine's culture, so the results are written back into placeholder array elements.",
+    "value": "=length($.scenarios)" },
+  { "command": "put", "path": "$.w.C", "value": "=length($.scenarios[0])" },
+  { "command": "put", "path": "$.w.T", "value": "=length($.scenarios[0][0].expectedCashflow)" },
+  { "command": "put", "path": "$.w.dollar", "value": "$$" },
+
+  { "command": "forEach", "path": "$.scenarios", "commands": [
+      { "command": "forEach", "path": "@", "commands": [
+          { "command": "put", "path": "@.totalCashflow", "value": "=sum(@.expectedCashflow)" },
+          { "command": "put", "path": "@.survivalProbability", "value": "=last(@.probActive[*])" }
+      ] }
+  ] },
+
+  { "command": "put", "path": "$.w.sCsv", "value": "", "title": "Index lists: scenarios, contracts, and every (scenario, step) pair" },
+  { "command": "put", "path": "$.w.cCsv", "value": "" },
+  { "command": "put", "path": "$.w.gCsv", "value": "" },
+  { "command": "put", "path": "$.w.s", "value": 0 },
+  { "command": "while", "condition": "=lessThan($.w.s,$.w.S)", "maxIterations": 100000,
+    "commands": [
+      { "command": "set", "path": "$.w.sCsv", "value": "=concat($.w.sCsv,=if(=equals($.w.s,0),'',','),$.w.s)" },
+      { "command": "put", "path": "$.w.t", "value": 0 },
+      { "command": "while", "condition": "=lessThan($.w.t,$.w.T)", "maxIterations": 100000,
+        "commands": [
+          { "command": "set", "path": "$.w.gCsv", "value": "=concat($.w.gCsv,=if(=equals($.w.gCsv,''),'',','),$.w.s,'|',$.w.t)" },
+          { "command": "set", "path": "$.w.t", "value": "=sum($.w.t,1)" }
+        ] },
+      { "command": "set", "path": "$.w.s", "value": "=sum($.w.s,1)" }
+    ] },
+  { "command": "put", "path": "$.w.c", "value": 0 },
+  { "command": "while", "condition": "=lessThan($.w.c,$.w.C)", "maxIterations": 100000,
+    "commands": [
+      { "command": "set", "path": "$.w.cCsv", "value": "=concat($.w.cCsv,=if(=equals($.w.c,0),'',','),$.w.c)" },
+      { "command": "set", "path": "$.w.c", "value": "=sum($.w.c,1)" }
+    ] },
+
+  { "command": "put", "path": "$.aggregate.portfolioCashflowAt", "value": "=split($.w.gCsv,',')",
+    "title": "Portfolio cashflow at each (scenario, step)" },
+  { "command": "forEach", "path": "$.aggregate.portfolioCashflowAt", "commands": [
+      { "command": "put", "path": "$.w.pair", "value": "=fetch(=scriptpath())" },
+      { "command": "put", "path": "$.w.ps", "value": "=regexReplace($.w.pair,'\\|.*$','')" },
+      { "command": "put", "path": "$.w.pt", "value": "=regexReplace($.w.pair,'^.*\\|','')" },
+      { "command": "put", "path": "$.w.ref",
+        "value": "=concat($.w.dollar,'.scenarios[',$.w.ps,'][*].expectedCashflow[',$.w.pt,']')" },
+      { "command": "set", "path": "@", "value": "=sum(=indirect($.w.ref))" }
+  ] },
+
+  { "command": "put", "path": "$.aggregate.portfolioTotalCashflow", "value": "=split($.w.sCsv,',')",
+    "title": "Portfolio total per scenario" },
+  { "command": "forEach", "path": "$.aggregate.portfolioTotalCashflow", "commands": [
+      { "command": "put", "path": "$.w.ps", "value": "=fetch(=scriptpath())" },
+      { "command": "put", "path": "$.w.ref", "value": "=concat($.w.dollar,'.scenarios[',$.w.ps,'][*].totalCashflow')" },
+      { "command": "set", "path": "@", "value": "=sum(=indirect($.w.ref))" }
+  ] },
+
+  { "command": "put", "path": "$.aggregate.cashflowStatsPerContract", "value": "=split($.w.cCsv,',')",
+    "title": "Per contract: min / max / mean of the total across the scenarios" },
+  { "command": "forEach", "path": "$.aggregate.cashflowStatsPerContract", "commands": [
+      { "command": "put", "path": "$.w.pc", "value": "=fetch(=scriptpath())" },
+      { "command": "put", "path": "$.w.ref", "value": "=concat($.w.dollar,'.scenarios[*][',$.w.pc,'].totalCashflow')" },
+      { "command": "put", "path": "$.w.nameRef", "value": "=concat($.w.dollar,'.scenarios[0][',$.w.pc,'].contract')" },
+      { "command": "set", "path": "@",
+        "value": {
+          "contract": "=indirect($.w.nameRef)",
+          "min": "=min(=indirect($.w.ref))",
+          "max": "=max(=indirect($.w.ref))",
+          "mean": "=avg(=indirect($.w.ref))"
+        } }
+  ] },
+
+  { "command": "put", "path": "$.aggregate.portfolioCashflowStats",
+    "title": "Portfolio: min / max / mean of the scenario totals",
+    "value": {
+      "min": "=min($.aggregate.portfolioTotalCashflow)",
+      "max": "=max($.aggregate.portfolioTotalCashflow)",
+      "mean": "=avg($.aggregate.portfolioTotalCashflow)"
+    } },
+  { "command": "remove", "path": "$.w" }
+]

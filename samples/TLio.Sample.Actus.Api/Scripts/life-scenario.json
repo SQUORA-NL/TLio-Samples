@@ -1,0 +1,8 @@
+[
+  { "command": "put", "path": "$.adjusted.extraPremBps",
+    "title": "Life insurance: apply a mortality / lapse scenario to a contract",
+    "description": "ACTUS-I LifeInsuranceGpuExecutor.ProjectScenarioBatch. The projection kernel itself knows nothing about scenarios: a scenario is applied by cloning the contract with two fields changed, and the clone is projected as usual (life-project.json). Input: { contract: { extraPremBps, yearsInForce, ... }, scenario: { mortalityShiftBps, lapseMultiplierPct } }. Output: $.adjusted { extraPremBps, yearsInForce } to merge into the contract. The mortality shift is added to extraPremBps and clamped to +-5000. The lapse multiplier is NOT applied to lapse rates: a multiplier other than 100 moves yearsInForce by -(pct - 100) * 0.05 years (never below 0), which moves the contract into another duration bracket of the lapse table. A multiplier of 100 leaves yearsInForce as it is.",
+    "value": "=clamp(=sum($.contract.extraPremBps,$.scenario.mortalityShiftBps),-5000,5000)" },
+  { "command": "put", "path": "$.adjusted.yearsInForce",
+    "value": "=if(=equals($.scenario.lapseMultiplierPct,100),$.contract.yearsInForce,=max(0,=subtract($.contract.yearsInForce,=multiply(=subtract($.scenario.lapseMultiplierPct,100),0.05))))" }
+]

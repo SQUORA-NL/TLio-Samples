@@ -1,0 +1,46 @@
+[
+  { "command": "put", "path": "$.w.age",
+    "title": "Life insurance: the eight risk factors",
+    "description": "ACTUS-I LifeFactorEvaluator, one contract at one evaluation date. Input: { contract: {...snapshot...}, evalDateDays, insuredDobDays }. Output: $.factors. The factors are evaluated in dependency order: age; base mortality; smoker loading; adjusted mortality; lapse rate; disability incidence; benefit amount; annual premium.",
+    "value": "=divide(=subtract($.evalDateDays,$.insuredDobDays),365.25)" },
+
+  { "command": "put", "path": "$.w.smoker", "value": "=if(=notEquals($.contract.smokerStatus,0),1.35,1)" },
+  { "command": "put", "path": "$.w.isFemale", "value": "=equals($.contract.insuredGender,1)",
+    "description": "Only gender F (1) gets the female mortality and disability adjustments here. Gender X (2) is treated as male by this evaluator, although the projection tables treat X like F." },
+
+  { "command": "put", "path": "$.w.mu",
+    "title": "Base mortality: Makeham force of decrement, turned into an annual probability",
+    "description": "mu = 0.0007 + 0.00005 * 1.09^age, times 0.85 for females; q = 1 - exp(-mu). TLio has no exp(); pow(e, -mu) is the same number to well below the 1e-10 the reference is held to.",
+    "value": "=multiply(=sum(0.0007,=multiply(0.00005,=pow(1.09,$.w.age))),=if($.w.isFemale,0.85,1))" },
+  { "command": "put", "path": "$.w.baseQx", "value": "=subtract(1,=pow(2.718281828459045,=multiply(-1,$.w.mu)))" },
+
+  { "command": "put", "path": "$.w.uwLoading", "value": "=sum(1,=divide($.contract.extraPremBps,10000))" },
+
+  { "command": "put", "path": "$.w.lapseBase",
+    "title": "Lapse rate by duration bracket and premium mode",
+    "value": "=if(=lessThan($.contract.yearsInForce,0.5),0.08,=if(=lessThan($.contract.yearsInForce,1),0.07,=if(=lessThan($.contract.yearsInForce,2),0.06,=if(=lessThan($.contract.yearsInForce,3),0.04,=if(=lessThan($.contract.yearsInForce,5),0.03,=if(=lessThan($.contract.yearsInForce,10),0.025,0.02))))))" },
+  { "command": "put", "path": "$.w.modeFactor",
+    "value": "=if(=equals($.contract.premiumMode,1),0.95,=if(=equals($.contract.premiumMode,2),0.9,1))" },
+
+  { "command": "put", "path": "$.w.disabilityBase",
+    "title": "Disability incidence",
+    "value": "=multiply(=sum(0.003,=multiply(0.0002,=max(0,=subtract($.w.age,30)))),=if($.w.isFemale,1.1,1))" },
+  { "command": "put", "path": "$.w.disabilityCapped", "value": "=min($.w.disabilityBase,0.05)" },
+
+  { "command": "put", "path": "$.w.payments",
+    "title": "Payments per year",
+    "value": "=if(=equals($.contract.premiumMode,1),4,=if(=equals($.contract.premiumMode,2),1,12))" },
+
+  { "command": "put", "path": "$.factors",
+    "value": {
+      "factorAge": "=fetch($.w.age)",
+      "factorSmokerLoading": "=fetch($.w.smoker)",
+      "factorBaseMortalityQx": "=fetch($.w.baseQx)",
+      "factorAdjustedMortalityQx": "=multiply($.w.baseQx,$.w.smoker,$.w.uwLoading)",
+      "factorLapseRate": "=multiply($.w.lapseBase,$.w.modeFactor)",
+      "factorDisabilityIncidence": "=multiply($.w.disabilityCapped,$.w.smoker)",
+      "factorBenefitAmount": "=fetch($.contract.sumAssured)",
+      "factorAnnualPremium": "=multiply($.contract.premiumAmount,$.w.payments)"
+    } },
+  { "command": "remove", "path": "$.w" }
+]

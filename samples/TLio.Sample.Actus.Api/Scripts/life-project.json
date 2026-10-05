@@ -1,0 +1,97 @@
+[
+  { "command": "put", "path": "$.w.terminal",
+    "title": "Life insurance: forward projection of one contract",
+    "description": "ACTUS-I LifeProjectionKernel. Input: { contract: { currentState (0-9), smokerStatus, insuredGender (0 M, 1 F, 2 X), premiumMode (0 monthly, 1 quarterly, 2 annual), ageAtEval, sumAssured, premiumAmount, yearsInForce, extraPremBps }, timeSteps, dtYears }. Output: $.steps, one { expectedCashflow, probActive, probDeathClaimed, probLapsed } per step. Actuarial rates are the Gompertz-Makeham mortality, duration-bracket lapse and age-linear disability tables ACTUS-I builds for the kernel, evaluated at the two neighbouring grid points and linearly interpolated (a table would have to be rebuilt in every execution, since TLio cannot share a node between executions). Which decrements apply from the starting state comes from the Markov graph: Only Active has mortality, lapse and disability hazards, and only Active and GracePeriod have a lapse hazard (the intensity models on the Markov graph's transitions). Every other non-terminal state is projected with no decrement and keeps collecting premium. ClaimPaid (6), DeathClaimPaid (7) and Terminated (9) are terminal: no cashflow, probActive 0, probDeathClaimed 1.",
+    "value": "=or(=equals($.contract.currentState,6),=or(=equals($.contract.currentState,7),=equals($.contract.currentState,9)))" },
+  { "command": "put", "path": "$.w.hM", "value": "=if(=equals($.contract.currentState,1),1,0)" },
+  { "command": "put", "path": "$.w.hD", "value": "=if(=equals($.contract.currentState,1),1,0)" },
+  { "command": "put", "path": "$.w.hL", "value": "=if(=or(=equals($.contract.currentState,1),=equals($.contract.currentState,2)),1,0)" },
+
+  { "command": "put", "path": "$.w.smoker", "title": "Contract-level constants",
+    "value": "=if(=notEquals($.contract.smokerStatus,0),1.35,1)" },
+  { "command": "put", "path": "$.w.uw", "value": "=sum(1,=divide($.contract.extraPremBps,10000))" },
+  { "command": "put", "path": "$.w.annual",
+    "value": "=multiply($.contract.premiumAmount,=if(=equals($.contract.premiumMode,0),12,=if(=equals($.contract.premiumMode,1),4,1)))" },
+  { "command": "put", "path": "$.w.fem", "description": "Table column: 0 is male, 1 female, 2 (X) is the female column.",
+    "value": "=if(=equals($.contract.insuredGender,0),1,0.85)" },
+  { "command": "put", "path": "$.w.disMult", "value": "=if(=equals($.contract.insuredGender,0),1,1.1)" },
+  { "command": "put", "path": "$.w.modeF",
+    "value": "=if(=equals($.contract.premiumMode,0),1,=if(=equals($.contract.premiumMode,1),0.95,0.9))" },
+  { "command": "put", "path": "$.w.pA", "value": 1 },
+  { "command": "put", "path": "$.w.pD", "value": 0 },
+  { "command": "put", "path": "$.w.pL", "value": 0 },
+
+  { "command": "put", "path": "$.w.csv", "value": "", "title": "One entry per time step" },
+  { "command": "put", "path": "$.w.k", "value": 0 },
+  { "command": "while", "condition": "=lessThan($.w.k,$.timeSteps)", "maxIterations": 100000,
+    "commands": [
+      { "command": "set", "path": "$.w.csv", "value": "=concat($.w.csv,=if(=equals($.w.k,0),'',','),$.w.k)" },
+      { "command": "set", "path": "$.w.k", "value": "=sum($.w.k,1)" }
+    ] },
+  { "command": "put", "path": "$.steps", "value": "=split($.w.csv,',')" },
+
+  { "command": "ifElse", "condition": "=fetch($.w.terminal)",
+    "ifScript": [
+      { "command": "forEach", "path": "$.steps", "commands": [
+          { "command": "set", "path": "@",
+            "value": { "expectedCashflow": 0, "probActive": 0, "probDeathClaimed": 1, "probLapsed": 0 } }
+      ] }
+    ],
+    "elseScript": [
+      { "command": "forEach", "path": "$.steps", "commands": [
+          { "command": "put", "path": "$.w.t", "value": "=fetch(=scriptpath())" },
+          { "command": "put", "path": "$.w.age", "value": "=sum($.contract.ageAtEval,=multiply($.w.t,$.dtYears))" },
+          { "command": "put", "path": "$.w.yif", "value": "=sum($.contract.yearsInForce,=multiply($.w.t,$.dtYears))" },
+
+          { "command": "put", "path": "$.w.nk", "title": "Age grid 20..80 step 1: position of the age, clamped to the table",
+            "value": "=clamp(=subtract($.w.age,20),0,100000)" },
+          { "command": "put", "path": "$.w.lo", "value": "=floor($.w.nk)" },
+          { "command": "put", "path": "$.w.i", "value": "=clamp($.w.lo,0,60)" },
+          { "command": "put", "path": "$.w.fr", "value": "=if(=greaterOrEqual($.w.lo,60),0,=subtract($.w.nk,$.w.lo))" },
+
+          { "command": "put", "path": "$.w.q0", "title": "Mortality: 1 - exp(-mu) at both grid ages",
+            "value": "=subtract(1,=pow(2.718281828459045,=multiply(-1,=multiply($.w.fem,=sum(0.0007,=multiply(0.00005,=pow(2.718281828459045,=multiply(=sum(20,$.w.i),0.08617196929518))))))))" },
+          { "command": "put", "path": "$.w.q1",
+            "value": "=subtract(1,=pow(2.718281828459045,=multiply(-1,=multiply($.w.fem,=sum(0.0007,=multiply(0.00005,=pow(2.718281828459045,=multiply(=sum(21,$.w.i),0.08617196929518))))))))" },
+          { "command": "put", "path": "$.w.qx",
+            "value": "=multiply($.w.hM,=clamp(=multiply(=sum($.w.q0,=multiply($.w.fr,=subtract($.w.q1,$.w.q0))),$.w.smoker,$.w.uw),0,0.999))" },
+
+          { "command": "put", "path": "$.w.d0", "title": "Disability incidence at both grid ages",
+            "value": "=min(=multiply(=min(=sum(0.003,=multiply(0.0002,=max(0,=subtract(=sum(20,$.w.i),30)))),0.05),$.w.disMult),0.05)" },
+          { "command": "put", "path": "$.w.d1",
+            "value": "=min(=multiply(=min(=sum(0.003,=multiply(0.0002,=max(0,=subtract(=sum(21,$.w.i),30)))),0.05),$.w.disMult),0.05)" },
+          { "command": "put", "path": "$.w.dis",
+            "value": "=multiply($.w.hD,=clamp(=multiply(=sum($.w.d0,=multiply($.w.fr,=subtract($.w.d1,$.w.d0))),$.w.smoker),0,0.05))" },
+
+          { "command": "put", "path": "$.w.nkL", "title": "Lapse: duration grid 0..30, bracketed base rate times the premium-mode factor",
+            "value": "=clamp($.w.yif,0,100000)" },
+          { "command": "put", "path": "$.w.loL", "value": "=floor($.w.nkL)" },
+          { "command": "put", "path": "$.w.iL", "value": "=clamp($.w.loL,0,30)" },
+          { "command": "put", "path": "$.w.frL", "value": "=if(=greaterOrEqual($.w.loL,30),0,=subtract($.w.nkL,$.w.loL))" },
+          { "command": "put", "path": "$.w.b0",
+            "value": "=if(=lessThan($.w.iL,1),0.08,=if(=lessThan($.w.iL,2),0.06,=if(=lessThan($.w.iL,3),0.04,=if(=lessThan($.w.iL,5),0.03,=if(=lessThan($.w.iL,10),0.025,0.02)))))" },
+          { "command": "put", "path": "$.w.b1",
+            "value": "=if(=lessThan($.w.iL,0),0.08,=if(=lessThan($.w.iL,1),0.06,=if(=lessThan($.w.iL,2),0.04,=if(=lessThan($.w.iL,4),0.03,=if(=lessThan($.w.iL,9),0.025,0.02)))))" },
+          { "command": "put", "path": "$.w.lapse",
+            "value": "=multiply($.w.hL,$.w.modeF,=sum($.w.b0,=multiply($.w.frL,=subtract($.w.b1,$.w.b0))))" },
+
+          { "command": "put", "path": "$.w.tot", "title": "Competing risks, independent approximation",
+            "value": "=min(1,=sum($.w.qx,$.w.lapse,$.w.dis))" },
+          { "command": "put", "path": "$.w.pDs", "value": "=multiply($.w.pA,$.w.qx)" },
+          { "command": "put", "path": "$.w.pLs", "value": "=multiply($.w.pA,$.w.lapse)" },
+          { "command": "put", "path": "$.w.pStay", "value": "=multiply($.w.pA,=subtract(1,$.w.tot))" },
+
+          { "command": "set", "path": "@",
+            "value": {
+              "expectedCashflow": "=subtract(=multiply($.w.pA,$.w.annual,$.dtYears),=multiply($.w.pDs,$.contract.sumAssured))",
+              "probActive": "=fetch($.w.pStay)",
+              "probDeathClaimed": "=sum($.w.pD,$.w.pDs)",
+              "probLapsed": "=sum($.w.pL,$.w.pLs)"
+            } },
+          { "command": "set", "path": "$.w.pD", "value": "=sum($.w.pD,$.w.pDs)" },
+          { "command": "set", "path": "$.w.pL", "value": "=sum($.w.pL,$.w.pLs)" },
+          { "command": "set", "path": "$.w.pA", "value": "=fetch($.w.pStay)" }
+      ] }
+    ] },
+  { "command": "remove", "path": "$.w" }
+]

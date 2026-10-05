@@ -90,14 +90,38 @@ public class ActusPam_BenchmarkTests
             ["interestPaymentCycle"] = new JObject { ["count"] = 3, ["unit"] = "months" },
         };
 
-    private static (long ElapsedMs, long EventCount) RunPortfolio(CompiledScript<JToken> script, int contractCount)
+    /// <summary>
+    /// The ACTUS-I "Ultimate" PAM workload (<c>UltimatePamData</c> in its benchmark project): one
+    /// fixed-rate contract, 50 years, monthly interest, notional 100,000 at 5 %, A365. ACTUS-I
+    /// counts 602 events (IED + 600 IP + MD); here the last IP and MD fall on the same date and
+    /// come out as one MD event, so 601.
+    /// </summary>
+    private static JToken BuildContract50y(int index) =>
+        new JObject
+        {
+            ["contractId"] = $"ULT50Y{index:D7}",
+            ["contractRole"] = "RPA",
+            ["currency"] = "USD",
+            ["notionalPrincipal"] = 100_000,
+            ["nominalInterestRate"] = 0.05,
+            ["dayCountConvention"] = "A365",
+            ["initialExchangeDate"] = "2025-01-01",
+            ["maturityDate"] = "2075-01-01",
+            ["interestPaymentCycle"] = new JObject { ["count"] = 1, ["unit"] = "months" },
+        };
+
+    private static (long ElapsedMs, long EventCount) RunPortfolio(CompiledScript<JToken> script, int contractCount) =>
+        RunPortfolio(script, contractCount, BuildContract);
+
+    private static (long ElapsedMs, long EventCount) RunPortfolio(
+        CompiledScript<JToken> script, int contractCount, Func<int, JToken> build)
     {
         var eventTotal = 0L;
         var sw = Stopwatch.StartNew();
         for (var i = 0; i < contractCount; i++)
         {
             var context = JsonExecutionContext.CreateDefault();
-            var result = script.Execute(BuildContract(i), context);
+            var result = script.Execute(build(i), context);
             if (!result.Success)
             {
                 var reasons = string.Join("; ", context.GetLogEntries().Select(e => $"{e.Level}: {e.Message}"));
@@ -190,5 +214,254 @@ public class ActusPam_BenchmarkTests
             $"throughput={contractsPerSecond:N0} contracts/sec | events={eventTotal:N0}");
 
         Assert.That(eventTotal, Is.EqualTo(41L * contractCount), "each contract's schedule should be IED + 39 IP + MD = 41 events");
+    }
+
+    /// <summary>
+    /// The 50-year monthly workload ACTUS-I's GPU/CPU numbers are measured on: 601 events per
+    /// contract against 41 above, about 15x the work. Sequential.
+    /// </summary>
+    [TestCase(100)]
+    [TestCase(1_000)]
+    [TestCase(10_000)]
+    public void Portfolio50y_Throughput(int contractCount)
+    {
+        var script = CreateEngine().Compile(File.ReadAllText(ScriptPath), JsonExecutionContext.CreateDefault().NodeAdapter);
+        RunPortfolio(script, System.Math.Min(50, contractCount), BuildContract50y);
+
+        var (elapsedMs, eventTotal) = RunPortfolio(script, contractCount, BuildContract50y);
+        TestContext.WriteLine(
+            $"shape=50y-monthly mode=seq portfolio={contractCount:N0} | total={elapsedMs:N0} ms | " +
+            $"per-contract={elapsedMs * 1000.0 / contractCount:F2} us | events={eventTotal:N0}");
+        Assert.That(eventTotal, Is.EqualTo(601L * contractCount), "IED + 599 IP + MD (last IP and MD share a date) = 601 events");
+    }
+
+    /// <summary>
+    /// <c>pam-reference.json</c>, the script that reproduces all 42 ACTUS reference cases, across
+    /// all cores. It does the full PAM semantics per event (ACTUS-I's scope), so this is the
+    /// like-for-like counterpart of ACTUS-I CPU. 42 events for the 10-year quarterly shape and
+    /// 602 for the 50-year monthly one (it emits the maturity IP separately, like ACTUS-I).
+    /// </summary>
+    [TestCase(false, 1_000)]
+    [TestCase(false, 10_000)]
+    [TestCase(false, 100_000)]
+    [TestCase(true, 100)]
+    [TestCase(true, 1_000)]
+    [TestCase(true, 10_000)]
+    [TestCase(true, 100_000)]
+    public void PortfolioReference_Throughput_Parallel(bool fiftyYearMonthly, int contractCount)
+    {
+        var reference = Path.Combine(Path.GetDirectoryName(ScriptPath)!, "pam-reference.json");
+        var script = CreateEngine().Compile(File.ReadAllText(reference), JsonExecutionContext.CreateDefault().NodeAdapter);
+        var expectedPerContract = fiftyYearMonthly ? 602 : 42;
+
+        JToken Build(int i)
+        {
+            var c = fiftyYearMonthly ? BuildContract50y(i) : BuildContract(i);
+            var cycle = (JObject)c["interestPaymentCycle"]!;
+            cycle["longStub"] = true;
+            c["interestPaymentAnchor"] = DateTime.Parse((string)c["initialExchangeDate"]!, System.Globalization.CultureInfo.InvariantCulture)
+                .AddMonths((int)cycle["count"]!).ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            c["statusDate"] = c["initialExchangeDate"];
+            c["endOfMonth"] = false;
+            return c;
+        }
+
+        long Execute(int i)
+        {
+            var context = JsonExecutionContext.CreateDefault();
+            var result = script.Execute(Build(i), context);
+            if (!result.Success)
+                throw new InvalidOperationException($"Contract {i} failed to execute.");
+            return result.Data.SelectToken("$.events")!.Count();
+        }
+
+        for (var i = 0; i < System.Math.Min(20, contractCount); i++) Execute(i); // warmup
+        ThreadPool.SetMinThreads(Environment.ProcessorCount, Environment.ProcessorCount);
+
+        var eventTotal = 0L;
+        var sw = Stopwatch.StartNew();
+        Parallel.For(0, contractCount,
+            new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
+            i => Interlocked.Add(ref eventTotal, Execute(i)));
+        sw.Stop();
+
+        TestContext.WriteLine(
+            $"shape=reference-{(fiftyYearMonthly ? "50y-monthly" : "10y-quarterly")} mode=par cores={Environment.ProcessorCount} " +
+            $"portfolio={contractCount:N0} | total={sw.ElapsedMilliseconds:N0} ms | " +
+            $"per-contract={sw.ElapsedMilliseconds * 1000.0 / contractCount:F2} us | events={eventTotal:N0}");
+        Assert.That(eventTotal, Is.EqualTo((long)expectedPerContract * contractCount));
+    }
+
+    /// <summary>
+    /// <c>life-project.json</c> over ACTUS-I's 42-policy benchmark cycle: 30 annual steps (the
+    /// horizon of its published 100,000-policy row) or 600 monthly steps (its "Ultimate"
+    /// workload). Sequential when <paramref name="parallel"/> is false.
+    /// </summary>
+    [TestCase(30, false, 10_000)]
+    [TestCase(30, true, 100_000)]
+    [TestCase(600, false, 1_000)]
+    [TestCase(600, true, 10_000)]
+    public void PortfolioLife_Throughput(int steps, bool parallel, int contractCount)
+    {
+        var lifeScript = Path.Combine(Path.GetDirectoryName(ScriptPath)!, "life-project.json");
+        var script = CreateEngine().Compile(File.ReadAllText(lifeScript), JsonExecutionContext.CreateDefault().NodeAdapter);
+        var dt = steps == 600 ? 1.0 / 12.0 : 1.0;
+
+        var ages = new[] { 25.0, 35, 40, 45, 50, 55, 60, 65 };
+        var policies = new List<JObject>(42);
+        var index = 0;
+        foreach (var age in ages)
+            for (var gender = 0; gender < 3; gender++)
+                foreach (var smoker in new[] { 0, 1 })
+                {
+                    if (++index > 42) break;
+                    var sumAssured = (index % 4) switch { 0 => 50_000.0, 1 => 100_000.0, 2 => 200_000.0, _ => 500_000.0 };
+                    policies.Add(new JObject
+                    {
+                        ["currentState"] = 1, ["smokerStatus"] = smoker, ["insuredGender"] = gender,
+                        ["premiumMode"] = index % 3, ["ageAtEval"] = age, ["sumAssured"] = sumAssured,
+                        ["premiumAmount"] = sumAssured * 0.001,
+                        ["yearsInForce"] = (index % 4) switch { 0 => 0.5, 1 => 2.0, 2 => 5.0, _ => 10.0 },
+                        ["extraPremBps"] = (index % 4) switch { 0 => 0, 1 => 100, 2 => 200, _ => 500 },
+                    });
+                }
+
+        long Execute(int i)
+        {
+            var input = new JObject { ["contract"] = policies[i % 42].DeepClone(), ["timeSteps"] = steps, ["dtYears"] = dt };
+            var context = JsonExecutionContext.CreateDefault();
+            var result = script.Execute(input, context);
+            if (!result.Success)
+                throw new InvalidOperationException($"Policy {i} failed to execute.");
+            return result.Data.SelectToken("$.steps")!.Count();
+        }
+
+        for (var i = 0; i < System.Math.Min(42, contractCount); i++) Execute(i); // warmup
+        ThreadPool.SetMinThreads(Environment.ProcessorCount, Environment.ProcessorCount);
+
+        var cells = 0L;
+        var sw = Stopwatch.StartNew();
+        if (parallel)
+            Parallel.For(0, contractCount,
+                new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
+                i => Interlocked.Add(ref cells, Execute(i)));
+        else
+            for (var i = 0; i < contractCount; i++) cells += Execute(i);
+        sw.Stop();
+
+        TestContext.WriteLine(
+            $"shape=life-{steps}steps mode={(parallel ? "par" : "seq")} cores={(parallel ? Environment.ProcessorCount : 1)} " +
+            $"portfolio={contractCount:N0} | total={sw.ElapsedMilliseconds:N0} ms | " +
+            $"per-policy={sw.ElapsedMilliseconds * 1000.0 / contractCount:F2} us | cells={cells:N0}");
+        Assert.That(cells, Is.EqualTo((long)steps * contractCount));
+    }
+
+    /// <summary>
+    /// ACTUS-I's own portfolio-sweep workload: its 42 PAM reference contracts cycled to any batch
+    /// size (<c>PamPortfolioSweepBenchmarks</c>, 520 events per 42-contract cycle), through
+    /// <c>pam-reference.json</c>. Likely the workload behind ACTUS-I's published PAM rows.
+    /// </summary>
+    [TestCase(false, 10_000)]
+    [TestCase(true, 10_000)]
+    [TestCase(true, 100_000)]
+    public void PortfolioCycledReference_Throughput(bool parallel, int contractCount)
+    {
+        var (script, cases) = LoadCycledReference();
+
+        long Execute(int i)
+        {
+            var context = JsonExecutionContext.CreateDefault();
+            var result = script.Execute(cases[i % cases.Count].DeepClone(), context);
+            if (!result.Success)
+                throw new InvalidOperationException($"Contract {i} failed to execute.");
+            return result.Data.SelectToken("$.events")!.Count();
+        }
+
+        var perCycle = Enumerable.Range(0, cases.Count).Sum(Execute);
+        Assert.That(perCycle, Is.EqualTo(520L), "ACTUS-I emits 520 events for the 42 reference contracts");
+        for (var i = 0; i < 500; i++) Execute(i); // warmup
+        ThreadPool.SetMinThreads(Environment.ProcessorCount, Environment.ProcessorCount);
+
+        var events = 0L;
+        var sw = Stopwatch.StartNew();
+        if (parallel)
+            Parallel.For(0, contractCount,
+                new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
+                i => Interlocked.Add(ref events, Execute(i)));
+        else
+            for (var i = 0; i < contractCount; i++) events += Execute(i);
+        sw.Stop();
+
+        TestContext.WriteLine(
+            $"shape=ref42 mode={(parallel ? "par" : "seq")} cores={(parallel ? Environment.ProcessorCount : 1)} " +
+            $"portfolio={contractCount:N0} | total={sw.ElapsedMilliseconds:N0} ms | " +
+            $"per-contract={sw.ElapsedMilliseconds * 1000.0 / contractCount:F2} us | events={events:N0}");
+    }
+
+    /// <summary>One warmed contract of the cycled reference set, mean/median/p99 over 4,000 runs.</summary>
+    [Test]
+    public void PortfolioCycledReference_SingleContract()
+    {
+        var (script, cases) = LoadCycledReference();
+        for (var i = 0; i < 2000; i++)
+            script.Execute(cases[i % cases.Count].DeepClone(), JsonExecutionContext.CreateDefault());
+
+        var micros = new double[4000];
+        for (var i = 0; i < micros.Length; i++)
+        {
+            var input = cases[i % cases.Count].DeepClone();
+            var context = JsonExecutionContext.CreateDefault();
+            var t = Stopwatch.GetTimestamp();
+            script.Execute(input, context);
+            micros[i] = Stopwatch.GetElapsedTime(t).TotalMicroseconds;
+        }
+        Array.Sort(micros);
+        TestContext.WriteLine(
+            $"shape=ref42 mode=single mean_us={micros.Average():F1} median_us={micros[micros.Length / 2]:F1} " +
+            $"p99_us={micros[(int)(micros.Length * 0.99)]:F1}");
+    }
+
+    private static (CompiledScript<JToken> Script, List<JObject> Cases) LoadCycledReference()
+    {
+        var reference = Path.Combine(Path.GetDirectoryName(ScriptPath)!, "pam-reference.json");
+        var script = CreateEngine().Compile(File.ReadAllText(reference), JsonExecutionContext.CreateDefault().NodeAdapter);
+        var file = Path.Combine(TestContext.CurrentContext.TestDirectory, "Resources", "actus-tests-pam.json");
+        var cases = JObject.Parse(File.ReadAllText(file)).Properties()
+            .Select(p => ActusPamOracleTests.BuildInput((JObject)p.Value))
+            .ToList();
+        return (script, cases);
+    }
+
+    /// <summary>Same 50-year workload across all cores, one shared compiled script.</summary>
+    [TestCase(100)]
+    [TestCase(10_000)]
+    [TestCase(100_000)]
+    public void Portfolio50y_Throughput_Parallel(int contractCount)
+    {
+        var script = CreateEngine().Compile(File.ReadAllText(ScriptPath), JsonExecutionContext.CreateDefault().NodeAdapter);
+        RunPortfolio(script, System.Math.Min(50, contractCount), BuildContract50y);
+        ThreadPool.SetMinThreads(Environment.ProcessorCount, Environment.ProcessorCount);
+
+        var eventTotal = 0L;
+        var sw = Stopwatch.StartNew();
+        Parallel.For(0, contractCount,
+            new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
+            i =>
+            {
+                var context = JsonExecutionContext.CreateDefault();
+                var result = script.Execute(BuildContract50y(i), context);
+                if (!result.Success)
+                {
+                    var reasons = string.Join("; ", context.GetLogEntries().Select(e => $"{e.Level}: {e.Message}"));
+                    throw new InvalidOperationException($"Contract {i} failed to execute: {reasons}");
+                }
+                Interlocked.Add(ref eventTotal, result.Data.SelectToken("$.summary.eventCount")!.Value<int>());
+            });
+        sw.Stop();
+
+        TestContext.WriteLine(
+            $"shape=50y-monthly mode=par cores={Environment.ProcessorCount} portfolio={contractCount:N0} | " +
+            $"total={sw.ElapsedMilliseconds:N0} ms | per-contract={sw.ElapsedMilliseconds * 1000.0 / contractCount:F2} us | events={eventTotal:N0}");
+        Assert.That(eventTotal, Is.EqualTo(601L * contractCount));
     }
 }
